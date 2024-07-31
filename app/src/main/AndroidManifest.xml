@@ -13,7 +13,40 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".registrationPage"
+            android:name=".reviewCompetitionRecordPage"
+            android:exported="false" />
+        <activity
+            android:name=".favouriteRestaurantsPage"
+            android:exported="false" />
+        <activity
+            android:name=".userReviewCreationPage"
+            android:exported="false" />
+        <activity
+            android:name=".profilePage"
+            android:exported="false" />
+        <activity
+            android:name=".ownerReviewRespondPage"
+            android:exported="false" />
+        <activity
+            android:name=".ownerRestaurantViewingPage"
+            android:exported="false" />
+        <activity
+            android:name=".restaurantOwnerProfilePage"
+            android:exported="false" />
+        <activity
+            android:name=".restaurantListPage"
+            android:exported="false" />
+        <activity
+            android:name=".restaurantDetailPage"
+            android:exported="false" />
+        <activity
+            android:name=".dashboardPage"
+            android:exported="false" />
+        <activity
+            android:name=".businessRegistrationPage"
+            android:exported="false" />
+        <activity
+            android:name=".userRegistrationPage"
             android:exported="false" />
         <activity
             android:name=".loginPage"
