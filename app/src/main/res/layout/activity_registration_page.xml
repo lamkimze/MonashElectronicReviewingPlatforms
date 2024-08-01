@@ -45,9 +45,11 @@
         android:id="@+id/imageView2"
         android:layout_width="135dp"
         android:layout_height="74dp"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        tools:layout_editor_absoluteX="209dp"
-        tools:layout_editor_absoluteY="123dp" />
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <TextView
         android:id="@+id/textView8"
@@ -65,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="240dp"
+        android:layout_marginEnd="230dp"
         android:text="First Name: "
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="240dp"
+        android:layout_marginEnd="230dp"
         android:text="Last Name: "
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="240dp"
+        android:layout_marginEnd="230dp"
         android:text="Username: "
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:layout_marginEnd="240dp"
+        android:layout_marginEnd="230dp"
         android:text="Password: "
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:layout_marginEnd="240dp"
+        android:layout_marginEnd="230dp"
         android:text="Confirm Password: "
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -120,19 +122,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="240dp"
+        android:layout_marginEnd="230dp"
         android:text="Email: "
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="623dp"
-        android:orientation="vertical">
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="96dp"
+        android:orientation="vertical"
+        android:onClick="onRadioButtonClicked"
+        app:layout_constraintBottom_toTopOf="@+id/submitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regEmail">
 
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/personalRadioBtn"
+            style="@style/Widget.Material3.CompoundButton.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Personal Account"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/radio_btn_bg"
+            android:drawablePadding="12dp"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/businessRadioBtn"
+            style="@style/Widget.Material3.CompoundButton.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Business Account"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/radio_btn_bg"
+            android:drawablePadding="12dp"/>
     </RadioGroup>
 
     <Button
@@ -140,34 +167,17 @@
         android:layout_width="240dp"
         android:layout_height="49dp"
         android:layout_marginBottom="24dp"
+        android:onClick="onClickSubmit"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <RadioButton
-        android:id="@+id/radio_personal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Personal Account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-    <RadioButton
-        android:id="@+id/radio_business"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Business Account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radio_personal" />
 
     <EditText
-        android:id="@+id/editTextText2"
-        android:layout_width="228dp"
-        android:layout_height="41dp"
+        android:id="@+id/regFirstName"
+        android:layout_width="215dp"
+        android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Insert your First Name"
@@ -176,53 +186,53 @@
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <EditText
-        android:id="@+id/editTextText3"
-        android:layout_width="229dp"
-        android:layout_height="39dp"
+        android:id="@+id/regLastName"
+        android:layout_width="215dp"
+        android:layout_height="40dp"
         android:ems="10"
         android:hint="Insert your Last Name"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/regFirstName" />
 
     <EditText
-        android:id="@+id/editTextText4"
-        android:layout_width="228dp"
-        android:layout_height="41dp"
+        android:id="@+id/regUsername"
+        android:layout_width="215dp"
+        android:layout_height="40dp"
         android:ems="10"
         android:hint="Insert your Username"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText3" />
+        app:layout_constraintTop_toBottomOf="@+id/regLastName" />
 
     <EditText
-        android:id="@+id/editTextTextPassword2"
-        android:layout_width="228dp"
-        android:layout_height="41dp"
+        android:id="@+id/regPassword"
+        android:layout_width="215dp"
+        android:layout_height="40dp"
         android:ems="10"
         android:hint="Insert your Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText4" />
+        app:layout_constraintTop_toBottomOf="@+id/regUsername" />
 
     <EditText
-        android:id="@+id/editTextTextPassword3"
-        android:layout_width="228dp"
+        android:id="@+id/regConPassword"
+        android:layout_width="215dp"
         android:layout_height="40dp"
         android:ems="10"
         android:hint="Re-Insert your Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
+        app:layout_constraintTop_toBottomOf="@+id/regPassword" />
 
     <EditText
-        android:id="@+id/editTextText5"
-        android:layout_width="227dp"
-        android:layout_height="39dp"
+        android:id="@+id/regEmail"
+        android:layout_width="215dp"
+        android:layout_height="40dp"
         android:ems="10"
         android:hint="Insert your Monash Email"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/textView14"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword3" />
+        app:layout_constraintTop_toBottomOf="@+id/regConPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
