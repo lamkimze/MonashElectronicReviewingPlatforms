@@ -8,6 +8,11 @@ public class Restaurant {
     private String location;
     private String hours;
 
+    /**
+     * @param name name of the restaurant
+     * @param hours hours of operation
+     * @param location location of the restaurant
+     */
     public Restaurant(String name, String hours, String location) {
         this.name = name;
         this.hours = hours;

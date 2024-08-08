@@ -44,6 +44,10 @@ public class ListAdapter extends BaseAdapter {
         TextView nameTextView = convertView.findViewById(R.id.restaurantName);
         nameTextView.setText(restaurant.getName());
 
+        TextView locationTextView = convertView.findViewById(R.id.restaurantLocation);
+        locationTextView.setText(restaurant.getLocation());
+
+
         return convertView;
     }
 }
