@@ -2,10 +2,10 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="MainActivity">
+      <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="loginPage">
+      <SelectionState runConfigName="restaurantListPage">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2024-08-01T02:37:10.031736Z">
           <Target type="DEFAULT_BOOT">
