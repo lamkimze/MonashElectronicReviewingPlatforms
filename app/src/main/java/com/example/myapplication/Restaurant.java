@@ -7,24 +7,29 @@ public class Restaurant {
     private String name;
     private String location;
     private String hours;
-    private Integer stars;
+    private Double stars;
+    private Integer imageResource;
+
 
     /**
      * Constructs a Restaurant with a name, location, and hours of operation.
-     * @param name name of the restaurant
-     * @param hours hours of operation
+     *
+     * @param name     name of the restaurant
+     * @param hours    hours of operation
      * @param location location of the restaurant
-     * @param stars rating of the restaurant
+     * @param stars    rating of the restaurant
      */
-    public Restaurant(String name, String hours, String location, Integer stars) {
+    public Restaurant(String name, String hours, String location, Double stars) {
         this.name = name;
         this.hours = hours;
         this.location = location;
-        this.stars = 0;
+        this.stars = stars;
+        this.imageResource = R.drawable.default_icon;
     }
 
     /**
      * Returns the name of the restaurant.
+     *
      * @return name of the restaurant
      */
     public String getName() {
@@ -33,6 +38,7 @@ public class Restaurant {
 
     /**
      * Sets the name of the restaurant.
+     *
      * @param name name of the restaurant
      */
     public void setRestaurantName(String name) {
@@ -41,6 +47,7 @@ public class Restaurant {
 
     /**
      * Returns the location of the restaurant.
+     *
      * @return location of the restaurant
      */
     public String getLocation() {
@@ -49,6 +56,7 @@ public class Restaurant {
 
     /**
      * Sets the location of the restaurant.
+     *
      * @param location location of the restaurant
      */
     public void setLocation(String location) {
@@ -57,6 +65,7 @@ public class Restaurant {
 
     /**
      * Returns the hours of operation of the restaurant.
+     *
      * @return hours of operation of the restaurant
      */
     public String getHours() {
@@ -65,6 +74,7 @@ public class Restaurant {
 
     /**
      * Sets the hours of operation of the restaurant.
+     *
      * @param hours hours of operation of the restaurant
      */
     public void setHours(String hours) {
@@ -73,17 +83,37 @@ public class Restaurant {
 
     /**
      * Returns the rating of the restaurant.
+     *
      * @return rating of the restaurant
      */
-    public Integer getStars() {
+    public Double getStars() {
         return stars;
     }
 
     /**
      * Sets the rating of the restaurant.
+     *
      * @param stars rating of the restaurant
      */
-    public void setStars(Integer stars) {
+    public void setStars(Double stars) {
         this.stars = stars;
+    }
+
+    /**
+     * Returns the image resource ID of the restaurant.
+     *
+     * @return image resource ID of the restaurant
+     */
+    public Integer getImageResource() {
+        return imageResource;
+    }
+
+    /**
+     * Sets the image resource ID of the restaurant.
+     *
+     * @param imageResource image resource ID of the restaurant
+     */
+    public void setImageResource(Integer imageResource) {
+        this.imageResource = imageResource;
     }
 }
