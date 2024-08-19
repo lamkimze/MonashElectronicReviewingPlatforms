@@ -103,29 +103,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/reviewDetailLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10"
-            tools:ignore="MissingConstraints">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/reviewDetail"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="250dp"
-                android:inputType="text|textLongMessage|textAutoComplete|textAutoCorrect|textMultiLine" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
 
         <!--        <HorizontalScrollView-->
         <!--            android:id="@+id/horizontalScrollView"-->
@@ -144,6 +121,30 @@
         <!--                android:orientation="vertical" />-->
         <!--        </HorizontalScrollView>-->
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reviewDetailLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10"
+            tools:ignore="MissingConstraints">
+
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reviewDetail"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:inputType="text|textLongMessage|textAutoComplete|textAutoCorrect|textMultiLine" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="90dp"
@@ -154,19 +155,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reviewDetailLayout"
             app:srcCompat="@android:drawable/ic_menu_camera" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="375dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.361"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/totalPhotos"
-            app:layout_constraintVertical_bias="0.514" />
 
         <TextView
             android:id="@+id/totalPhotos"
@@ -196,6 +184,59 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toEndOf="@+id/imageButton"
             app:layout_constraintTop_toBottomOf="@+id/reviewDetailLayout" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/selectCard"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp"
+            app:layout_constraintBottom_toTopOf="@id/button3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totalPhotos">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="777dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_arrow_down" />
+
+                <TextView
+                    android:id="@+id/tvCuisineProd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Cuisine and Products" />
+
+            </RelativeLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:text="Submit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.222"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
