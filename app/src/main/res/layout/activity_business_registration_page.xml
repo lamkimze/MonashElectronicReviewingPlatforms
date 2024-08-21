@@ -14,7 +14,7 @@
     tools:context=".businessRegistrationPage">
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/restaurantTitle"
         android:layout_width="279dp"
         android:layout_height="30dp"
         android:layout_marginTop="34dp"
@@ -33,7 +33,7 @@
         android:layout_marginTop="24dp"
         android:text="Please enter business details:"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintTop_toBottomOf="@+id/restaurantTitle" />
 
     <TextView
         android:id="@+id/textView20"

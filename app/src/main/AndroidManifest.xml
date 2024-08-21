@@ -31,7 +31,7 @@
             android:name=".ownerRestaurantViewingPage"
             android:exported="false" />
         <activity
-            android:name=".restaurantOwnerProfilePage"
+            android:name=".profilePage"
             android:exported="false" />
         <activity
             android:name=".restaurantListPage"
@@ -49,7 +49,7 @@
             android:name=".userRegistrationPage"
             android:exported="false" />
         <activity
-            android:name=".profilePage"
+            android:name=".restaurantOwnerProfilePage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

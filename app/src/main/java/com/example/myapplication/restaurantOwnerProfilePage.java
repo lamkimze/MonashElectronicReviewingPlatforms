@@ -1,6 +1,11 @@
 package com.example.myapplication;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -14,6 +19,7 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
 
     TextView textView;
     RatingBar ratingBar;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +31,13 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        imageView = (ImageView) findViewById(R.id.restaurantOwnerPicture);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_icon);
+        Bitmap scakedBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
+        Drawable userDrawable = new BitmapDrawable(getResources(), scakedBitmap);
+        imageView.setImageDrawable(userDrawable);
 
-        textView = (TextView) findViewById(R.id.textView17);
-        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        textView = (TextView) findViewById(R.id.restaurantTitle);
+        ratingBar = (RatingBar) findViewById(R.id.restaurantAverageRatingBar);
     }
 }
