@@ -55,7 +55,7 @@ public class ListAdapter extends BaseAdapter {
 
         // Display the restaurant location in the TextView with the ID restaurantLocation
         TextView locationTextView = convertView.findViewById(R.id.restaurantLocation);
-        locationTextView.setText(restaurant.getLocation());
+        locationTextView.setText(restaurant.getAddress());
 
 
         return convertView;
