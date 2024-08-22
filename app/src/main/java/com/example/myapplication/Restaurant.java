@@ -1,119 +1,100 @@
 package com.example.myapplication;
 
-/**
- * Represents a Restaurant with a name, location, and hours of operation.
- */
 public class Restaurant {
+    private int id;
     private String name;
-    private String location;
+    private String address;
+    private String phone;
+    private String email;
+    private String website;
     private String hours;
-    private Double stars;
-    private Integer imageResource;
+    private String cuisine;
 
+    public int getImageResource() {
+        return imageResource;
+    }
 
-    /**
-     * Constructs a Restaurant with a name, location, and hours of operation.
-     *
-     * @param name     name of the restaurant
-     * @param hours    hours of operation
-     * @param location location of the restaurant
-     * @param stars    rating of the restaurant
-     */
-    public Restaurant(String name, String hours, String location, Double stars) {
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
+    }
+
+    private int imageResource = R.drawable.default_icon;
+
+    public Restaurant(int id, String name, String address, String phone, String email, String website, String hours, String cuisine) {
+        this.id = id;
         this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.website = website;
         this.hours = hours;
-        this.location = location;
-        this.stars = stars;
-        this.imageResource = R.drawable.default_icon;
+        this.cuisine = cuisine;
     }
 
-    /**
-     * Returns the name of the restaurant.
-     *
-     * @return name of the restaurant
-     */
-    public String getName() {
-        return name;
+    public Restaurant() {
     }
 
-    /**
-     * Sets the name of the restaurant.
-     *
-     * @param name name of the restaurant
-     */
-    public void setRestaurantName(String name) {
-        this.name = name;
+    public int getId() {
+        return id;
     }
 
-    /**
-     * Returns the location of the restaurant.
-     *
-     * @return location of the restaurant
-     */
-    public String getLocation() {
-        return location;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    /**
-     * Sets the location of the restaurant.
-     *
-     * @param location location of the restaurant
-     */
-    public void setLocation(String location) {
-        this.location = location;
+    public String getCuisine() {
+        return cuisine;
     }
 
-    /**
-     * Returns the hours of operation of the restaurant.
-     *
-     * @return hours of operation of the restaurant
-     */
+    public void setCuisine(String cuisine) {
+        this.cuisine = cuisine;
+    }
+
     public String getHours() {
         return hours;
     }
 
-    /**
-     * Sets the hours of operation of the restaurant.
-     *
-     * @param hours hours of operation of the restaurant
-     */
     public void setHours(String hours) {
         this.hours = hours;
     }
 
-    /**
-     * Returns the rating of the restaurant.
-     *
-     * @return rating of the restaurant
-     */
-    public Double getStars() {
-        return stars;
+    public String getWebsite() {
+        return website;
     }
 
-    /**
-     * Sets the rating of the restaurant.
-     *
-     * @param stars rating of the restaurant
-     */
-    public void setStars(Double stars) {
-        this.stars = stars;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
-    /**
-     * Returns the image resource ID of the restaurant.
-     *
-     * @return image resource ID of the restaurant
-     */
-    public Integer getImageResource() {
-        return imageResource;
+    public String getEmail() {
+        return email;
     }
 
-    /**
-     * Sets the image resource ID of the restaurant.
-     *
-     * @param imageResource image resource ID of the restaurant
-     */
-    public void setImageResource(Integer imageResource) {
-        this.imageResource = imageResource;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
