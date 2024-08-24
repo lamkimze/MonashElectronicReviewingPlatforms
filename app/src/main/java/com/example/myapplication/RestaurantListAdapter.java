@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ListAdapter extends BaseAdapter {
+public class RestaurantListAdapter extends BaseAdapter {
     private final Context context;
     private final List<Restaurant> restaurants;
 
-    public ListAdapter(Context context, List<Restaurant> restaurants) {
+    public RestaurantListAdapter(Context context, List<Restaurant> restaurants) {
         this.context = context;
         this.restaurants = restaurants;
     }

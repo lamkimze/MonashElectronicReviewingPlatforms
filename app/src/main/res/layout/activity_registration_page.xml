@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/usernameInput"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".userRegistrationPage">
 
         <TextView
@@ -190,7 +190,7 @@
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/reviewTitle"
+                android:id="@+id/regConPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="250dp"
@@ -224,66 +224,134 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/restaurantCodeLayout"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="@id/emailLayout"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:hint="Restaurant Code"
+            app:boxBackgroundColor="#D6D7D7"
+            app:layout_constraintEnd_toStartOf="@+id/restaurantNameShowingLayout"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailLayout">
+            app:layout_constraintTop_toBottomOf="@+id/emailLayout"
+            tools:ignore="MissingConstraints">
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/personalRadioBtn"
-                style="@style/Widget.Material3.CompoundButton.CheckBox"
-                android:layout_width="172dp"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:button="@null"
-                android:drawableStart="@drawable/radio_btn_bg"
-                android:drawablePadding="12dp"
-                android:text="Personal Account" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/restaurantCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="250dp"
+                android:background="#D9EBFA"
+                android:shadowColor="#D6D7D7" />
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/businessRadioBtn"
-                style="@style/Widget.Material3.CompoundButton.CheckBox"
-                android:layout_width="174dp"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:button="@null"
-                android:drawableStart="@drawable/radio_btn_bg"
-                android:drawablePadding="12dp"
-                android:text="Business Account" />
-        </RadioGroup>
-
-
-        <Button
-            android:id="@+id/submitButton"
-            android:layout_width="240dp"
-            android:layout_height="49dp"
-            android:onClick="onClickSubmit"
-            android:text="Submit"
-            android:textColorLink="#2196F3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-            app:rippleColor="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="227dp"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="183dp"
-            tools:layout_editor_absoluteY="182dp">
+            tools:layout_editor_absoluteY="182dp"
+            tools:ignore="MissingConstraints">
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/restaurantNameShowingLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/restaurantCodeLayout">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/restaurantNameShowing"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:hint="   Restaurant Name" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="Position"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView28"
+            app:layout_constraintTop_toBottomOf="@+id/restaurantNameShowingLayout"
+            tools:ignore="MissingConstraints">
+
+            <AutoCompleteTextView
+                android:id="@+id/positions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="240dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="onClickSubmit"
+            android:text="Submit"
+            android:textColorLink="#2196F3"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="@null" />
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_weight="1"
+            android:text="Crew Member :"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restaurantNameShowingLayout"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restaurantCodeLayout"
+            tools:src="@tools:sample/avatars" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="63dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            android:text="Verify"
+            app:cornerRadius="5dp"
+            app:layout_constraintStart_toEndOf="@+id/restaurantCodeLayout"
+            app:layout_constraintTop_toBottomOf="@+id/emailLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
