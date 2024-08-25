@@ -9,12 +9,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.RestaurantListAdapter;
 import java.util.ArrayList;
 
 public class restaurantListPage extends AppCompatActivity {
 
 
-    ListAdapter listAdapter;
+    RestaurantListAdapter restaurantListAdapter;
     ArrayList<Restaurant> restaurants = new ArrayList<>();
     ListView restaurantListView;
     DatabaseHelper db;
@@ -31,22 +32,24 @@ public class restaurantListPage extends AppCompatActivity {
             return insets;
         });
 
-        // Step 2: Initialize ListView and set the adapter
+
+    // Initialize ListView and set the adapter
         restaurantListView = findViewById(R.id.restaurantListView);
-        listAdapter = new ListAdapter(this, restaurants);
-        restaurantListView.setAdapter(listAdapter);
+        restaurantListAdapter = new RestaurantListAdapter(this, restaurants);
+        restaurantListView.setAdapter(restaurantListAdapter);
 
 //        get restaurants from database
         try {
             db = new DatabaseHelper(this);
+            ArrayList<Restaurant> dbRestaurants = db.getAllRestaurants();
+            restaurants.addAll(dbRestaurants);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        ArrayList<Restaurant> dbRestaurants = db.getAllRestaurants();
-        restaurants.addAll(dbRestaurants);
+
 
         // Notify the adapter that the data has changed
-        listAdapter.notifyDataSetChanged();
+        restaurantListAdapter.notifyDataSetChanged();
     }
 }

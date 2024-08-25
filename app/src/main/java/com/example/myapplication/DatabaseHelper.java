@@ -134,7 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Restaurant restaurant = new Restaurant();
+                Restaurant restaurant = new Restaurant(null , null, null);
                 restaurant.setId(cursor.getInt(cursor.getColumnIndex("bus_id")));
                 restaurant.setName(cursor.getString(cursor.getColumnIndex("bus_name")));
                 restaurant.setAddress(cursor.getString(cursor.getColumnIndex("bus_addr")));
