@@ -19,8 +19,9 @@ public class userRegistrationPage extends AppCompatActivity {
     TextInputEditText etFirstName, etLastName, etUserName, etPassword, etConPassword, etEmail;
     String stringFirstName, stringLastName, stringUserName, stringPassword, stringConPassword, stringEmail;
     String stringPosition;
-
-    String [] positions = {"HeadChef", "Manager", "Waiter", "Cashier"};
+    String [] positions = {"Fast Food Attendant", "Busser", "Runner", "Cashier", "DishWasher", "Barista", "Prep Cook",
+            "Expeditor", "Pastry Cook", "Server", "Bartender", "Line Cook", "Kitchen Manager", "Sous Chef", "Catering Manager",
+    "General Manager", "Maintenance Person", "Executive Chef", "Main Chef"};
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> adapterItems;
 

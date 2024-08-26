@@ -77,7 +77,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:background="#F9F9FA"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:hint="First Name"
             android:outlineProvider="none"
             app:boxBackgroundColor="#00BCD4"
@@ -101,13 +103,15 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lastNameLayout"
-            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:hint="Last Name"
             app:boxBackgroundColor="#D6D7D7"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/firstNameLayout"
@@ -130,6 +134,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:hint="Username"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -153,6 +159,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:hint="Password"
             android:inputType="textPassword"
             app:boxBackgroundColor="#D6D7D7"
@@ -180,6 +188,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:hint="Confirm Password"
             android:inputType="textPassword"
             app:boxBackgroundColor="#D6D7D7"
@@ -207,6 +217,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:hint="Monash Email"
             app:boxBackgroundColor="#D6D7D7"
             app:layout_constraintEnd_toEndOf="parent"
@@ -231,13 +243,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:hint="Restaurant Code"
             app:boxBackgroundColor="#D6D7D7"
-            app:layout_constraintEnd_toStartOf="@+id/restaurantNameShowingLayout"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailLayout"
             tools:ignore="MissingConstraints">
+<!--            app:layout_constraintEnd_toStartOf="@+id/restaurantNameShowingLayout"-->
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/restaurantCode"
@@ -253,6 +267,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:orientation="vertical"
             tools:ignore="MissingConstraints" />
 
@@ -272,6 +287,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -282,26 +298,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
                 android:hint="   Restaurant Name" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:hint="Position"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView28"
-            app:layout_constraintTop_toBottomOf="@+id/restaurantNameShowingLayout"
-            tools:ignore="MissingConstraints">
-
-            <AutoCompleteTextView
-                android:id="@+id/positions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -320,7 +316,7 @@
             app:rippleColor="@null" />
 
         <TextView
-            android:id="@+id/textView28"
+            android:id="@+id/crewMemberText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -352,6 +348,34 @@
             app:cornerRadius="5dp"
             app:layout_constraintStart_toEndOf="@+id/restaurantCodeLayout"
             app:layout_constraintTop_toBottomOf="@+id/emailLayout" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="231dp"
+            tools:ignore="MissingConstraints" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="Position"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/crewMemberText"
+            app:layout_constraintTop_toBottomOf="@+id/restaurantNameShowingLayout"
+            tools:ignore="MissingConstraints">
+
+            <AutoCompleteTextView
+                android:id="@+id/positions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

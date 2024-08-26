@@ -51,6 +51,7 @@ public class dashboardPage extends DrawerBaseActivity {
         super.onCreate(savedInstanceState);
         activityDashboardPageBinding = ActivityDashboardPageBinding.inflate(getLayoutInflater());
         setContentView(activityDashboardPageBinding.getRoot());
+        allocateActivityTitle("Electronic Review Platform");
 
         onPostCreate(savedInstanceState);
         viewPager2 = findViewById(R.id.viewPager);

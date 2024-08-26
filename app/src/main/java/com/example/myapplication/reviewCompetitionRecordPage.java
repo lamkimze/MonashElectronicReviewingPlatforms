@@ -10,6 +10,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.databinding.ActivityReviewCompetitionRecordPageBinding;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     ActivityReviewCompetitionRecordPageBinding activityReviewCompetitionRecordPageBinding;
 
     ArrayList<Restaurant> listRestaurant = new ArrayList<>();
+    DatabaseHelper dbHelper;
     CompetitionRecyclerAdapter recyclerAdapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -33,6 +36,15 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
         setContentView(activityReviewCompetitionRecordPageBinding.getRoot());
 
         onPostCreate(savedInstanceState);
+
+        try {
+            dbHelper = new DatabaseHelper(this);
+            CRUD_Business crudBusiness = new CRUD_Business(dbHelper);
+            ArrayList<Restaurant> dbRestaurants = crudBusiness.getAllRestaurants();
+            listRestaurant.addAll(dbRestaurants);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         searchView = findViewById(R.id.searchView);
         searchView.clearFocus();
@@ -57,13 +69,6 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
         recyclerAdapter.setData(listRestaurant);
         recyclerView.setAdapter(recyclerAdapter);
 
-        // Sample data for demonstration
-        Restaurant r1 = new Restaurant("Guzman Y Gomez", "https://drive.google.com/uc?export=download&id=16DiM24O7ysYcDxlCIEnr1oVHLkfAowVt", "");
-        Restaurant r2 = new Restaurant("PapaRich", "R.drawable.default_icon", "");
-        Restaurant r3 = new Restaurant("Roll'd", "R.drawable.default_icon", "");
-        addRestaurantToRecyclerView(r1);
-        addRestaurantToRecyclerView(r2);
-        addRestaurantToRecyclerView(r3);
     }
 
     private void filterList(String text) {

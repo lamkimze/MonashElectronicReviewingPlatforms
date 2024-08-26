@@ -16,10 +16,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication"
+        android:theme="@style/Theme.MyApp"
         tools:targetApi="31">
         <activity
-            android:name=".loginPage"
+            android:name=".userRegistrationPage"
             android:exported="false" />
         <activity
             android:name=".favouriteRestaurantsPage"
@@ -41,7 +41,7 @@
             android:exported="false" />
         <activity
             android:name=".restaurantListPage"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".restaurantDetailPage"
             android:exported="false" />
@@ -52,10 +52,10 @@
             android:name=".businessRegistrationPage"
             android:exported="false" />
         <activity
-            android:name=".userRegistrationPage"
+            android:name=".dashboardPage"
             android:exported="false" />
         <activity
-            android:name=".dashboardPage"
+            android:name=".loginPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

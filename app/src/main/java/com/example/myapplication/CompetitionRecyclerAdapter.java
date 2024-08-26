@@ -49,7 +49,7 @@ public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<Competition
         holder.tvPlaceChange.setText(String.valueOf(data.get(position).getPlaceChange()));
 
         Picasso.get()
-                .load(data.get(position).getPictureUrl())
+                .load(data.get(position).getImageResource())
                 .error(R.drawable.default_icon) // Optional: add an error image
                 .into(holder.ivRestaurantImage);
 
