@@ -24,7 +24,7 @@ public class loginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
 
         restoredUserData();
-//        etUserName = findViewById(R.id.loginUsernameInput);
+        etUserName = findViewById(R.id.loginUsernameInput);
         etPassword = findViewById(R.id.loginPasswordInput);
 
 
@@ -40,9 +40,15 @@ public class loginPage extends AppCompatActivity {
         }
     }
 
-    public void onClickRegister(View view){
-        Intent registerIntent = new Intent(this, userRegistrationPage.class);
-        startActivity(registerIntent);
+
+    public void onclickRegisterPersonal(View view){
+        Intent personalIntent = new Intent(this, userRegistrationPage.class);
+        startActivity(personalIntent);
+    }
+
+    public void onClickRegisteredBusiness(View view){
+        Intent businessIntent = new Intent(this, businessRegistrationPage.class);
+        startActivity(businessIntent);
     }
 
     public void restoredUserData(){
