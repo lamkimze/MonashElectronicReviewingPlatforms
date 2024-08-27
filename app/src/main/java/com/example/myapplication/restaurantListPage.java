@@ -10,6 +10,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.RestaurantListAdapter;
 import java.util.ArrayList;
 import com.example.myapplication.Database.DatabaseHelper;
