@@ -9,6 +9,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.RestaurantListAdapter;
 import java.util.ArrayList;
 
@@ -18,7 +20,7 @@ public class restaurantListPage extends AppCompatActivity {
     RestaurantListAdapter restaurantListAdapter;
     ArrayList<Restaurant> restaurants = new ArrayList<>();
     ListView restaurantListView;
-    DatabaseHelper db;
+    DatabaseHelper dbHelper;
 
 
     @Override
@@ -40,8 +42,9 @@ public class restaurantListPage extends AppCompatActivity {
 
 //        get restaurants from database
         try {
-            db = new DatabaseHelper(this);
-            ArrayList<Restaurant> dbRestaurants = db.getAllRestaurants();
+            dbHelper = new DatabaseHelper(this);
+            CRUD_Business crudBusiness = new CRUD_Business(dbHelper);
+            ArrayList<Restaurant> dbRestaurants = crudBusiness.getAllRestaurants();
             restaurants.addAll(dbRestaurants);
         } catch (Exception e) {
             e.printStackTrace();
