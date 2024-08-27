@@ -28,10 +28,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 //        Create our tables
-        String createCustomerTable = "CREATE TABLE customer (user_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,passwrd TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+        String createCustomerTable = "CREATE TABLE customer (user_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,password TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
         db.execSQL(createCustomerTable);
 
-        String createOwnerTable = "CREATE TABLE owner (owner_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,passwrd TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+        String createOwnerTable = "CREATE TABLE owner (owner_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,password TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
         db.execSQL(createOwnerTable);
 
         String createBusinessTable = "CREATE TABLE business (bus_id INTEGER PRIMARY KEY AUTOINCREMENT,bus_name TEXT NOT NULL,bus_addr TEXT NOT NULL,bus_ph_nb TEXT,bus_email TEXT,website_url TEXT,owner_id INTEGER,bus_hours TEXT,bus_cuisine_type TEXT,FOREIGN KEY (owner_id) REFERENCES owner(owner_id));";
@@ -87,7 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(insertBusinessData);
 
         String hashedPassword = Password.hash("password123").withSCrypt().getResult();
-        String insertCustomerData = format("INSERT INTO customer (username, passwrd, email, first_name, last_name) VALUES\n" +
+        String insertCustomerData = format("INSERT INTO customer (username, password, email, first_name, last_name) VALUES\n" +
                 "('jdoe001', '%s', 'jdoe001@student.monash.edu', 'John', 'Doe'),\n" +
                 "('asmith002', '%s', 'asmith002@student.monash.edu', 'Alice', 'Smith'),\n" +
                 "('bwong003', '%s', 'bwong003@student.monash.edu', 'Ben', 'Wong'),\n" +
