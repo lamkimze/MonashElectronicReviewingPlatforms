@@ -15,11 +15,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 public class restaurantOwnerProfilePage extends AppCompatActivity {
 
     TextView textView;
     RatingBar ratingBar;
     ImageView imageView;
+    ArrayList<ReviewModel> reviewModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,5 +42,15 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
 
         textView = (TextView) findViewById(R.id.restaurantTitle);
         ratingBar = (RatingBar) findViewById(R.id.restaurantAverageRatingBar);
+    }
+
+    private void setUpReviewModels () {
+        String[] reviewTitles = getResources().getStringArray(R.array.);
+        String[] reviewRatings = getResources().getStringArray(R.array);
+
+        for (int i = 0; i < reviewTitles.length; i++){
+            reviewModels.add(new ReviewModel(reviewTitles[i],
+                    reviewRatings[i]));
+        }
     }
 }
