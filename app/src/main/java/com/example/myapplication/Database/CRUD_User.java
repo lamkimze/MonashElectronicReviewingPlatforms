@@ -37,7 +37,7 @@ public class CRUD_User {
             Cursor cursor = db.rawQuery(selectHashedPass, null);
             cursor.moveToFirst();
             @SuppressLint("Range") String hashedPass = cursor.getString(cursor.getColumnIndex("password"));
-            return Password.check(password, hashedPass).withSCrypt(); // check the password
+            return Password.check(password, hashedPass).withScrypt(); // check the password
         }
         return false;
     }
@@ -83,7 +83,7 @@ public class CRUD_User {
         String email = user.getEmail();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
-        String hashedPass = Password.hash(password).withBCrypt().getResult();
+        String hashedPass = Password.hash(password).withScrypt().getResult();
         String insertStatement = "INSERT INTO %s (username, password, email, first_name, last_name)";
         String valueStatement = " VALUES ('%s', '%s', '%s', '%s', '%s');";
         String insertUser = format(insertStatement + valueStatement,

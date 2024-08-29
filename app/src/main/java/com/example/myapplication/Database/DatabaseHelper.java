@@ -86,7 +86,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('Wholefoods', 'Level 1, Campus Centre, 21 Chancellors Walk, Clayton campus', '99024350', 'msa-wholefoods@monash.edu', 'monashwholefoods.org', 'Cafe: Mon–Fri: 9am – 4pm, Kitchen: Mon–Fri: 11:30am – 2:30pm', 'Vegetarian');";
         db.execSQL(insertBusinessData);
 
-        String hashedPassword = Password.hash("password123").withSCrypt().getResult();
+        String hashedPassword = Password.hash("password123").withScrypt().getResult();
         String insertCustomerData = format("INSERT INTO customer (username, password, email, first_name, last_name) VALUES\n" +
                 "('jdoe001', '%s', 'jdoe001@student.monash.edu', 'John', 'Doe'),\n" +
                 "('asmith002', '%s', 'asmith002@student.monash.edu', 'Alice', 'Smith'),\n" +
