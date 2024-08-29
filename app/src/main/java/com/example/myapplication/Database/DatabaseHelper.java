@@ -1,5 +1,7 @@
 package com.example.myapplication.Database;
 
+import static java.lang.String.format;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.Restaurant;
+import com.password4j.Password;
 
 import java.util.ArrayList;
 
@@ -25,10 +28,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 //        Create our tables
-        String createCustomerTable = "CREATE TABLE customer (user_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,passwrd TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+        String createCustomerTable = "CREATE TABLE customer (user_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,password TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
         db.execSQL(createCustomerTable);
 
-        String createOwnerTable = "CREATE TABLE owner (owner_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,passwrd TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+        String createOwnerTable = "CREATE TABLE owner (owner_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,password TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
         db.execSQL(createOwnerTable);
 
         String createBusinessTable = "CREATE TABLE business (bus_id INTEGER PRIMARY KEY AUTOINCREMENT,bus_name TEXT NOT NULL,bus_addr TEXT NOT NULL,bus_ph_nb TEXT,bus_email TEXT,website_url TEXT,owner_id INTEGER,bus_hours TEXT,bus_cuisine_type TEXT,FOREIGN KEY (owner_id) REFERENCES owner(owner_id));";
@@ -83,17 +86,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('Wholefoods', 'Level 1, Campus Centre, 21 Chancellors Walk, Clayton campus', '99024350', 'msa-wholefoods@monash.edu', 'monashwholefoods.org', 'Cafe: Mon–Fri: 9am – 4pm, Kitchen: Mon–Fri: 11:30am – 2:30pm', 'Vegetarian');";
         db.execSQL(insertBusinessData);
 
-        String insertCustomerData = "INSERT INTO customer (username, passwrd, email, first_name, last_name) VALUES\n" +
-                "('jdoe001', 'password123', 'jdoe001@student.monash.edu', 'John', 'Doe'),\n" +
-                "('asmith002', 'password123', 'asmith002@student.monash.edu', 'Alice', 'Smith'),\n" +
-                "('bwong003', 'password123', 'bwong003@student.monash.edu', 'Ben', 'Wong'),\n" +
-                "('charris004', 'password123', 'charris004@student.monash.edu', 'Carol', 'Harris'),\n" +
-                "('dlee005', 'password123', 'dlee005@student.monash.edu', 'David', 'Lee'),\n" +
-                "('emma006', 'password123', 'emma006@student.monash.edu', 'Emma', 'Brown'),\n" +
-                "('fclark007', 'password123', 'fclark007@student.monash.edu', 'Frank', 'Clark'),\n" +
-                "('gwhite008', 'password123', 'gwhite008@student.monash.edu', 'Grace', 'White'),\n" +
-                "('hking009', 'password123', 'hking009@student.monash.edu', 'Henry', 'King'),\n" +
-                "('ijones010', 'password123', 'ijones010@student.monash.edu', 'Irene', 'Jones');\n";
+        String hashedPassword = Password.hash("password123").withSCrypt().getResult();
+        String insertCustomerData = format("INSERT INTO customer (username, password, email, first_name, last_name) VALUES\n" +
+                "('jdoe001', '%s', 'jdoe001@student.monash.edu', 'John', 'Doe'),\n" +
+                "('asmith002', '%s', 'asmith002@student.monash.edu', 'Alice', 'Smith'),\n" +
+                "('bwong003', '%s', 'bwong003@student.monash.edu', 'Ben', 'Wong'),\n" +
+                "('charris004', '%s', 'charris004@student.monash.edu', 'Carol', 'Harris'),\n" +
+                "('dlee005', '%s', 'dlee005@student.monash.edu', 'David', 'Lee'),\n" +
+                "('emma006', '%s', 'emma006@student.monash.edu', 'Emma', 'Brown'),\n" +
+                "('fclark007', '%s', 'fclark007@student.monash.edu', 'Frank', 'Clark'),\n" +
+                "('gwhite008', '%s', 'gwhite008@student.monash.edu', 'Grace', 'White'),\n" +
+                "('hking009', '%s', 'hking009@student.monash.edu', 'Henry', 'King'),\n" +
+                "('ijones010', '%s', 'ijones010@student.monash.edu', 'Irene', 'Jones');\n",
+                hashedPassword,
+                hashedPassword,
+                hashedPassword,
+                hashedPassword,
+                hashedPassword,
+                hashedPassword,
+                hashedPassword,
+                hashedPassword,
+                hashedPassword,
+                hashedPassword
+                );
         db.execSQL(insertCustomerData);
     }
 
