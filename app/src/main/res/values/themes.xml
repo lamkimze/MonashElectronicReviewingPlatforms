@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/lavender</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Ensure text appearances are properly defined -->
-<!--        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>-->
+        <!--        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>-->
     </style>
 
     <!-- Rounded ImageView style -->
