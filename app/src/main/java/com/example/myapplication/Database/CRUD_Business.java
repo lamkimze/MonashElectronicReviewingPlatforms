@@ -190,4 +190,17 @@ public class CRUD_Business {
                 bus_id);
         db.execSQL(updateBusinessCuisineType);
     }
+
+    /**
+     * Assigns an owner to a business
+     * @param bus_id The id of the business
+     * @param owner_id The id of the owner
+     */
+    public void assignOwnerToBusiness(int bus_id, int owner_id) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        @SuppressLint("DefaultLocale") String updateBusinessOwner = format("UPDATE business SET owner_id = %d WHERE bus_id = %d;",
+                owner_id,
+                bus_id);
+        db.execSQL(updateBusinessOwner);
+    }
 }
