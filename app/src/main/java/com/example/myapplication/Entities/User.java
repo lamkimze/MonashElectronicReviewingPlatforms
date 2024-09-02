@@ -6,7 +6,6 @@ public abstract class User {
     private String email;
     private String firstName;
     private String lastName;
-    private String createdAt;
 
 
     // Constructor for when the user tries to log in
@@ -15,13 +14,11 @@ public abstract class User {
     }
 
     // Constructor for when the user is created
-    public User(int id, String username,  String email, String firstName, String lastName, String createdAt) {
-        this.id = id;
+    public User(String username,  String email, String firstName, String lastName) {
         this.username = username;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -62,14 +59,6 @@ public abstract class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 
     abstract public String getTableName();

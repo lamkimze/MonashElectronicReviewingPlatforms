@@ -8,8 +8,8 @@ public class Customer extends User{
     }
 
     // Constructor for when the user is created
-    public Customer(int id, String username, String email, String firstName, String lastName, String createdAt) {
-        super(id, username, email, firstName, lastName, createdAt);
+    public Customer(String username, String email, String firstName, String lastName) {
+        super(username, email, firstName, lastName);
     }
 
     @Override
