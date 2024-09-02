@@ -64,7 +64,7 @@ public class CRUD_User {
             user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
             user.setFirstName(cursor.getString(cursor.getColumnIndex("first_name")));
             user.setLastName(cursor.getString(cursor.getColumnIndex("last_name")));
-            user.setCreatedAt(cursor.getString(cursor.getColumnIndex("created_at")));
+            user.setLastName(cursor.getString(cursor.getColumnIndex("last_name")));
             return user;
         }
         return null;
