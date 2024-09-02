@@ -76,7 +76,7 @@ public class CRUD_User {
      * @param user the user to create
      * @param password the UN-HASHED password of the user
      */
-    public void createUser(User user, String password) {
+    public boolean createUser(User user, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String userTable = user.getTableName();
         String username = user.getUsername();
@@ -84,6 +84,13 @@ public class CRUD_User {
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         String hashedPass = Password.hash(password).withScrypt().getResult();
+
+        // Check if the user already exists
+        String selectUser = format("SELECT * FROM %s WHERE username = '%s';", userTable, username);
+        if (db.rawQuery(selectUser, null).getCount() == 1) {
+            return false;
+        }
+
         String insertStatement = "INSERT INTO %s (username, password, email, first_name, last_name)";
         String valueStatement = " VALUES ('%s', '%s', '%s', '%s', '%s');";
         String insertUser = format(insertStatement + valueStatement,
@@ -94,6 +101,7 @@ public class CRUD_User {
                 firstName,
                 lastName);
         db.execSQL(insertUser);
+        return true;
     }
 
 
