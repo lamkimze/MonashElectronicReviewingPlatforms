@@ -5,7 +5,7 @@ public class Owner extends User{
     private int managingBusinessId;
 
     // Constructor for when the user tries to log in
-    public Owner(String username, String password) {
+    public Owner(String username) {
         super(username);
     }
 
