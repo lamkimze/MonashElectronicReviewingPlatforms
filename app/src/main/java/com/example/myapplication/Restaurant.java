@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Restaurant {
     private int id;
+    private int ownerID;
     private String name;
     private String address;
     private String phone;
@@ -47,6 +48,14 @@ public class Restaurant {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
     }
 
     public void setName(String name) {

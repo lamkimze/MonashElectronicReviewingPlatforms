@@ -2,7 +2,7 @@ package com.example.myapplication.Entities;
 
 public class Owner extends User{
 
-    private int managingBusinessId;
+    private int busID;
 
     // Constructor for when the user tries to log in
     public Owner(String username) {
@@ -15,12 +15,12 @@ public class Owner extends User{
     }
 
 
-    public int getManagingBusinessId() {
-        return managingBusinessId;
+    public int getBusID() {
+        return busID;
     }
 
-    public void setManagingBusinessId(int managingBusiness) {
-        this.managingBusinessId = managingBusiness;
+    public void setBusID(int busID) {
+        this.busID = busID;
     }
 
     @Override
