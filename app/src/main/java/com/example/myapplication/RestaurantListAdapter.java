@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ListAdapter extends BaseAdapter {
+public class RestaurantListAdapter extends BaseAdapter {
     private final Context context;
     private final List<Restaurant> restaurants;
 
-    public ListAdapter(Context context, List<Restaurant> restaurants) {
+    public RestaurantListAdapter(Context context, List<Restaurant> restaurants) {
         this.context = context;
         this.restaurants = restaurants;
     }
@@ -55,7 +55,7 @@ public class ListAdapter extends BaseAdapter {
 
         // Display the restaurant location in the TextView with the ID restaurantLocation
         TextView locationTextView = convertView.findViewById(R.id.restaurantLocation);
-        locationTextView.setText(restaurant.getLocation());
+        locationTextView.setText(restaurant.getAddress());
 
 
         return convertView;

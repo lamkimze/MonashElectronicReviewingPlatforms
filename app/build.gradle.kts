@@ -16,6 +16,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures{
+        viewBinding = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -29,6 +33,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildToolsVersion = "35.0.0"
 }
 
 dependencies {
@@ -41,4 +46,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("com.password4j:password4j:1.8.2")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("com.makeramen:roundedimageview:2.3.0")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
+    implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("com.google.android.material:material:1.12.0")
 }

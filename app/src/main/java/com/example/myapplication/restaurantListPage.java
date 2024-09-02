@@ -9,14 +9,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.DatabaseHelper;
+import com.example.myapplication.RestaurantListAdapter;
 import java.util.ArrayList;
+import com.example.myapplication.Database.DatabaseHelper;
 
 public class restaurantListPage extends AppCompatActivity {
 
 
-    ListAdapter listAdapter;
+    RestaurantListAdapter restaurantListAdapter;
     ArrayList<Restaurant> restaurants = new ArrayList<>();
     ListView restaurantListView;
+    DatabaseHelper dbHelper;
 
 
     @Override
@@ -30,17 +36,25 @@ public class restaurantListPage extends AppCompatActivity {
             return insets;
         });
 
-        // Step 2: Initialize ListView and set the adapter
-        restaurantListView = findViewById(R.id.restaurantListView);
-        listAdapter = new ListAdapter(this, restaurants);
-        restaurantListView.setAdapter(listAdapter);
 
-        // Step 3: Populate the ArrayList with sample restaurant data
-        restaurants.add(new Restaurant("The Cheesecake Factory", "11:00 AM - 11:00 PM", "123 Main St", 3.0));
-        restaurants.add(new Restaurant("Olive Garden", "11:00 AM - 10:00 PM", "456 Elm St", 4.5));
-        restaurants.add(new Restaurant("Red Lobster", "12:00 PM - 9:00 PM", "789 Oak St", 4.0));
+    // Initialize ListView and set the adapter
+        restaurantListView = findViewById(R.id.restaurantListView);
+        restaurantListAdapter = new RestaurantListAdapter(this, restaurants);
+        restaurantListView.setAdapter(restaurantListAdapter);
+
+//        get restaurants from database
+        try {
+            dbHelper = new DatabaseHelper(this);
+            CRUD_Business crudBusiness = new CRUD_Business(dbHelper);
+            ArrayList<Restaurant> dbRestaurants = crudBusiness.getAllRestaurants();
+            restaurants.addAll(dbRestaurants);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
 
         // Notify the adapter that the data has changed
-        listAdapter.notifyDataSetChanged();
+        restaurantListAdapter.notifyDataSetChanged();
     }
 }

@@ -1,119 +1,170 @@
 package com.example.myapplication;
 
-/**
- * Represents a Restaurant with a name, location, and hours of operation.
- */
+import java.util.Date;
+
 public class Restaurant {
+    private int id;
     private String name;
-    private String location;
+    private String address;
+    private String phone;
+    private String email;
+    private String website;
     private String hours;
     private Double stars;
-    private Integer imageResource;
+    private final Integer imageResource;
+    private final String pictureUrl;
+    private final String logoUrl;
+    private String cuisine;
+    private static int accumulatedReview = 0;
+    private static int accumulateMonth = 0;
+    private int monthlyReview = 0;
+    private int seasonReview = 0;
+    private int halfYearReview = 0;
+    private int yearlyReview = 0;
+    private int goldMedalNo = 0;
+    private int silverMedalNo = 0;
+    private int bronzeMedalNo = 0;
+    protected int placeChange = -1;
 
 
-    /**
-     * Constructs a Restaurant with a name, location, and hours of operation.
-     *
-     * @param name     name of the restaurant
-     * @param hours    hours of operation
-     * @param location location of the restaurant
-     * @param stars    rating of the restaurant
-     */
-    public Restaurant(String name, String hours, String location, Double stars) {
+
+
+    public Restaurant(String name, String pictureUrl, String logoUrl){
         this.name = name;
-        this.hours = hours;
-        this.location = location;
-        this.stars = stars;
+        this.pictureUrl = pictureUrl;
+        this.logoUrl = logoUrl;
         this.imageResource = R.drawable.default_icon;
+        this.stars = 0.0;
     }
 
-    /**
-     * Returns the name of the restaurant.
-     *
-     * @return name of the restaurant
-     */
-    public String getName() {
-        return name;
+
+//    getters and setters
+
+
+    public int getId() {
+        return id;
     }
 
-    /**
-     * Sets the name of the restaurant.
-     *
-     * @param name name of the restaurant
-     */
-    public void setRestaurantName(String name) {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Returns the location of the restaurant.
-     *
-     * @return location of the restaurant
-     */
-    public String getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    /**
-     * Sets the location of the restaurant.
-     *
-     * @param location location of the restaurant
-     */
-    public void setLocation(String location) {
-        this.location = location;
+    public String getPhone() {
+        return phone;
     }
 
-    /**
-     * Returns the hours of operation of the restaurant.
-     *
-     * @return hours of operation of the restaurant
-     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
     public String getHours() {
         return hours;
     }
 
-    /**
-     * Sets the hours of operation of the restaurant.
-     *
-     * @param hours hours of operation of the restaurant
-     */
     public void setHours(String hours) {
         this.hours = hours;
     }
 
-    /**
-     * Returns the rating of the restaurant.
-     *
-     * @return rating of the restaurant
-     */
     public Double getStars() {
         return stars;
     }
 
-    /**
-     * Sets the rating of the restaurant.
-     *
-     * @param stars rating of the restaurant
-     */
     public void setStars(Double stars) {
         this.stars = stars;
     }
 
-    /**
-     * Returns the image resource ID of the restaurant.
-     *
-     * @return image resource ID of the restaurant
-     */
+    public static int getAccumulateMonth() {
+        return accumulateMonth;
+    }
+
+    public int getPlaceChange() {
+        return placeChange;
+    }
+
+    public void incrementReview(){
+        accumulatedReview ++;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public int getAccumulatedReview() {
+        return accumulatedReview;
+    }
+
+    public int getGoldMedalNo() {
+        return goldMedalNo;
+    }
+
+    public int getSilverMedalNo() {
+        return silverMedalNo;
+    }
+
+    public int getBronzeMedalNo() {
+        return bronzeMedalNo;
+    }
+
+    public int getMonthlyReview() {
+        return monthlyReview;
+    }
+
+    public int getSeasonReview() {
+        return seasonReview;
+    }
+
+    public int getHalfYearReview() {
+        return halfYearReview;
+    }
+
+    public int getYearlyReview() {
+        return yearlyReview;
+    }
+
     public Integer getImageResource() {
         return imageResource;
     }
 
-    /**
-     * Sets the image resource ID of the restaurant.
-     *
-     * @param imageResource image resource ID of the restaurant
-     */
-    public void setImageResource(Integer imageResource) {
-        this.imageResource = imageResource;
+    public void setCuisine(String busCuisineType) {
+        this.cuisine = busCuisineType;
+    }
+
+    public String getCuisine() {
+        return cuisine;
     }
 }

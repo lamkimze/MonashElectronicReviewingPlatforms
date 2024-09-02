@@ -24,7 +24,7 @@ public class OperatingTimeRecyclerAdapter extends RecyclerView.Adapter<Operating
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.day_card_layout, parent, false);
-        CustomViewHolder viewHolder = new CustomViewHolder(v);
+        OperatingTimeRecyclerAdapter.CustomViewHolder viewHolder = new CustomViewHolder(v);
         return viewHolder;
     }
 

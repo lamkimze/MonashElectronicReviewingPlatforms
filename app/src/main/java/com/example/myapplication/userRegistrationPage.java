@@ -1,11 +1,13 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +18,14 @@ public class userRegistrationPage extends AppCompatActivity {
 
     TextInputEditText etFirstName, etLastName, etUserName, etPassword, etConPassword, etEmail;
     String stringFirstName, stringLastName, stringUserName, stringPassword, stringConPassword, stringEmail;
+    String stringPosition;
+    String [] positions = {"Fast Food Attendant", "Busser", "Runner", "Cashier", "DishWasher", "Barista", "Prep Cook",
+            "Expeditor", "Pastry Cook", "Server", "Bartender", "Line Cook", "Kitchen Manager", "Sous Chef", "Catering Manager",
+    "General Manager", "Maintenance Person", "Executive Chef", "Main Chef"};
+    AutoCompleteTextView autoCompleteTextView;
+    ArrayAdapter<String> adapterItems;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -27,25 +36,22 @@ public class userRegistrationPage extends AppCompatActivity {
         etLastName = findViewById(R.id.regLastName);
         etUserName = findViewById(R.id.regUsername);
         etPassword = findViewById(R.id.regPassword);
-        etConPassword = findViewById(R.id.reviewTitle);
-        etEmail = findViewById(R.id.regEmail);
+        etConPassword = findViewById(R.id.regConPassword);
+        etEmail = findViewById(R.id.bisRegEmail);
 
-        final RadioGroup accountSelected = (RadioGroup)findViewById(R.id.radioGroup);
-        accountSelected.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        autoCompleteTextView = findViewById(R.id.positions);
+        adapterItems = new ArrayAdapter<String>(this, R.layout.positions, positions);
+        autoCompleteTextView.setAdapter(adapterItems);
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rb = (RadioButton) findViewById(checkedId);
-                if(rb.getText().equals("Business Account")){
-                    switchBusiness();
-                }
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l){
+                stringPosition = adapterView.getItemAtPosition(position).toString();
             }
         });
+
     }
 
-    public void switchBusiness(){
-        Intent businessIntent = new Intent(this, businessRegistrationPage.class);
-        startActivity(businessIntent);
-    }
 
     public void onClickSubmit(View view){
         stringFirstName = etFirstName.getText().toString();
@@ -100,4 +106,10 @@ public class userRegistrationPage extends AppCompatActivity {
         Intent loginIntent = new Intent(this, loginPage.class);
         startActivity(loginIntent);
     }
+
+//    public void onClickUploadPicture(View view){
+//        if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
+//        }
+//    }
 }
