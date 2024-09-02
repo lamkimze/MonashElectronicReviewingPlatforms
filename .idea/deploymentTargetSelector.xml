@@ -11,13 +11,16 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="restaurantListPage">
+      <SelectionState runConfigName="profilePage">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="dashboardPage (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="loginPage (1)">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="restaurantOwnerProfilePage">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

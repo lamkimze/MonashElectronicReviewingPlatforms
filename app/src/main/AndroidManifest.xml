@@ -28,7 +28,7 @@
             android:name=".userReviewCreationPage"
             android:exported="false" />
         <activity
-            android:name=".profilePage"
+            android:name=".loginPage"
             android:exported="false" />
         <activity
             android:name=".ownerReviewRespondPage"
@@ -37,7 +37,7 @@
             android:name=".ownerRestaurantViewingPage"
             android:exported="false" />
         <activity
-            android:name=".restaurantOwnerProfilePage"
+            android:name=".profilePage"
             android:exported="false" />
         <activity
             android:name=".restaurantListPage"
@@ -55,7 +55,7 @@
             android:name=".dashboardPage"
             android:exported="false" />
         <activity
-            android:name=".loginPage"
+            android:name=".restaurantOwnerProfilePage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

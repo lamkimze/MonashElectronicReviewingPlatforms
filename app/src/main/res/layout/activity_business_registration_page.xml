@@ -14,7 +14,7 @@
     tools:context=".businessRegistrationPage">
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/restaurantTitle"
         android:layout_width="279dp"
         android:layout_height="30dp"
         android:layout_marginTop="34dp"
