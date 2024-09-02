@@ -92,9 +92,6 @@ public class CRUD_Business {
      * @return An ArrayList of all the restaurants
      */
     public ArrayList<Restaurant> getAllRestaurants() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectAllRestaurants = "SELECT * FROM business;";
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectAllRestaurants, null);
         ArrayList<Restaurant> restaurants = new ArrayList<>();
         ArrayList<Integer> businessIds = getBusinessIds();
         for (int busID : businessIds) {
