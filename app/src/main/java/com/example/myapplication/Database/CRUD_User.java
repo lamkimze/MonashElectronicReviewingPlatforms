@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.myapplication.Entities.Owner;
 import com.example.myapplication.Entities.User;
 import com.password4j.Password;
 
@@ -70,6 +71,8 @@ public class CRUD_User {
         return null;
     }
 
+
+
     // Create methods
     /**
      * Create a user in the database
@@ -104,8 +107,21 @@ public class CRUD_User {
         return true;
     }
 
+    // Read methods
 
-
-
+    /**
+     * grabs the bus_id of the owner i.e. the business they own
+     * @param owner the owner to get the bus_id of
+     * @return the bus_id of the owner
+     */
+    @SuppressLint("Range")
+    public int getOwnersBusID(Owner owner) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int ownerID = owner.getId();
+        @SuppressLint("DefaultLocale") String selectBusID = format("SELECT owner_id FROM owner WHERE id = %d;", ownerID);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectBusID, null);
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndex("bus_id"));
+    }
 
 }

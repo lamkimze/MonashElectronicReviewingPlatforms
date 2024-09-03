@@ -100,6 +100,22 @@ public class CRUD_Business {
         return restaurants;
     }
 
+    /**
+     * Grabs the owner id of the business
+     * @param restaurant the restaurant to get the owner id of
+     * @return the owner id of the business
+     */
+    public int getOwnerID(Restaurant restaurant) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int bus_id = restaurant.getId();
+        @SuppressLint("DefaultLocale") String selectOwnerID = format("SELECT owner_id FROM business WHERE bus_id = %d;", bus_id);
+        Cursor cursor = db.rawQuery(selectOwnerID, null);
+        cursor.moveToFirst();
+        @SuppressLint("Range") int ownerID = cursor.getInt(cursor.getColumnIndex("owner_id"));
+        cursor.close();
+        return ownerID;
+    }
+
     // Update operations
     /**
      * Updates the name of a business
