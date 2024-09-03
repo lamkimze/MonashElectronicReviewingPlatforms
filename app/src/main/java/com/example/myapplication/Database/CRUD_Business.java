@@ -116,6 +116,22 @@ public class CRUD_Business {
         return ownerID;
     }
 
+    /**
+     * Calculates the star rating of a business
+     * @param restaurant The restaurant to calculate the star rating of
+     * @return The star rating of the business in double format
+     */
+    public double getBusinessStarRating(Restaurant restaurant) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int bus_id = restaurant.getId();
+        @SuppressLint("DefaultLocale") String selectStarRating = format("SELECT AVG(rating) FROM review WHERE bus_id = %d;", bus_id);
+        Cursor cursor = db.rawQuery(selectStarRating, null);
+        cursor.moveToFirst();
+        @SuppressLint("Range") double starRating = cursor.getDouble(cursor.getColumnIndex("AVG(rating)"));
+        cursor.close();
+        return starRating;
+    }
+
     // Update operations
     /**
      * Updates the name of a business
