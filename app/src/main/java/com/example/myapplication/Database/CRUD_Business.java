@@ -132,6 +132,23 @@ public class CRUD_Business {
         return starRating;
     }
 
+    /**
+     * Gets the most reviewed restaurants of the day
+     * @return An ArrayList of the most reviewed restaurants
+     */
+    @SuppressLint("Range")
+    public ArrayList<Restaurant> getMostReviewedRestaurantsDaily() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectMostReviewedRestaurants = "SELECT bus_id, COUNT(*) FROM review WHERE date = CURRENT_DATE GROUP BY bus_id ORDER BY COUNT(*) DESC;";
+        Cursor cursor = db.rawQuery(selectMostReviewedRestaurants, null);
+        ArrayList<Restaurant> mostReviewedRestaurants = new ArrayList<>();
+        while (cursor.moveToNext() && mostReviewedRestaurants.size() < 5) {
+            int bus_id = cursor.getInt(cursor.getColumnIndex("bus_id"));
+            mostReviewedRestaurants.add(getRestaurant(bus_id));
+        }
+        cursor.close();
+        return mostReviewedRestaurants;
+    }
     // Update operations
     /**
      * Updates the name of a business
