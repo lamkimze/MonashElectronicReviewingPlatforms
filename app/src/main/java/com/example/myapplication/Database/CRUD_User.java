@@ -129,6 +129,7 @@ public class CRUD_User {
 
     /**
      * Assigns an owner to a bus
+     * Note this method only updates the database, it does not update the owner object
      * @param owner the owner to assign to the bus
      * @param busID the bus to assign the owner to
      */
