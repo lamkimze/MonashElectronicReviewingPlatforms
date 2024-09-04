@@ -19,12 +19,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * This method is called when the database is created for the first time.
+     * @param db The database.
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Table creation statements
@@ -165,12 +169,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(insertCustomerData);
     }
 
+    /**
+     * This method is called when the database needs to be upgraded.
+     * @param db The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop tables and recreate them
-        db.execSQL("DROP TABLE IF EXISTS review_image");
         db.execSQL("DROP TABLE IF EXISTS business_image");
-        db.execSQL("DROP TABLE IF EXISTS image");
+        db.execSQL("DROP TABLE IF EXISTS review_image");
         db.execSQL("DROP TABLE IF EXISTS response");
         db.execSQL("DROP TABLE IF EXISTS review");
         db.execSQL("DROP TABLE IF EXISTS business");
@@ -178,5 +187,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS customer");
         onCreate(db);
     }
+
 
 }
