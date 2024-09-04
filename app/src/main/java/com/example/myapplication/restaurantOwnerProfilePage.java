@@ -44,13 +44,13 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
         ratingBar = (RatingBar) findViewById(R.id.restaurantAverageRatingBar);
     }
 
-    private void setUpReviewModels () {
-        String[] reviewTitles = getResources().getStringArray(R.array.);
-        String[] reviewRatings = getResources().getStringArray(R.array);
-
-        for (int i = 0; i < reviewTitles.length; i++){
-            reviewModels.add(new ReviewModel(reviewTitles[i],
-                    reviewRatings[i]));
-        }
-    }
+//    private void setUpReviewModels () {
+//        String[] reviewTitles = getResources().getStringArray(R.array.);
+//        String[] reviewRatings = getResources().getStringArray(R.array);
+//
+//        for (int i = 0; i < reviewTitles.length; i++){
+//            reviewModels.add(new ReviewModel(reviewTitles[i],
+//                    reviewRatings[i]));
+//        }
+//    }
 }
