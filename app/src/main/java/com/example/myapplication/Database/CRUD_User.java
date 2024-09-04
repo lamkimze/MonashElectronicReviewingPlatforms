@@ -4,6 +4,7 @@ package com.example.myapplication.Database;
 import static java.lang.String.format;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -94,17 +95,13 @@ public class CRUD_User {
         if (db.rawQuery(selectUser, null).getCount() == 1) {
             return false;
         }
-
-        String insertStatement = "INSERT INTO %s (username, password, email, first_name, last_name)";
-        String valueStatement = " VALUES ('%s', '%s', '%s', '%s', '%s');";
-        String insertUser = format(insertStatement + valueStatement,
-                userTable,
-                username,
-                hashedPass,
-                email,
-                firstName,
-                lastName);
-        db.execSQL(insertUser);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("username", username);
+        contentValues.put("email", email);
+        contentValues.put("first_name", firstName);
+        contentValues.put("last_name", lastName);
+        contentValues.put("password", hashedPass);
+        db.insert(userTable, null, contentValues);
         return true;
     }
 
