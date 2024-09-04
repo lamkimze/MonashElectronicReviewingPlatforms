@@ -27,29 +27,82 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        Create our tables
-        String createCustomerTable = "CREATE TABLE customer (user_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,password TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+        // Table creation statements
+        // Create customer table
+        String createCustomerTable = "CREATE TABLE customer (" +
+                "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "username TEXT NOT NULL, " +
+                "password TEXT NOT NULL, " +
+                "email TEXT NOT NULL, " +
+                "first_name TEXT NOT NULL, " +
+                "last_name TEXT NOT NULL, " +
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
         db.execSQL(createCustomerTable);
 
-        String createOwnerTable = "CREATE TABLE owner (owner_id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL,password TEXT NOT NULL,email TEXT NOT NULL,first_name TEXT NOT NULL,last_name TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+        // Create owner table
+        String createOwnerTable = "CREATE TABLE owner (" +
+                "owner_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "username TEXT NOT NULL, " +
+                "password TEXT NOT NULL, " +
+                "email TEXT NOT NULL, " +
+                "first_name TEXT NOT NULL, " +
+                "last_name TEXT NOT NULL, " +
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
         db.execSQL(createOwnerTable);
 
-        String createBusinessTable = "CREATE TABLE business (bus_id INTEGER PRIMARY KEY AUTOINCREMENT,bus_name TEXT NOT NULL,bus_addr TEXT NOT NULL,bus_ph_nb TEXT,bus_email TEXT,website_url TEXT,owner_id INTEGER,bus_hours TEXT,bus_cuisine_type TEXT,FOREIGN KEY (owner_id) REFERENCES owner(owner_id));";
+        // Create business table
+        String createBusinessTable = "CREATE TABLE business (" +
+                "bus_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "bus_name TEXT NOT NULL, " +
+                "bus_addr TEXT NOT NULL, " +
+                "bus_ph_nb TEXT, " +
+                "bus_email TEXT, " +
+                "website_url TEXT, " +
+                "owner_id INTEGER, " +
+                "bus_hours TEXT, " +
+                "bus_cuisine_type TEXT, " +
+                "FOREIGN KEY (owner_id) REFERENCES owner(owner_id));";
         db.execSQL(createBusinessTable);
 
-        String createReviewTable = "CREATE TABLE review (review_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL,bus_id INTEGER NOT NULL,star_rating INTEGER NOT NULL,review_text TEXT,review_date DATE,FOREIGN KEY (user_id) REFERENCES customer(user_id),FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
+        // Create review table
+        String createReviewTable = "CREATE TABLE review (" +
+                "review_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id INTEGER NOT NULL, " +
+                "bus_id INTEGER NOT NULL, " +
+                "star_rating INTEGER NOT NULL, " +
+                "review_text TEXT, " +
+                "review_date DATE, " +
+                "FOREIGN KEY (user_id) REFERENCES customer(user_id), " +
+                "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
         db.execSQL(createReviewTable);
 
-        String createImageTable = "CREATE TABLE image (image_id INTEGER PRIMARY KEY AUTOINCREMENT,review_id INTEGER NOT NULL,business_id INTEGER NOT NULL,image_url TEXT NOT NULL,FOREIGN KEY (review_id) REFERENCES review(review_id),FOREIGN KEY (business_id) REFERENCES business(bus_id));";
-        db.execSQL(createImageTable);
-
-        String createReviewImageTable = "CREATE TABLE review_image (review_id INTEGER NOT NULL,image_id INTEGER NOT NULL,PRIMARY KEY (review_id, image_id),FOREIGN KEY (review_id) REFERENCES review(review_id),FOREIGN KEY (image_id) REFERENCES image(image_id));";
-        db.execSQL(createReviewImageTable);
-
-        String createBusinessImageTable = "CREATE TABLE business_image (bus_id INTEGER NOT NULL,image_id INTEGER NOT NULL,PRIMARY KEY (bus_id, image_id),FOREIGN KEY (bus_id) REFERENCES business(bus_id),FOREIGN KEY (image_id) REFERENCES image(image_id));";
+        // Create business image table
+        String createBusinessImageTable = "CREATE TABLE business_image (" +
+                "image_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "bus_id INTEGER NOT NULL, " +
+                "image_data BLOB NOT NULL, " +  // Store the image data as a BLOB
+                "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
         db.execSQL(createBusinessImageTable);
 
-        String createResponseTable = "CREATE TABLE response (response_id INTEGER PRIMARY KEY AUTOINCREMENT,review_id INTEGER,user_id INTEGER,response_text TEXT,response_date DATE,owner_id INTEGER,FOREIGN KEY (review_id) REFERENCES review(review_id),FOREIGN KEY (user_id) REFERENCES customer(user_id),FOREIGN KEY (owner_id) REFERENCES owner(owner_id));";
+        // Create review image table
+        String createReviewImageTable = "CREATE TABLE review_image (" +
+                "image_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "review_id INTEGER NOT NULL, " +
+                "image_data BLOB NOT NULL, " +  // Store the image data as a BLOB
+                "FOREIGN KEY (review_id) REFERENCES review(review_id));";
+        db.execSQL(createReviewImageTable);
+
+        // Create response table
+        String createResponseTable = "CREATE TABLE response (" +
+                "response_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "review_id INTEGER, " +
+                "user_id INTEGER, " +
+                "response_text TEXT, " +
+                "response_date DATE, " +
+                "owner_id INTEGER, " +
+                "FOREIGN KEY (review_id) REFERENCES review(review_id), " +
+                "FOREIGN KEY (user_id) REFERENCES customer(user_id), " +
+                "FOREIGN KEY (owner_id) REFERENCES owner(owner_id));";
         db.execSQL(createResponseTable);
 
         // Insert initial data
