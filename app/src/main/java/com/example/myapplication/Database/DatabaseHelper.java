@@ -51,7 +51,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "email TEXT NOT NULL, " +
                 "first_name TEXT NOT NULL, " +
                 "last_name TEXT NOT NULL, " +
-                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+                "bus_id INTEGER, " +
+                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
         db.execSQL(createOwnerTable);
 
         // Create business table

@@ -23,22 +23,23 @@ public class CRUD_User {
 
     // login methods
     /**
-     * Verify the login credentials of a user
-     * @param username the username of the user
-     * @param password the UN-HASHED password of the user
+     * Method to verify the login credentials of a user
+     * @param user the user trying to login
+     * @param password the UN-HASHED password attempt of the user
      * @return true if the login credentials are correct, false otherwise
      */
     @SuppressLint("Recycle")
-    public boolean verifyLogin(String username, String password) {
+    public boolean verifyLogin(User user, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectUser = format("SELECT * FROM user WHERE username = '%s';", username);
-        if (db.rawQuery(selectUser, null).getCount() == 1) {
-            // grab the hashed password from the database
-            String selectHashedPass = format("SELECT passwrd FROM user WHERE username = '%s';", username);
-            Cursor cursor = db.rawQuery(selectHashedPass, null);
+        String username = user.getUsername();
+        String userTable = user.getTableName();
+        String selectUser = format("SELECT * FROM %s WHERE username = '%s';", userTable, username);
+        // Check if the user exists
+        Cursor cursor = db.rawQuery(selectUser, null);
+        if (cursor.getCount() == 1) {
             cursor.moveToFirst();
             @SuppressLint("Range") String hashedPass = cursor.getString(cursor.getColumnIndex("password"));
-            return Password.check(password, hashedPass).withScrypt(); // check the password
+            return Password.check(password, hashedPass).withScrypt();
         }
         return false;
     }
@@ -53,10 +54,10 @@ public class CRUD_User {
     @SuppressLint("Range")
     public User loginUser(User user, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String username = user.getUsername();
         // verify the login credentials
-        if (verifyLogin(username, password)) {
+        if (verifyLogin(user, password)) {
             // use the users setter methods to set the user's information
+            String username = user.getUsername();
             String userTable = user.getTableName();
             String selectUser = format("SELECT * FROM %s WHERE username = '%s';", userTable, username);
             @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectUser, null);
