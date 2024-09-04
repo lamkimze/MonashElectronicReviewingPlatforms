@@ -125,4 +125,19 @@ public class CRUD_User {
         return cursor.getInt(cursor.getColumnIndex("bus_id"));
     }
 
+    // Update methods
+
+    /**
+     * Assigns an owner to a bus
+     * @param owner the owner to assign to the bus
+     * @param busID the bus to assign the owner to
+     */
+    public void assignOwnerToBus(Owner owner, int busID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int ownerID = owner.getId();
+        String updateStatement = "UPDATE owner SET bus_id = %d WHERE id = %d;";
+        @SuppressLint("DefaultLocale") String updateOwner = format(updateStatement, busID, ownerID);
+        db.execSQL(updateOwner);
+    }
+
 }
