@@ -122,6 +122,22 @@ public class CRUD_User {
         return cursor.getInt(cursor.getColumnIndex("bus_id"));
     }
 
+    /**
+     * grabs the user_id of the user
+     * @param user the user to get the user_id of
+     * @return the user_id of the user
+     */
+    @SuppressLint("Range")
+    public int getUserID(User user) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String username = user.getUsername();
+        String userTable = user.getTableName();
+        @SuppressLint("DefaultLocale") String selectUserID = format("SELECT id FROM %s WHERE username = '%s';", userTable, username);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectUserID, null);
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndex("id"));
+    }
+
     // Update methods
 
     /**
