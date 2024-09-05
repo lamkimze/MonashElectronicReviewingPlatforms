@@ -28,5 +28,10 @@ public class Owner extends User{
         return "owner";
     }
 
+    @Override
+    public String getPkName() {
+        return "owner_id";
+    }
+
 
 }

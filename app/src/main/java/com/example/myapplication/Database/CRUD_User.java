@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.myapplication.Entities.Customer;
 import com.example.myapplication.Entities.Owner;
 import com.example.myapplication.Entities.User;
 import com.example.myapplication.Restaurant;
@@ -106,6 +107,7 @@ public class CRUD_User {
         contentValues.put("password", hashedPass);
         db.insert(userTable, null, contentValues);
 
+
         user.setId(getUserID(user));
         return user;
     }
@@ -141,6 +143,30 @@ public class CRUD_User {
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectUserID, null);
         cursor.moveToFirst();
         return cursor.getInt(cursor.getColumnIndex("id"));
+    }
+
+    @SuppressLint("Range")
+    public Customer getCustomer (int customerID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectCustomer = "SELECT * FROM customer WHERE id = " + customerID + ";";
+        Cursor cursor = db.rawQuery(selectCustomer, null);
+        cursor.moveToFirst();
+        return new Customer(cursor.getString(cursor.getColumnIndex("username")),
+                cursor.getString(cursor.getColumnIndex("email")),
+                cursor.getString(cursor.getColumnIndex("first_name")),
+                cursor.getString(cursor.getColumnIndex("last_name")));
+    }
+
+    @SuppressLint("Range")
+    public Owner getOwner (int ownerID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectOwner = "SELECT * FROM owner WHERE id = " + ownerID + ";";
+        Cursor cursor = db.rawQuery(selectOwner, null);
+        cursor.moveToFirst();
+        return new Owner(cursor.getString(cursor.getColumnIndex("username")),
+                cursor.getString(cursor.getColumnIndex("email")),
+                cursor.getString(cursor.getColumnIndex("first_name")),
+                cursor.getString(cursor.getColumnIndex("last_name")));
     }
 
     // Update methods

@@ -1,11 +1,14 @@
 package com.example.myapplication.Entities;
 
+import java.util.ArrayList;
+
 public abstract class User {
     private int id;
     private String username;
     private String email;
     private String firstName;
     private String lastName;
+    private ArrayList<Integer> favourites = new ArrayList<>();
 
 
     // Constructor for when the user tries to log in
@@ -62,4 +65,12 @@ public abstract class User {
     }
 
     abstract public String getTableName();
+
+    abstract public String getPkName();
+
+    public ArrayList<Integer> getFavourites() {
+        return favourites;
+    }
+
+
 }

@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Table creation statements
         // Create customer table
         String createCustomerTable = "CREATE TABLE customer (" +
-                "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "customer_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "username TEXT NOT NULL, " +
                 "password TEXT NOT NULL, " +
                 "email TEXT NOT NULL, " +

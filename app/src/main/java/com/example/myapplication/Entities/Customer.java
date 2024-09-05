@@ -16,4 +16,9 @@ public class Customer extends User{
     public String getTableName() {
         return "customer";
     }
+
+    @Override
+    public String getPkName() {
+        return "customer_id";
+    }
 }
