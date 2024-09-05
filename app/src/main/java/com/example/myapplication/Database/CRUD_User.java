@@ -85,7 +85,7 @@ public class CRUD_User {
      * @param user the user to create
      * @param password the UN-HASHED password of the user
      */
-    public User createUser(User user, String password) {
+    public Boolean createUser(User user, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String userTable = user.getTableName();
         String username = user.getUsername();
@@ -94,11 +94,14 @@ public class CRUD_User {
         String lastName = user.getLastName();
         String hashedPass = Password.hash(password).withScrypt().getResult();
 
-        // Check if the user already exists
-        String selectUser = format("SELECT * FROM %s WHERE username = '%s';", userTable, username);
-        if (db.rawQuery(selectUser, null).getCount() == 1) {
-            return null;
+        // check if email or username already exists
+        String selectUser = format("SELECT * FROM %s WHERE username = '%s' OR email = '%s';", userTable, username, email);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectUser, null);
+        if (cursor.getCount() > 0) {
+            return false;
         }
+
+        // insert the user into the database
         ContentValues contentValues = new ContentValues();
         contentValues.put("username", username);
         contentValues.put("email", email);
@@ -106,10 +109,7 @@ public class CRUD_User {
         contentValues.put("last_name", lastName);
         contentValues.put("password", hashedPass);
         db.insert(userTable, null, contentValues);
-
-
-        user.setId(getUserID(user));
-        return user;
+        return true;
     }
 
     // Read methods
@@ -130,18 +130,31 @@ public class CRUD_User {
     }
 
     /**
-     * grabs the user_id of the user
-     * @param user the user to get the user_id of
-     * @return the user_id of the user
+     * grabs the bus_id of the owner i.e. the business they own
+     * @param customer the customer to get the bus_id of
+     * @return the bus_id of the customer
      */
     @SuppressLint("Range")
-    public int getUserID(User user) {
+    public int getCustomerID(Customer customer) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String username = user.getUsername();
-        String userTable = user.getTableName();
-        String userPK = user.getPkName();
-        @SuppressLint("DefaultLocale") String selectUserID = format("SELECT %s FROM %s WHERE username = '%s';", userPK, userTable, username);
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectUserID, null);
+        String username = customer.getUsername();
+        String selectCustomerID = format("SELECT id FROM customer WHERE username = '%s';", username);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectCustomerID, null);
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndex("id"));
+    }
+
+    /**
+     * Method to get the owner ID of an owner
+     * @param owner the owner to get the ID of
+     * @return the ID of the owner
+     */
+    @SuppressLint("Range")
+    public int getOwnerID(Owner owner) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String username = owner.getUsername();
+        String selectOwnerID = format("SELECT id FROM owner WHERE username = '%s';", username);
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectOwnerID, null);
         cursor.moveToFirst();
         return cursor.getInt(cursor.getColumnIndex("id"));
     }
