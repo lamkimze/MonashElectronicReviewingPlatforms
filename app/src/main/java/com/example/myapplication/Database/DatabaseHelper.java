@@ -98,6 +98,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (review_id) REFERENCES review(review_id));";
         db.execSQL(createReviewImageTable);
 
+        // Create userProfileImage table
+        String createUserProfileImageTable = "CREATE TABLE user_profile_image (" +
+                "image_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id INTEGER NOT NULL, " +
+                "image_data BLOB NOT NULL, " +  // Store the image data as a BLOB
+                "FOREIGN KEY (user_id) REFERENCES customer(user_id));";
+        db.execSQL(createUserProfileImageTable);
         // Create response table
         String createResponseTable = "CREATE TABLE response (" +
                 "response_id INTEGER PRIMARY KEY AUTOINCREMENT, " +

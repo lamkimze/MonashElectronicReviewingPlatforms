@@ -32,4 +32,16 @@ public class ReviewModel {
     public ArrayList<Bitmap> getReviewImages() {
         return reviewImages;
     }
+
+    public String getReviewText() {
+        return reviewText;
+    }
+
+    public int getReviewerId() {
+        return reviewerId;
+    }
+
+    public int getBusinessId() {
+        return businessId;
+    }
 }
