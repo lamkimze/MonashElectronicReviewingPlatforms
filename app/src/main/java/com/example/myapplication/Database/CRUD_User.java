@@ -159,6 +159,11 @@ public class CRUD_User {
         return cursor.getInt(cursor.getColumnIndex("id"));
     }
 
+    /**
+     * Method to get the customer object from the database
+     * @param customerID the ID of the customer to get
+     * @return the customer object
+     */
     @SuppressLint("Range")
     public Customer getCustomer (int customerID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -171,6 +176,11 @@ public class CRUD_User {
                 cursor.getString(cursor.getColumnIndex("last_name")));
     }
 
+    /**
+     * Method to get the owner object from the database
+     * @param ownerID the ID of the owner to get
+     * @return the owner object
+     */
     @SuppressLint("Range")
     public Owner getOwner (int ownerID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -184,7 +194,6 @@ public class CRUD_User {
     }
 
     // Update methods
-
     /**
      * Assigns an owner to a bus
      * Note this method only updates the database, it does not update the owner object
