@@ -1,14 +1,24 @@
 package com.example.myapplication;
 
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
+
 public class ReviewModel {
     String reviewTitle;
     int reviewRating;
-    int reviewImage;
+    ArrayList<Bitmap> reviewImages;
+    String reviewText;
+    int reviewerId;
+    int businessId;
 
-    public ReviewModel(int reviewRating, String reviewTitle, int reviewImage) {
+    public ReviewModel(int reviewRating, String reviewTitle, ArrayList<Bitmap> reviewImages, String reviewText, int reviewerId, int businessId) {
         this.reviewRating = reviewRating;
         this.reviewTitle = reviewTitle;
-        this.reviewImage = reviewImage;
+        this.reviewImages = reviewImages;
+        this.reviewText = reviewText;
+        this.reviewerId = reviewerId;
+        this.businessId = businessId;
     }
 
     public String getReviewTitle() {
@@ -19,7 +29,7 @@ public class ReviewModel {
         return reviewRating;
     }
 
-    public int getReviewImage() {
-        return reviewImage;
+    public ArrayList<Bitmap> getReviewImages() {
+        return reviewImages;
     }
 }
