@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -73,12 +73,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create review table
         String createReviewTable = "CREATE TABLE review (" +
                 "review_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "user_id INTEGER NOT NULL, " +
+                "customer_id INTEGER NOT NULL, " +
                 "bus_id INTEGER NOT NULL, " +
                 "star_rating INTEGER NOT NULL, " +
                 "review_text TEXT, " +
                 "review_date DATE, " +
-                "FOREIGN KEY (user_id) REFERENCES customer(user_id), " +
+                "FOREIGN KEY (customer_id) REFERENCES customer(customer_id), " +
                 "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
         db.execSQL(createReviewTable);
 
@@ -99,12 +99,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createReviewImageTable);
 
         // Create userProfileImage table
-        String createUserProfileImageTable = "CREATE TABLE user_profile_image (" +
+        String createCustomerProfileImageTable = "CREATE TABLE user_profile_image (" +
                 "image_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "user_id INTEGER NOT NULL, " +
+                "customer_id INTEGER NOT NULL, " +
                 "image_data BLOB NOT NULL, " +  // Store the image data as a BLOB
-                "FOREIGN KEY (user_id) REFERENCES customer(user_id));";
-        db.execSQL(createUserProfileImageTable);
+                "FOREIGN KEY (user_id) REFERENCES customer(customer_id));";
+        db.execSQL(createCustomerProfileImageTable);
         // Create response table
         String createResponseTable = "CREATE TABLE response (" +
                 "response_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -114,7 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "response_date DATE, " +
                 "owner_id INTEGER, " +
                 "FOREIGN KEY (review_id) REFERENCES review(review_id), " +
-                "FOREIGN KEY (user_id) REFERENCES customer(user_id), " +
+                "FOREIGN KEY (customer_id) REFERENCES customer(customer_id), " +
                 "FOREIGN KEY (owner_id) REFERENCES owner(owner_id));";
         db.execSQL(createResponseTable);
 
