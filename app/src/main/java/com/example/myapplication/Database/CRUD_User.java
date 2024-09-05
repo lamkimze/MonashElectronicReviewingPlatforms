@@ -139,7 +139,8 @@ public class CRUD_User {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String username = user.getUsername();
         String userTable = user.getTableName();
-        @SuppressLint("DefaultLocale") String selectUserID = format("SELECT id FROM %s WHERE username = '%s';", userTable, username);
+        String userPK = user.getPkName();
+        @SuppressLint("DefaultLocale") String selectUserID = format("SELECT %s FROM %s WHERE username = '%s';", userPK, userTable, username);
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectUserID, null);
         cursor.moveToFirst();
         return cursor.getInt(cursor.getColumnIndex("id"));
