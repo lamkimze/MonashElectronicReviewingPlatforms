@@ -24,7 +24,6 @@ public class restaurantListPage extends AppCompatActivity {
     ListView restaurantListView;
     DatabaseHelper dbHelper;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

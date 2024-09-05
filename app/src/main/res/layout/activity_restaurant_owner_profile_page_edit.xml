@@ -25,7 +25,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/circular_bg"
-        android:backgroundTint="@color/my_primary"
+        android:backgroundTint="@color/purple"
         android:src="@drawable/person_icon"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/textView19"
@@ -104,7 +104,8 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="624dp" />
+        tools:layout_editor_absoluteY="624dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/logoutButton"

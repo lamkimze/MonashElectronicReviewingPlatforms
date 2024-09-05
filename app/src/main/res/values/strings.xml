@@ -8,5 +8,17 @@
     <string name="list_of_restaurants">List of Restaurants</string>
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+    <string name="sort_and_filter">Sort and Filter</string>
+    <string name="sort_by">Sort by</string>
+    <string name="alphabetical_order">Alphabetical Order</string>
+    <string name="cuisine_type">Cuisine Type</string>
+    <string name="reset_all">Reset All</string>
+    <string name="apply">Apply</string>
+    <string name="medals">Medals</string>
+    <string name="rating">Rating</string>
+    <string name="message_error_unknown_error">Something went wrong</string>
+    <string name="message_error_internet_error">Internet connection lost</string>
+    <string name="message_error_server_error">Server not found</string>
+
 
 </resources>

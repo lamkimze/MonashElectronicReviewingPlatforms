@@ -20,8 +20,6 @@ public class operatingTime {
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
-        Log.e(TAG, "operatingTime:" + startTime);
-        Log.e(TAG, "operatingTime:" + endTime);
     }
 
     public String getDay() {

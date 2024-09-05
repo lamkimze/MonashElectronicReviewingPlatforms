@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,30 +15,68 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.Database.CRUD_User;
+import com.example.myapplication.Database.DatabaseHelper;
+import com.example.myapplication.Entities.Customer;
+import com.example.myapplication.Entities.User;
+import com.example.myapplication.databinding.ActivityLoginPageBinding;
+import com.google.gson.Gson;
+
 public class loginPage extends AppCompatActivity {
-    EditText etUserName, etPassword;
-    String registeredUsername, registeredPassword, stringUserName, stringPassword;
+    ActivityLoginPageBinding binding;
+    String stringUserName, stringPassword;
+    DatabaseHelper dbHelper;
+    CRUD_User crudUser;
+    User loginUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_page);
+        binding = ActivityLoginPageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        restoredUserData();
-        etUserName = findViewById(R.id.loginUsernameInput);
-        etPassword = findViewById(R.id.loginPasswordInput);
+        try {
+            dbHelper = new DatabaseHelper(this);
+            crudUser = new CRUD_User(dbHelper); // or whatever initialization is required
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        binding.loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stringUserName = binding.loginUsernameInput.getText().toString();
+                stringPassword = binding.loginPasswordInput.getText().toString();
+
+                if(stringUserName.equalsIgnoreCase("") || stringPassword.equalsIgnoreCase("")){
+                    Toast.makeText(loginPage.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    loginUser = new Customer(stringUserName);
+                    if(crudUser.verifyLogin(loginUser, stringPassword)){
+                        Toast.makeText(loginPage.this, "Login Successful !!", Toast.LENGTH_LONG).show();
+                        sharedPreference();
+                        Intent loginIntent = new Intent(getApplicationContext(), dashboardPage.class);
+                        startActivity(loginIntent);
+                    }
+                    else{
+                        Toast.makeText(loginPage.this, "Invalid Credential", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
 
     }
 
-    public void onClickLogin(View view){
-        stringUserName = etUserName.getText().toString();
-        stringPassword = etPassword.getText().toString();
-        if(registeredUsername.equals(stringUserName) && registeredPassword.equals(stringPassword)){
-            Toast.makeText(this, "Login Successful !!", Toast.LENGTH_LONG).show();
-            Intent loginIntent = new Intent(this, dashboardPage.class);
-            startActivity(loginIntent);
-        }
+
+    public void sharedPreference(){
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(loginUser);
+        editor.putString("MyObject", json);
+        editor.commit();
+        editor.apply();
     }
 
 
@@ -51,10 +90,4 @@ public class loginPage extends AppCompatActivity {
         startActivity(businessIntent);
     }
 
-    public void restoredUserData(){
-        SharedPreferences sharedPreferences = getSharedPreferences("USER_DATAFILE", MODE_PRIVATE);
-        registeredUsername = sharedPreferences.getString("USERNAME", "DEFAULT_VALUE");
-        registeredPassword = sharedPreferences.getString("PASSWORD", "DEFAULT_VALUE");
-
-    }
 }

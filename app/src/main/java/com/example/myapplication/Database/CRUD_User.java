@@ -25,7 +25,6 @@ public class CRUD_User {
         this.dbHelper = dbHelper;
     }
 
-
     // login methods
     /**
      * Method to verify the login credentials of a user

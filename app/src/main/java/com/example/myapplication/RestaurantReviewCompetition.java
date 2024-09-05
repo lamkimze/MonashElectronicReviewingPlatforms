@@ -10,7 +10,7 @@ public class RestaurantReviewCompetition {
     private int goldMedalNo = 0;
     private int silverMedalNo = 0;
     private int bronzeMedalNo = 0;
-    protected int placeChange = -1;
+    protected int placeChange = 0;
 
 
     public static int getAccumulateMonth() {

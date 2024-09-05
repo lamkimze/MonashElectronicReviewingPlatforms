@@ -1,14 +1,20 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.DatabaseHelper;
@@ -26,16 +32,24 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     CompetitionRecyclerAdapter recyclerAdapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
+    private RestaurantViewModel viewModel;
     private SearchView searchView;
+    private Button sortButton;
+    private Button filterButton;
+    private LinearLayout sortView;
+    private LinearLayout filterView1;
+    private LinearLayout filterView2;
+    private LinearLayout filterView3;
+    boolean sortHidden = true;
+    boolean filterHidden = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        WindowCompat.setDecorFitsSystemWindows(this.getWindow(), false);
         super.onCreate(savedInstanceState);
-        activityReviewCompetitionRecordPageBinding = ActivityReviewCompetitionRecordPageBinding.inflate(getLayoutInflater());
+        activityReviewCompetitionRecordPageBinding = ActivityReviewCompetitionRecordPageBinding.inflate(this.getLayoutInflater());
         allocateActivityTitle("Review Competition Records");
         setContentView(activityReviewCompetitionRecordPageBinding.getRoot());
-
-        onPostCreate(savedInstanceState);
 
         try {
             dbHelper = new DatabaseHelper(this);
@@ -60,6 +74,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
                 return true;
             }
         });
+        initWidgets();
 
         recyclerView = findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(this);
@@ -69,6 +84,62 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
         recyclerAdapter.setData(listRestaurant);
         recyclerView.setAdapter(recyclerAdapter);
 
+        hideFilter();
+        hideSort();
+
+    }
+
+    private void initWidgets(){
+        sortButton = (Button) findViewById(R.id.sortButton);
+        filterButton = (Button) findViewById(R.id.filterButton);
+        filterView1 = (LinearLayout) findViewById(R.id.filterTabsLayout1);
+        filterView2 = (LinearLayout) findViewById(R.id.filterTabsLayout2);
+        filterView3 = (LinearLayout) findViewById(R.id.filterTabsLayout3);
+        sortView = (LinearLayout) findViewById(R.id.sortTabsLayout);
+    }
+
+    public void showFilterTapped(View view){
+        if(filterHidden == true){
+            filterHidden = false;
+            showFilter();
+        }else{
+            filterHidden = true;
+            hideFilter();
+        }
+    }
+
+    public void showSortTapped(View view){
+        if(sortHidden == true){
+            sortHidden = false;
+            showSort();
+        }else{
+            sortHidden = true;
+            hideSort();
+        }
+    }
+
+    private void hideFilter(){
+        filterView1.setVisibility(View.GONE);
+        filterView2.setVisibility(View.GONE);
+        filterView3.setVisibility(View.GONE);
+        filterButton.setText("FILTER");
+    }
+
+    private void showFilter(){
+        filterView1.setVisibility(View.VISIBLE);
+        filterView2.setVisibility(View.VISIBLE);
+        filterView3.setVisibility(View.VISIBLE);
+        filterButton.setText("HIDE");
+    }
+
+    private void hideSort(){
+        sortView.setVisibility(View.GONE);
+        sortButton.setText("SORT");
+    }
+
+    private void showSort(){
+        sortView.setVisibility(View.VISIBLE);
+        sortButton.setText("HIDE");
     }
 
     private void filterList(String text) {
@@ -85,9 +156,6 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
         }
     }
 
-    private void addRestaurantToRecyclerView(Restaurant restaurant){
-        listRestaurant.add(restaurant);
-        recyclerAdapter.notifyDataSetChanged();
+    public void setFilterData(View view){
     }
-
 }
