@@ -138,7 +138,7 @@ public class CRUD_User {
     public int getCustomerID(Customer customer) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String username = customer.getUsername();
-        String selectCustomerID = format("SELECT id FROM customer WHERE username = '%s';", username);
+        String selectCustomerID = format("SELECT customer_id FROM customer WHERE username = '%s';", username);
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectCustomerID, null);
         cursor.moveToFirst();
         return cursor.getInt(cursor.getColumnIndex("id"));
@@ -153,7 +153,7 @@ public class CRUD_User {
     public int getOwnerID(Owner owner) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String username = owner.getUsername();
-        String selectOwnerID = format("SELECT id FROM owner WHERE username = '%s';", username);
+        String selectOwnerID = format("SELECT owner_id FROM owner WHERE username = '%s';", username);
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectOwnerID, null);
         cursor.moveToFirst();
         return cursor.getInt(cursor.getColumnIndex("id"));
@@ -167,7 +167,7 @@ public class CRUD_User {
     @SuppressLint("Range")
     public Customer getCustomer (int customerID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectCustomer = "SELECT * FROM customer WHERE id = " + customerID + ";";
+        String selectCustomer = "SELECT * FROM customer WHERE customer_id = " + customerID + ";";
         Cursor cursor = db.rawQuery(selectCustomer, null);
         cursor.moveToFirst();
         return new Customer(cursor.getString(cursor.getColumnIndex("username")),
