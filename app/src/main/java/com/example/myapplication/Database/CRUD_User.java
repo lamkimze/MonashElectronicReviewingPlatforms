@@ -10,7 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.myapplication.Entities.Owner;
 import com.example.myapplication.Entities.User;
+import com.example.myapplication.Restaurant;
 import com.password4j.Password;
+
+import java.util.ArrayList;
 
 
 public class CRUD_User {
@@ -81,7 +84,7 @@ public class CRUD_User {
      * @param user the user to create
      * @param password the UN-HASHED password of the user
      */
-    public boolean createUser(User user, String password) {
+    public User createUser(User user, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String userTable = user.getTableName();
         String username = user.getUsername();
@@ -93,7 +96,7 @@ public class CRUD_User {
         // Check if the user already exists
         String selectUser = format("SELECT * FROM %s WHERE username = '%s';", userTable, username);
         if (db.rawQuery(selectUser, null).getCount() == 1) {
-            return false;
+            return null;
         }
         ContentValues contentValues = new ContentValues();
         contentValues.put("username", username);
@@ -102,7 +105,9 @@ public class CRUD_User {
         contentValues.put("last_name", lastName);
         contentValues.put("password", hashedPass);
         db.insert(userTable, null, contentValues);
-        return true;
+
+        user.setId(getUserID(user));
+        return user;
     }
 
     // Read methods
@@ -155,3 +160,5 @@ public class CRUD_User {
     }
 
 }
+
+
