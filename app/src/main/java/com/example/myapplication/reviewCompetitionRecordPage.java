@@ -18,7 +18,6 @@ import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.databinding.ActivityReviewCompetitionRecordPageBinding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class reviewCompetitionRecordPage extends DrawerBaseActivity {
 
@@ -45,7 +44,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     private boolean westernBool, southEastAsianBool, asianBool, cafe_beverageBool, otherBool = false;
     private Button all, western, southEastAsian, asian, cafe_beverage, others;
     private Button nameAsc, medalAsc, ratingAsc;
-    private int blue, red, white;
+    private int blue, red, white, brown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +99,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
         blue = ContextCompat.getColor(getApplicationContext(), R.color.blue);
         red = ContextCompat.getColor(getApplicationContext(), R.color.red);
         white = ContextCompat.getColor(getApplicationContext(), R.color.white);
+        brown = ContextCompat.getColor(getApplicationContext(), R.color.brown);
 
     }
 
@@ -109,27 +109,32 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     }
 
     private void unselectedAllSorts(){
-        lookUnSelected(nameAsc);
-        lookUnSelected(medalAsc);
-        lookUnSelected(ratingAsc);
+        lookSortUnSelected(nameAsc);
+        lookSortUnSelected(medalAsc);
+        lookSortUnSelected(ratingAsc);
     }
 
+
     private void unselectedAllFilters(){
-        lookUnSelected(all);
-        lookUnSelected(western);
-        lookUnSelected(southEastAsian);
-        lookUnSelected(asian);
-        lookUnSelected(cafe_beverage);
-        lookUnSelected(others);
+        lookFilterUnSelected(all);
+        lookFilterUnSelected(western);
+        lookFilterUnSelected(southEastAsian);
+        lookFilterUnSelected(asian);
+        lookFilterUnSelected(cafe_beverage);
+        lookFilterUnSelected(others);
 
         selectedFilter.clear();
         westernBool = asianBool = southEastAsianBool = cafe_beverageBool = otherBool = false;
     }
 
-    private void lookUnSelected(Button parsedButton){
-        Log.e("Removed Filter", parsedButton.getText().toString().toLowerCase());
+    private void lookSortUnSelected(Button parsedButton){
         parsedButton.setTextColor(white);
         parsedButton.setBackgroundColor(blue);
+    }
+
+    private void lookFilterUnSelected(Button parsedButton){
+        parsedButton.setTextColor(white);
+        parsedButton.setBackgroundColor(brown);
     }
 
     private void initWidgets(){
@@ -317,7 +322,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             filterCuisine("German");
             filterCuisine("American");
             lookSelected(western);
-            lookUnSelected(all);
+            lookFilterUnSelected(all);
             westernBool = true;
         }
         else{
@@ -327,7 +332,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             selectedFilter.remove("British");
             selectedFilter.remove("German");
             selectedFilter.remove("American");
-            lookUnSelected(western);
+            lookFilterUnSelected(western);
             removeCuisine();
             checkNothingSelected();
         }
@@ -341,14 +346,14 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             filterCuisine("Malaysian");
             filterCuisine("Vietnamese");
             lookSelected(southEastAsian);
-            lookUnSelected(all);
+            lookFilterUnSelected(all);
             southEastAsianBool = true;
         }
         else{
             southEastAsianBool = false;
             selectedFilter.remove("Malaysian");
             selectedFilter.remove("Vietnamese");
-            lookUnSelected(southEastAsian);
+            lookFilterUnSelected(southEastAsian);
             removeCuisine();
             checkNothingSelected();
         }
@@ -361,14 +366,14 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             filterCuisine("Chinese");
             filterCuisine("Japanese");
             lookSelected(asian);
-            lookUnSelected(all);
+            lookFilterUnSelected(all);
             asianBool = true;
         }
         else{
             asianBool = false;
             selectedFilter.remove("Chinese");
             selectedFilter.remove("Japanese");
-            lookUnSelected(asian);
+            lookFilterUnSelected(asian);
             removeCuisine();
             checkNothingSelected();
         }
@@ -381,7 +386,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             filterCuisine("Cafe");
             filterCuisine("Bar");
             lookSelected(cafe_beverage);
-            lookUnSelected(all);
+            lookFilterUnSelected(all);
             cafe_beverageBool = true;
 
         }else{
@@ -389,7 +394,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             selectedFilter.remove("Beverage");
             selectedFilter.remove("Cafe");
             selectedFilter.remove("Bar");
-            lookUnSelected(cafe_beverage);
+            lookFilterUnSelected(cafe_beverage);
             removeCuisine();
             checkNothingSelected();
         }
@@ -404,7 +409,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             filterCuisine("Vegetarian");
             filterCuisine("Convenience Store");
             lookSelected(others);
-            lookUnSelected(all);
+            lookFilterUnSelected(all);
             otherBool = true;
         }else{
             otherBool = false;
@@ -413,7 +418,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             selectedFilter.remove("Portuguese");
             selectedFilter.remove("Vegetarian");
             selectedFilter.remove("Convenience Store");
-            lookUnSelected(others);
+            lookFilterUnSelected(others);
             removeCuisine();
             checkNothingSelected();
         }

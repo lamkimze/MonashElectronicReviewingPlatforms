@@ -42,7 +42,7 @@
         android:queryHint="Search Restaurant"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14"
-        tools:ignore="MissingConstraints"></SearchView>
+        tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,29 +50,17 @@
         android:background="@color/dark_blue"
         android:orientation="horizontal">
 
-
         <Button
             android:id="@+id/sortButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:backgroundTint="@color/dark_blue"
             android:onClick="showSortTapped"
             android:text="SORT"
             android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/filterButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_weight="1"
-            android:backgroundTint="@color/dark_blue"
-            android:onClick="showFilterTapped"
-            android:text="Filter"
-            android:textSize="20sp" />
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/sortTabsLayout"
@@ -113,72 +101,90 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/filterTabsLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
+        android:background="@color/dark_brown"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/filterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="0.5"
+            android:backgroundTint="@color/dark_brown"
+            android:onClick="showFilterTapped"
+            android:text="Cuisine Filter"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/filterTabsLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@color/brown"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/all"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/brown"
             android:onClick="allFilterTap"
             android:text="All" />
 
         <Button
             android:id="@+id/western"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/brown"
             android:onClick="westernFilterTap"
             android:text="Western" />
 
         <Button
             android:id="@+id/southeastasian"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/brown"
             android:onClick="southeastAsianFilterTap"
-            android:text="South-East Asian" />
+            android:text="SouthEast Asian" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/filterTabsLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blue"
+        android:layout_height="75dp"
+        android:background="@color/brown"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/asian"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/brown"
             android:onClick="asianFilterTap"
             android:text="Asian" />
 
         <Button
             android:id="@+id/cafe_beverage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/brown"
             android:onClick="cafeBeverageFilterTap"
             android:text="Cafe &amp; Beverage" />
 
         <Button
             android:id="@+id/others"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/brown"
             android:onClick="otherFilterTap"
             android:text="Others" />
 
@@ -189,6 +195,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
