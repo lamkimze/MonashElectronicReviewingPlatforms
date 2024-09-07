@@ -121,7 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Insert initial data
         String insertBusinessData = "INSERT INTO business (bus_name, bus_addr, bus_ph_nb, bus_email, website_url, bus_hours, bus_cuisine_type) VALUES\n" +
                 "('Artichoke & Whitebait', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '95432523', 'artichokewhitebait@gmail.com', 'artichokeandwhitebait.com.au', 'Mon–Fri: 7am – 5pm', 'Australian'),\n" +
-                "('Boost Juice Clayton', 'Northern Plaza, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, NULL, 'boostjuice.com.au', 'Mon–Thu: 8am – 6pm,Fri: 8am – 5.30pm,Sat–Sun: 12–4pm', 'Juice'),\n" +
+                "('Boost Juice Clayton', 'Northern Plaza, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, NULL, 'boostjuice.com.au', 'Mon–Thu: 8am – 6pm,Fri: 8am – 5.30pm,Sat–Sun: 12–4pm', 'Beverage'),\n" +
                 "('Café Cinque Lire', 'The Strip, 15 Innovation Walk, Clayton campus', '954007780', 'cinqueliremonash@yahoo.com.au', NULL, 'Mon–Thu: 6.30am – 5pm, Fri: 6.30am – 6.30pm', 'Italian'),\n" +
                 "('Church of Secular Coffee', '32 Exhibition Walk, Clayton campus', '99050888', 'churchofsecularcoffe@monash.edu', NULL, 'Mon–Fri: 8am – 3pm', 'Cafe'),\n" +
                 "('Coffee Point', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99055714', 'cater@monashcatering.com.au', 'www.monashcateringonline.com.au', 'Mon–Fri: 7:30am – 5pm', 'Cafe'),\n" +
@@ -136,15 +136,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('The Monash Merchant', '28 Sports Walk, Clayton campus', '99052292 / 99052289', 'supermarket@monash.edu', NULL, 'Mon–Fri: 9am – 9:30pm, Sat–Sun: 11am – 6pm', 'Convenience Store'),\n" +
                 "('Neptune''s Seafood Catch', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton Campus', '0421942161', 'larry.ma.catering.group@gmail.com', NULL, 'Mon-Fri: 8am - 7pm', 'British'),\n" +
                 "('Nesso Café', 'Ground Floor, Learning and Teaching Building', '0430210102', 'nessocatering@gmail.com', 'www.cafenessoltb.com.au', 'Mon–Fri: 7am – 5:30pm', 'Cafe'),\n" +
-                "('Noodle Noodle', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99058058', NULL, NULL, 'Mon–Fri: 8am – 7pm', 'Asian'),\n" +
-                "('Noodle Plus', 'Ground Floor, Learning and Teaching Building', NULL, NULL, NULL, 'Mon–Tue: 10am – 6.30pm', 'Asian'),\n" +
+                "('Noodle Noodle', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99058058', NULL, NULL, 'Mon–Fri: 8am – 7pm', 'Chinese'),\n" +
+                "('Noodle Plus', 'Ground Floor, Learning and Teaching Building', NULL, NULL, NULL, 'Mon–Tue: 10am – 6.30pm', 'Chinese'),\n" +
                 "('PappaRich', 'Ground Floor, Campus Centre, 21 Chancellors Walk', '96454667', NULL, 'papparich.net.au', 'Mon–Sun: 10am – 7pm', 'Malaysian'),\n" +
                 "('Peri Peri', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99055714', 'cater@monashcatering.com.au', 'www.monashcateringonline.com.au', 'Mon–Fri: 8:30am – 5:30pm', 'Portugese'),\n" +
                 "('Roll''d', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, 'info@rolld.com.au', 'rolld.com.au', 'Mon–Fri: 8am – 3pm', 'Vietnamese'),\n" +
                 "('Sammy''s (Clayton)', 'Ground Floor, Monash Sport, 42 Scenic Boulevard, Clayton campus', NULL, NULL, NULL, 'Mon–Fri: 8am – 3pm, Sat: 8am – 1pm', 'Cafe'),\n" +
                 "('Schnitz', '28 Sports Walk, Clayton campus', '95435609', 'feedback@schnitz.com.au', 'schnitz.com.au', 'Mon–Sun: 10am – 9pm', 'German'),\n" +
                 "('Secret Garden Eatery', '13 College Walk, Andrew Hargrave Library, Clayton campus', '95487362', 'info@secretgardeneatery.com.au', 'secretgardeneatery.com.au', 'Mon-Fri: 7am - 4pm', 'Cafe'),\n" +
-                "('Sharetea', '32 Exhibition Walk, Clayton campus', NULL, 'marketing@sharetea.com.au', NULL, 'Mon–Fri: 10:30am – 6pm', 'Taiwanese'),\n" +
+                "('Sharetea', '32 Exhibition Walk, Clayton campus', NULL, 'marketing@sharetea.com.au', NULL, 'Mon–Fri: 10:30am – 6pm', 'Beverage'),\n" +
                 "('Sir John''s', 'Level 1, Campus Centre, 21 Chancellors Walk, Clayton campus', '99053035', 'msa-sirjohns@monash.edu', 'www.sirjohnsbar.com', 'Mon: 12am – 5pm, Tue–Thu: 12am – 7pm, Fri: 12am – 5pm', 'Bar'),\n" +
                 "('Subway', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '85540500', 'monashuni@subcatering.com.au', 'www.subway.com.au', 'Mon–Fri: 9am – 5pm', 'American'),\n" +
                 "('Sushi Sushi', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, 'info@sushisushi.com.au', 'sushisushi.com.au', 'Mon–Fri: 8am – 6pm', 'Japanese'),\n" +

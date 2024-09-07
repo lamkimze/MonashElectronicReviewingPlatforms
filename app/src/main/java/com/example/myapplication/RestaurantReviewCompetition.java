@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import java.util.Comparator;
+
 public class RestaurantReviewCompetition {
     private static int accumulatedReview = 0;
     private static int accumulateMonth = 0;
@@ -57,5 +59,6 @@ public class RestaurantReviewCompetition {
     public int getYearlyReview() {
         return yearlyReview;
     }
+
 }
 

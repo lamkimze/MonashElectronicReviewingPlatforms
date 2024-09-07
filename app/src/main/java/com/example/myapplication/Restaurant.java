@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import java.util.Comparator;
 import java.util.Date;
 
 public class Restaurant extends RestaurantReviewCompetition {
@@ -122,4 +123,31 @@ public class Restaurant extends RestaurantReviewCompetition {
     public String getCuisine() {
         return cuisine;
     }
+
+    public static Comparator<Restaurant> medalAscending = new Comparator<Restaurant>() {
+        @Override
+        public int compare(Restaurant r1, Restaurant r2) {
+            int medal1 = Integer.valueOf(r1.getGoldMedalNo());
+            int medal2 = Integer.valueOf(r2.getGoldMedalNo());
+            return Integer.compare(medal1, medal2);
+        }
+    };
+
+    public static Comparator<Restaurant> nameAscending = new Comparator<Restaurant>() {
+        @Override
+        public int compare(Restaurant r1, Restaurant r2) {
+            String name1 = r1.getName().toLowerCase();
+            String name2 = r2.getName().toLowerCase();
+            return name1.compareTo(name2);
+        }
+    };
+
+    public static Comparator<Restaurant> ratingAscending = new Comparator<Restaurant>() {
+        @Override
+        public int compare(Restaurant r1, Restaurant r2) {
+            double rating1 = r1.getStars();
+            double rating2 = r2.getStars();
+            return Double.compare(rating1, rating2);
+        }
+    };
 }

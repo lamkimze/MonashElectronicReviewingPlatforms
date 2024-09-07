@@ -5,5 +5,8 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+            <!-- Override the default button background color -->
+        <item name="colorButtonNormal">@color/mor_green</item>
+
     </style>
 </resources>

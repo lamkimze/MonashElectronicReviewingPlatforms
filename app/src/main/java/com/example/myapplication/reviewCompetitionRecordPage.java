@@ -1,39 +1,36 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.databinding.ActivityReviewCompetitionRecordPageBinding;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class reviewCompetitionRecordPage extends DrawerBaseActivity {
 
     ActivityReviewCompetitionRecordPageBinding activityReviewCompetitionRecordPageBinding;
 
     ArrayList<Restaurant> listRestaurant = new ArrayList<>();
+
     DatabaseHelper dbHelper;
     CompetitionRecyclerAdapter recyclerAdapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     private RestaurantViewModel viewModel;
-    private SearchView searchView;
     private Button sortButton;
     private Button filterButton;
     private LinearLayout sortView;
@@ -42,6 +39,13 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     private LinearLayout filterView3;
     boolean sortHidden = true;
     boolean filterHidden = true;
+    private final ArrayList<String> selectedFilter = new ArrayList<>();
+    String currentSearchText = "";
+
+    private boolean westernBool, southEastAsianBool, asianBool, cafe_beverageBool, otherBool = false;
+    private Button all, western, southEastAsian, asian, cafe_beverage, others;
+    private Button nameAsc, medalAsc, ratingAsc;
+    private int blue, red, white;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             e.printStackTrace();
         }
 
-        searchView = findViewById(R.id.searchView);
+        SearchView searchView = findViewById(R.id.searchView);
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
@@ -86,7 +90,46 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
 
         hideFilter();
         hideSort();
+        initColors();
+        lookSelected(nameAsc);
+        lookSelected(all);
+        selectedFilter.add("All");
+    }
 
+    private void initColors(){
+        blue = ContextCompat.getColor(getApplicationContext(), R.color.blue);
+        red = ContextCompat.getColor(getApplicationContext(), R.color.red);
+        white = ContextCompat.getColor(getApplicationContext(), R.color.white);
+
+    }
+
+    private void lookSelected(Button parsedButton){
+        parsedButton.setTextColor(blue);
+        parsedButton.setBackgroundColor(red);
+    }
+
+    private void unselectedAllSorts(){
+        lookUnSelected(nameAsc);
+        lookUnSelected(medalAsc);
+        lookUnSelected(ratingAsc);
+    }
+
+    private void unselectedAllFilters(){
+        lookUnSelected(all);
+        lookUnSelected(western);
+        lookUnSelected(southEastAsian);
+        lookUnSelected(asian);
+        lookUnSelected(cafe_beverage);
+        lookUnSelected(others);
+
+        selectedFilter.clear();
+        westernBool = asianBool = southEastAsianBool = cafe_beverageBool = otherBool = false;
+    }
+
+    private void lookUnSelected(Button parsedButton){
+        Log.e("Removed Filter", parsedButton.getText().toString().toLowerCase());
+        parsedButton.setTextColor(white);
+        parsedButton.setBackgroundColor(blue);
     }
 
     private void initWidgets(){
@@ -94,12 +137,22 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
         filterButton = (Button) findViewById(R.id.filterButton);
         filterView1 = (LinearLayout) findViewById(R.id.filterTabsLayout1);
         filterView2 = (LinearLayout) findViewById(R.id.filterTabsLayout2);
-        filterView3 = (LinearLayout) findViewById(R.id.filterTabsLayout3);
         sortView = (LinearLayout) findViewById(R.id.sortTabsLayout);
+
+        all = findViewById(R.id.all);
+        western = findViewById(R.id.western);
+        southEastAsian = findViewById(R.id.southeastasian);
+        asian = findViewById(R.id.asian);
+        cafe_beverage = findViewById(R.id.cafe_beverage);
+        others = findViewById(R.id.others);
+
+        nameAsc = findViewById(R.id.NameSort);
+        medalAsc = findViewById(R.id.MedalSort);
+        ratingAsc = findViewById(R.id.RatingSort);
     }
 
     public void showFilterTapped(View view){
-        if(filterHidden == true){
+        if(filterHidden){
             filterHidden = false;
             showFilter();
         }else{
@@ -109,7 +162,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     }
 
     public void showSortTapped(View view){
-        if(sortHidden == true){
+        if(sortHidden){
             sortHidden = false;
             showSort();
         }else{
@@ -121,14 +174,12 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     private void hideFilter(){
         filterView1.setVisibility(View.GONE);
         filterView2.setVisibility(View.GONE);
-        filterView3.setVisibility(View.GONE);
         filterButton.setText("FILTER");
     }
 
     private void showFilter(){
         filterView1.setVisibility(View.VISIBLE);
         filterView2.setVisibility(View.VISIBLE);
-        filterView3.setVisibility(View.VISIBLE);
         filterButton.setText("HIDE");
     }
 
@@ -143,19 +194,238 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     }
 
     private void filterList(String text) {
-        List<Restaurant> filteredList = new ArrayList<>();
-        for(Restaurant restaurant: listRestaurant){
-            if(restaurant.getName().toLowerCase().contains(text.toLowerCase())){
-                filteredList.add(restaurant);
+        Log.e("query filter", selectedFilter.toString());
+        currentSearchText = text;
+        ArrayList<Restaurant> cuisineSelected = new ArrayList<>();
+        for (Restaurant restaurant : listRestaurant) {
+            Log.e("Filter Selected", selectedFilter.toString());
+            if (restaurant.getName().toLowerCase().contains(text.toLowerCase())) {
+                if (selectedFilter.contains("All")) {
+                    cuisineSelected.add(restaurant);
+                } else {
+                    if(selectedFilter.contains(restaurant.getCuisine())){
+                        cuisineSelected.add(restaurant);
+                    }
+                }
             }
         }
-        if(filteredList.isEmpty()){
+        recyclerAdapter.setFilteredList(cuisineSelected);
+        if(cuisineSelected.isEmpty()){
             Toast.makeText(this, "No Data Found", Toast.LENGTH_SHORT).show();
-        }else{
-            recyclerAdapter.setFilteredList(filteredList);
         }
     }
 
-    public void setFilterData(View view){
+    private void checkForFilter() {
+        if(selectedFilter.contains("All")){
+            if(currentSearchText.isEmpty()){
+                recyclerAdapter.setFilteredList(listRestaurant);
+            }
+            else{
+                ArrayList<Restaurant> filteredRestaurant = new ArrayList<>();
+                for(Restaurant restaurant: listRestaurant){
+                    if(restaurant.getName().toLowerCase().contains(currentSearchText.toLowerCase())){
+                        filteredRestaurant.add(restaurant);
+                    }
+                }
+                recyclerAdapter.setFilteredList(filteredRestaurant);
+            }
+        }
+        else{
+            filterCuisine(null);
+        }
+    }
+
+    private void filterCuisine(String status) {
+
+        if(status != null && !selectedFilter.contains(status)){
+            selectedFilter.add(status);
+
+            ArrayList<Restaurant> filteredRestaurants = new ArrayList<>();
+            for(Restaurant restaurant: listRestaurant){
+                for(String filter: selectedFilter){
+                    if(restaurant.getCuisine().equalsIgnoreCase(filter) || selectedFilter.contains("All")){
+                        if(currentSearchText.isEmpty()){
+                            filteredRestaurants.add(restaurant);
+                        }
+                        else{
+                            if(restaurant.getName().toLowerCase().contains(currentSearchText.toLowerCase())){
+                                filteredRestaurants.add(restaurant);
+                            }
+                        }
+                    }
+                }
+            }
+            recyclerAdapter.setFilteredList(filteredRestaurants);
+        }
+
+    }
+
+    public void removeCuisine(){
+        ArrayList<Restaurant> filteredRestaurants = new ArrayList<>();
+        for(Restaurant restaurant: listRestaurant){
+            for(String filter: selectedFilter){
+                if(restaurant.getCuisine().equalsIgnoreCase(filter)){
+                    if(currentSearchText.isEmpty()){
+                        filteredRestaurants.add(restaurant);
+                    }
+                    else{
+                        if(restaurant.getName().toLowerCase().contains(currentSearchText.toLowerCase())){
+                            filteredRestaurants.add(restaurant);
+                        }
+                    }
+                }
+            }
+        }
+        recyclerAdapter.setFilteredList(filteredRestaurants);
+    }
+
+    public void medalASCTapped(View view){
+        listRestaurant.sort(Restaurant.medalAscending);
+        checkForFilter();
+        unselectedAllSorts();
+        lookSelected(medalAsc);
+    }
+
+    public void nameASCTapped(View view){
+        listRestaurant.sort(Restaurant.nameAscending);
+        checkForFilter();
+        unselectedAllSorts();
+        lookSelected(nameAsc);
+    }
+
+    public void ratingASCTapped(View view){
+        listRestaurant.sort(Restaurant.ratingAscending);
+        checkForFilter();
+        unselectedAllSorts();
+        lookSelected(ratingAsc);
+    }
+
+
+    public void allFilterTap(View view){
+        unselectedAllFilters();
+        filterCuisine("All");
+        lookSelected(all);
+    }
+
+    public void westernFilterTap(View view){
+//        Australian, Italian, British, German, American
+        if(!westernBool){
+            selectedFilter.remove("All");
+            filterCuisine("Australian");
+            filterCuisine("Italian");
+            filterCuisine("British");
+            filterCuisine("German");
+            filterCuisine("American");
+            lookSelected(western);
+            lookUnSelected(all);
+            westernBool = true;
+        }
+        else{
+            westernBool = false;
+            selectedFilter.remove("Australian");
+            selectedFilter.remove("Italian");
+            selectedFilter.remove("British");
+            selectedFilter.remove("German");
+            selectedFilter.remove("American");
+            lookUnSelected(western);
+            removeCuisine();
+            checkNothingSelected();
+        }
+
+
+    }
+    public void southeastAsianFilterTap(View view){
+//        Malasian, Vietnamese
+        if(!southEastAsianBool){
+            selectedFilter.remove("All");
+            filterCuisine("Malaysian");
+            filterCuisine("Vietnamese");
+            lookSelected(southEastAsian);
+            lookUnSelected(all);
+            southEastAsianBool = true;
+        }
+        else{
+            southEastAsianBool = false;
+            selectedFilter.remove("Malaysian");
+            selectedFilter.remove("Vietnamese");
+            lookUnSelected(southEastAsian);
+            removeCuisine();
+            checkNothingSelected();
+        }
+
+    }
+    public void asianFilterTap(View view){
+//        Chinese, Japanese
+        if(!asianBool) {
+            selectedFilter.remove("All");
+            filterCuisine("Chinese");
+            filterCuisine("Japanese");
+            lookSelected(asian);
+            lookUnSelected(all);
+            asianBool = true;
+        }
+        else{
+            asianBool = false;
+            selectedFilter.remove("Chinese");
+            selectedFilter.remove("Japanese");
+            lookUnSelected(asian);
+            removeCuisine();
+            checkNothingSelected();
+        }
+    }
+    public void cafeBeverageFilterTap(View view){
+//        Beverage, Cafe, Bar
+        if(!cafe_beverageBool){
+            selectedFilter.remove("All");
+            filterCuisine("Beverage");
+            filterCuisine("Cafe");
+            filterCuisine("Bar");
+            lookSelected(cafe_beverage);
+            lookUnSelected(all);
+            cafe_beverageBool = true;
+
+        }else{
+            cafe_beverageBool = false;
+            selectedFilter.remove("Beverage");
+            selectedFilter.remove("Cafe");
+            selectedFilter.remove("Bar");
+            lookUnSelected(cafe_beverage);
+            removeCuisine();
+            checkNothingSelected();
+        }
+    }
+    public void otherFilterTap(View view){
+//        International, Mexican, Portuguese, Vegetarian, Convenience Store
+        if(!otherBool){
+            selectedFilter.remove("All");
+            filterCuisine("International");
+            filterCuisine("Mexican");
+            filterCuisine("Portuguese");
+            filterCuisine("Vegetarian");
+            filterCuisine("Convenience Store");
+            lookSelected(others);
+            lookUnSelected(all);
+            otherBool = true;
+        }else{
+            otherBool = false;
+            selectedFilter.remove("International");
+            selectedFilter.remove("Mexican");
+            selectedFilter.remove("Portuguese");
+            selectedFilter.remove("Vegetarian");
+            selectedFilter.remove("Convenience Store");
+            lookUnSelected(others);
+            removeCuisine();
+            checkNothingSelected();
+        }
+
+    }
+
+    public void checkNothingSelected(){
+        if(selectedFilter.isEmpty()){
+            unselectedAllFilters();
+            filterCuisine("All");
+            lookSelected(all);
+        }
+
     }
 }
