@@ -91,7 +91,7 @@ public class userRegistrationPage extends AppCompatActivity {
         });
 
         // Set the content view
-        setContentView(R.layout.activity_registration_page);
+//        setContentView(R.layout.activity_registration_page);
 
 
         picButton = findViewById(R.id.userPicUpload);

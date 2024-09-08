@@ -120,7 +120,7 @@ public class businessRegistrationPage extends AppCompatActivity {
         });
 
         // Set the content view
-        setContentView(R.layout.activity_business_registration_page);
+//        setContentView(R.layout.activity_business_registration_page);
 
 
         picButton = findViewById(R.id.userPicUpload);
