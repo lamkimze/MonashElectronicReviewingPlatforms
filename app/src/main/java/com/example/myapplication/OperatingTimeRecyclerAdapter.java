@@ -45,6 +45,16 @@ public class OperatingTimeRecyclerAdapter extends RecyclerView.Adapter<Operating
         return 0;
     }
 
+    public String databaseFormat(){
+        String stringOperatingTime = "";
+        for (operatingTime operatingTime: data) {
+            stringOperatingTime += operatingTime.getDay() + ":";
+            stringOperatingTime += operatingTime.getStartTime() + "-";
+            stringOperatingTime += operatingTime.getEndTime() + ";";
+        }
+        return stringOperatingTime;
+    }
+
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvOperatingDay;

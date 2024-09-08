@@ -9,6 +9,6 @@
     android:maxLines="1"
     android:textAppearance="?attr/textAppearanceSubtitle1"
     >
-        
+
 
 </TextView>

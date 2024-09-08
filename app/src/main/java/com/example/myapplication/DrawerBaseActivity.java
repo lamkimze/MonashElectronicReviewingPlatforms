@@ -37,6 +37,8 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
                 this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+
     }
 
     private void goToLogin(){
@@ -86,6 +88,11 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         }else{
             super.onBackPressed();
         }
+    }
+
+    public void goToProfile(View view){
+        Intent profileIntent = new Intent(this, profilePage.class);
+        startActivity(profileIntent);
     }
 
     protected void onPostCreate(Bundle saveInstanceState){

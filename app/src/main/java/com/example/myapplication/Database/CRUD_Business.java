@@ -3,8 +3,10 @@ package com.example.myapplication.Database;
 import static java.lang.String.format;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.contentcapture.ContentCaptureCondition;
 
 import com.example.myapplication.Restaurant;
 
@@ -249,4 +251,23 @@ public class CRUD_Business {
                 bus_id);
         db.execSQL(updateBusinessOwner);
     }
+
+    public void updateRestaurantDetail(String bus_name, String bus_addr, String bus_ph_nb, String bus_email, String website_url, String bus_hours, String bus_cuisine_type) {
+        SQLiteDatabase db = this.dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("bus_name", bus_name);
+        values.put("bus_addr", bus_addr);
+        values.put("bus_ph_nb", bus_ph_nb);
+        values.put("bus_email", bus_email);
+        values.put("website_url", website_url);
+        values.put("bus_hours", bus_hours);
+        values.put("bus_cuisine_type", bus_cuisine_type);
+
+        String whereClause = "bus_name = ?";
+        String[] whereArgs = {bus_name};
+
+        db.update("business", values, whereClause, whereArgs);
+    }
+
 }

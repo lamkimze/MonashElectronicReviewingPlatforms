@@ -15,6 +15,10 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.DatabaseHelper;
+
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,6 +28,10 @@ import java.util.TimerTask;
  * create an instance of this fragment.
  */
 public class CompetitionRecordsFragment extends Fragment {
+
+    ArrayList<Restaurant> listRestaurant = new ArrayList<>();
+    DatabaseHelper dbHelper;
+    FunctionalLibraries functionalLibraries = new FunctionalLibraries();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,7 +77,15 @@ public class CompetitionRecordsFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
+        try {
+            dbHelper = new DatabaseHelper(getContext());
+            CRUD_Business crudBusiness = new CRUD_Business(dbHelper);
+            ArrayList<Restaurant> dbRestaurants = crudBusiness.getAllRestaurants();
+            listRestaurant.addAll(dbRestaurants);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        functionalLibraries.binarySort(listRestaurant, "restaurant");
     }
 
 
@@ -81,6 +97,15 @@ public class CompetitionRecordsFragment extends Fragment {
 
         seekBar1 = (SeekBar) fragmentView.findViewById(R.id.seekBar1);
         showCount1 = fragmentView.findViewById(R.id.top1Count);
+//        seekBar2 = (SeekBar) fragmentView.findViewById(R.id.seekBar2);
+//        showCount2 = fragmentView.findViewById(R.id.top2Count);
+//        seekBar3 = (SeekBar) fragmentView.findViewById(R.id.seekBar3);
+//        showCount3 = fragmentView.findViewById(R.id.top3Count);
+//        seekBar4 = (SeekBar) fragmentView.findViewById(R.id.seekBar4);
+//        showCount4 = fragmentView.findViewById(R.id.top4Count);
+//        seekBar5 = (SeekBar) fragmentView.findViewById(R.id.seekBar5);
+//        showCount5 = fragmentView.findViewById(R.id.top5Count);
+
 
         Bitmap gygBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez);
         Bitmap scaledGygBitmap = Bitmap.createScaledBitmap(gygBitmap, 90, 90, true);

@@ -1,7 +1,12 @@
 package com.example.myapplication;
 
+import static android.provider.MediaStore.Images.Media.insertImage;
+
+import static com.example.myapplication.Enumerables.ImageType.BUSINESS;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -21,6 +26,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.Enumerables.ImageType;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import kotlin.Unit;
@@ -64,6 +70,11 @@ public class profilePageEditor extends AppCompatActivity {
                         return null;
                     });
         });
+
+//        profilePic.buildDrawingCache();
+//        Bitmap bmap = profilePic.getDrawingCache();
+
+//        insertImage(1, BUSINESS, bmap);
 
         // Apply window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

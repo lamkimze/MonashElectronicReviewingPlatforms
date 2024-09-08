@@ -18,6 +18,7 @@ android {
 
     buildFeatures{
         viewBinding = true
+        dataBinding = true
     }
 
     buildTypes {
@@ -53,6 +54,16 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.google.android.material:material:1.12.0")
-    implementation("com.github.dhaval2404:imagepicker:2.1")
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.github.dhaval2404:imagepicker:2.1")
+    implementation("com.google.dagger:hilt-android:2.44.2")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    testImplementation("androidx.paging:paging-testing:3.2.0-alpha04")
+    implementation("androidx.paging:paging-runtime:3.1.1")
+    implementation("org.reactivestreams:reactive-streams:1.0.4")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+
+
 }

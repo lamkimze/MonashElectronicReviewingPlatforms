@@ -25,7 +25,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/circular_bg"
-        android:backgroundTint="@color/my_primary"
+        android:backgroundTint="@color/purple"
         android:src="@drawable/person_icon"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/textView19"
@@ -39,15 +39,13 @@
         android:id="@+id/userProfileEmailAddress"
         android:layout_width="336dp"
         android:layout_height="42dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_rounded_corner"
         android:elevation="5dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         android:text="test@email.com"
-        app:layout_constraintBottom_toTopOf="@+id/editTextPhone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,17 +70,17 @@
         android:id="@+id/editTextPhone"
         android:layout_width="338dp"
         android:layout_height="42dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_rounded_corner"
         android:elevation="5dp"
         android:ems="10"
         android:inputType="phone"
         android:padding="10dp"
         android:text="+61234567890"
-        app:layout_constraintBottom_toTopOf="@+id/updateProfileButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileEmailAddress" />
 
     <TextView
         android:id="@+id/textView19"
@@ -100,17 +98,18 @@
         android:id="@+id/updateProfileButton"
         android:layout_width="370dp"
         android:layout_height="43dp"
+        android:layout_marginTop="230dp"
         android:text="Update Profile"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="624dp" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhone"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="100dp"
         android:layout_height="43dp"
-        android:layout_marginTop="63dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="#FFFFFF"
         android:text="Logout"
@@ -118,8 +117,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/updateProfileButton"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/updateProfileButton" />
 
     <RatingBar
         android:id="@+id/ratingBar3"
