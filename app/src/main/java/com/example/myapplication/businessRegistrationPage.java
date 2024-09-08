@@ -1,11 +1,17 @@
 package com.example.myapplication;
 
+import static android.provider.MediaStore.Images.Media.insertImage;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.URLUtil;
@@ -26,13 +32,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.Entities.Owner;
+import com.example.myapplication.Enumerables.ImageType;
 import com.example.myapplication.databinding.ActivityBusinessRegistrationPageBinding;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,6 +67,7 @@ public class businessRegistrationPage extends AppCompatActivity {
     DatabaseHelper dbHelper;
     CRUD_Business crudBusiness;
     CRUD_User crudUser;
+    CRUD_Image crudImage;
     int businessId;
     boolean exist = false;
 
@@ -71,6 +81,7 @@ public class businessRegistrationPage extends AppCompatActivity {
     OperatingTimeRecyclerAdapter recyclerAdapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -115,6 +126,12 @@ public class businessRegistrationPage extends AppCompatActivity {
                     selectedImageUri = data.getData();
                     // Update the ImageView with the selected image
                     businessPic.setImageURI(selectedImageUri);
+                    try {
+                        Bitmap bitmap = getBitmapFromUri(selectedImageUri);
+                        crudImage.insertImage(businessId, ImageType.BUSINESS, bitmap);  // Assuming linkingID = 1
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -137,6 +154,10 @@ public class businessRegistrationPage extends AppCompatActivity {
                         return null;
                     });
         });
+
+//        businessPic.buildDrawingCache();
+//        Bitmap bitmap = businessPic.getDrawingCache();
+//        crudImage.insertImage(1, ImageType.BUSINESS, bitmap);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -177,6 +198,7 @@ public class businessRegistrationPage extends AppCompatActivity {
             dbHelper = new DatabaseHelper(this);
             crudBusiness = new CRUD_Business(dbHelper);
             crudUser = new CRUD_User(dbHelper);
+            crudImage = new CRUD_Image(dbHelper);
             ArrayList<Restaurant> dbRestaurants = crudBusiness.getAllRestaurants();
             restaurants.addAll(dbRestaurants);
 
@@ -325,5 +347,15 @@ public class businessRegistrationPage extends AppCompatActivity {
         operatingEnd.setText("");
         autoCompleteTextView.setText(null);
         autoCompleteTextView.setFocusable(false);
+    }
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            // For newer Android versions (API level 28 and above)
+            ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), uri);
+            return ImageDecoder.decodeBitmap(source);
+        } else {
+            // For older Android versions
+            return MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+        }
     }
 }

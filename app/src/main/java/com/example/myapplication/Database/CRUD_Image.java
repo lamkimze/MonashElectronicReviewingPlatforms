@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class CRUD_Image {
     DatabaseHelper dbHelper;
-    CRUD_Image(DatabaseHelper dbHelper) {this.dbHelper = dbHelper;}
+    public CRUD_Image(DatabaseHelper dbHelper) {this.dbHelper = dbHelper;}
 
 
     // Create methods
