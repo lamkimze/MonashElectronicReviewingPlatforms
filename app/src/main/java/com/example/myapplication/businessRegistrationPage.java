@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,10 +12,16 @@ import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +30,7 @@ import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.Entities.Owner;
 import com.example.myapplication.databinding.ActivityBusinessRegistrationPageBinding;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.ParseException;
@@ -32,6 +40,10 @@ import java.util.Date;
 import java.util.Locale;
 
 public class businessRegistrationPage extends AppCompatActivity {
+    ImageView picButton;
+    ImageView businessPic;
+    ActivityResultLauncher<Intent> imagePickLauncher;
+    Uri selectedImageUri;
 
     ActivityBusinessRegistrationPageBinding binding;
     TextInputEditText etRestaurantName, etAddress, etRestaurantURL, etPhoneNumber, etCuisineType;
@@ -94,6 +106,43 @@ public class businessRegistrationPage extends AppCompatActivity {
         recyclerAdapter = new OperatingTimeRecyclerAdapter();
         recyclerAdapter.setData(listOperatingTime);
         recyclerView.setAdapter(recyclerAdapter);
+
+        // Register the launcher for image picking
+        imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK) {
+                Intent data = result.getData();
+                if (data != null && data.getData() != null) {
+                    selectedImageUri = data.getData();
+                    // Update the ImageView with the selected image
+                    businessPic.setImageURI(selectedImageUri);
+                }
+            }
+        });
+
+        // Set the content view
+        setContentView(R.layout.activity_business_registration_page);
+
+
+        picButton = findViewById(R.id.userPicUpload);
+        businessPic = findViewById(R.id.imageView);
+
+        // Set the click listener for the business picture
+        picButton.setOnClickListener(v -> {
+            ImagePicker.with(this)
+                    .cropSquare()  // Allow cropping to a square
+                    .compress(512) // Compress the image to 512kb
+                    .maxResultSize(512, 512) // Set the max result size
+                    .createIntent(intent -> {
+                        imagePickLauncher.launch(intent);
+                        return null;
+                    });
+        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         // Set listeners
         setListeners();
