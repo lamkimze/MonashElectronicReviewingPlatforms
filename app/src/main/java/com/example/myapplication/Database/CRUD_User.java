@@ -64,13 +64,13 @@ public class CRUD_User {
             String username = user.getUsername();
             String userTable = user.getTableName();
             String selectUser = format("SELECT * FROM %s WHERE username = '%s';", userTable, username);
-            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectUser, null);
+            Cursor cursor = db.rawQuery(selectUser, null);
             cursor.moveToFirst();
-            user.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            user.setId(cursor.getInt(cursor.getColumnIndex(user.getPkName())));
             user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
             user.setFirstName(cursor.getString(cursor.getColumnIndex("first_name")));
             user.setLastName(cursor.getString(cursor.getColumnIndex("last_name")));
-            user.setLastName(cursor.getString(cursor.getColumnIndex("last_name")));
+            cursor.close();
             return user;
         }
         return null;
@@ -95,10 +95,12 @@ public class CRUD_User {
 
         // check if email or username already exists
         String selectUser = format("SELECT * FROM %s WHERE username = '%s' OR email = '%s';", userTable, username, email);
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectUser, null);
+        Cursor cursor = db.rawQuery(selectUser, null);
         if (cursor.getCount() > 0) {
+            cursor.close();
             return false;
         }
+        cursor.close();
 
         // insert the user into the database
         ContentValues contentValues = new ContentValues();
@@ -122,10 +124,12 @@ public class CRUD_User {
     public int getOwnersBusID(Owner owner) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         int ownerID = owner.getId();
-        @SuppressLint("DefaultLocale") String selectBusID = format("SELECT owner_id FROM owner WHERE id = %d;", ownerID);
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectBusID, null);
+        String selectBusID = format("SELECT bus_id FROM owner WHERE owner_id = %d;", ownerID);
+        Cursor cursor = db.rawQuery(selectBusID, null);
         cursor.moveToFirst();
-        return cursor.getInt(cursor.getColumnIndex("bus_id"));
+        int busID = cursor.getInt(cursor.getColumnIndex("bus_id"));
+        cursor.close();
+        return busID;
     }
 
     /**
@@ -140,7 +144,7 @@ public class CRUD_User {
         String selectCustomerID = format("SELECT customer_id FROM customer WHERE username = '%s';", username);
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectCustomerID, null);
         cursor.moveToFirst();
-        return cursor.getInt(cursor.getColumnIndex("id"));
+        return cursor.getInt(cursor.getColumnIndex("customer_id"));
     }
 
     /**
@@ -153,9 +157,11 @@ public class CRUD_User {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String username = owner.getUsername();
         String selectOwnerID = format("SELECT owner_id FROM owner WHERE username = '%s';", username);
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectOwnerID, null);
+        Cursor cursor = db.rawQuery(selectOwnerID, null);
         cursor.moveToFirst();
-        return cursor.getInt(cursor.getColumnIndex("id"));
+        int ownerID = cursor.getInt(cursor.getColumnIndex("owner_id"));
+        cursor.close();
+        return ownerID;
     }
 
     /**
@@ -169,10 +175,12 @@ public class CRUD_User {
         String selectCustomer = "SELECT * FROM customer WHERE customer_id = " + customerID + ";";
         Cursor cursor = db.rawQuery(selectCustomer, null);
         cursor.moveToFirst();
-        return new Customer(cursor.getString(cursor.getColumnIndex("username")),
+        Customer retrievedCustomer = new Customer(cursor.getString(cursor.getColumnIndex("username")),
                 cursor.getString(cursor.getColumnIndex("email")),
                 cursor.getString(cursor.getColumnIndex("first_name")),
                 cursor.getString(cursor.getColumnIndex("last_name")));
+        cursor.close();
+        return retrievedCustomer;
     }
 
     /**
@@ -183,13 +191,15 @@ public class CRUD_User {
     @SuppressLint("Range")
     public Owner getOwner (int ownerID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectOwner = "SELECT * FROM owner WHERE id = " + ownerID + ";";
+        String selectOwner = "SELECT * FROM owner WHERE owner_id = " + ownerID + ";";
         Cursor cursor = db.rawQuery(selectOwner, null);
         cursor.moveToFirst();
-        return new Owner(cursor.getString(cursor.getColumnIndex("username")),
+        Owner owner = new Owner(cursor.getString(cursor.getColumnIndex("username")),
                 cursor.getString(cursor.getColumnIndex("email")),
                 cursor.getString(cursor.getColumnIndex("first_name")),
                 cursor.getString(cursor.getColumnIndex("last_name")));
+        cursor.close();
+        return owner;
     }
 
     // Update methods
@@ -202,7 +212,7 @@ public class CRUD_User {
     public void assignOwnerToBus(Owner owner, int busID) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int ownerID = owner.getId();
-        String updateStatement = "UPDATE owner SET bus_id = %d WHERE id = %d;";
+        String updateStatement = "UPDATE owner SET bus_id = %d WHERE owner_id = %d;";
         @SuppressLint("DefaultLocale") String updateOwner = format(updateStatement, busID, ownerID);
         db.execSQL(updateOwner);
     }
