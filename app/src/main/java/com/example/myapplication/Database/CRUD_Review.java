@@ -42,12 +42,15 @@ public class CRUD_Review {
         String selectReview = "SELECT * FROM review WHERE review_id = " + reviewId + ";";
         Cursor cursor = db.rawQuery(selectReview, null);
         cursor.moveToFirst();
-        return new ReviewModel(cursor.getInt(cursor.getColumnIndex("rating")),
+
+        ReviewModel reviewModel =  new ReviewModel(cursor.getInt(cursor.getColumnIndex("rating")),
                 cursor.getString(cursor.getColumnIndex("title")),
                 crudImage.getImages(reviewId, ImageType.REVIEW),
                 cursor.getString(cursor.getColumnIndex("text")),
                 cursor.getInt(cursor.getColumnIndex("customer_id")),
                 cursor.getInt(cursor.getColumnIndex("bus_id")));
+        cursor.close();
+        return reviewModel;
     }
 
     /**
@@ -64,12 +67,13 @@ public class CRUD_Review {
         while (cursor.moveToNext()) {
             reviewIDs.add(cursor.getInt(cursor.getColumnIndex("review_id")));
         }
+        cursor.close();
         return reviewIDs;
     }
 
     /**
      * Method to get all the reviews for a business
-     * @param businessId
+     * @param businessId the business to get the reviews for
      * @return an array list of all the reviews
      */
     public ArrayList<ReviewModel> getReviews(int businessId) {

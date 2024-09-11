@@ -32,7 +32,6 @@ public class CRUD_User {
      * @param password the UN-HASHED password attempt of the user
      * @return true if the login credentials are correct, false otherwise
      */
-    @SuppressLint("Recycle")
     public boolean verifyLogin(User user, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String username = user.getUsername();
@@ -43,6 +42,7 @@ public class CRUD_User {
         if (cursor.getCount() == 1) {
             cursor.moveToFirst();
             @SuppressLint("Range") String hashedPass = cursor.getString(cursor.getColumnIndex("password"));
+            cursor.close();
             return Password.check(password, hashedPass).withScrypt();
         }
         return false;
@@ -124,7 +124,7 @@ public class CRUD_User {
     public int getOwnersBusID(Owner owner) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         int ownerID = owner.getId();
-        String selectBusID = format("SELECT bus_id FROM owner WHERE owner_id = %d;", ownerID);
+        @SuppressLint("DefaultLocale") String selectBusID = format("SELECT bus_id FROM owner WHERE owner_id = %d;", ownerID);
         Cursor cursor = db.rawQuery(selectBusID, null);
         cursor.moveToFirst();
         int busID = cursor.getInt(cursor.getColumnIndex("bus_id"));
@@ -142,9 +142,11 @@ public class CRUD_User {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String username = customer.getUsername();
         String selectCustomerID = format("SELECT customer_id FROM customer WHERE username = '%s';", username);
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery(selectCustomerID, null);
+        Cursor cursor = db.rawQuery(selectCustomerID, null);
         cursor.moveToFirst();
-        return cursor.getInt(cursor.getColumnIndex("customer_id"));
+        int customerID = cursor.getInt(cursor.getColumnIndex("customer_id"));
+        cursor.close();
+        return customerID;
     }
 
     /**

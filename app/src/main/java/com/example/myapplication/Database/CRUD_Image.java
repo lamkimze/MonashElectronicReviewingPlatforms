@@ -19,7 +19,7 @@ public class CRUD_Image {
     /**
      * Inserts an image into the database
      * @param linkingID The foreign key that links the image to another table
-     * @param imageType The type of image (business or review)
+     * @param imageType The type of image
      * @param image A bitmap of the image
      * @throws IOException If the image cannot be converted to a byte array
      */
@@ -42,7 +42,7 @@ public class CRUD_Image {
     // Read methods
 
     /**
-     * Retrives an image from the database
+     * Retrieves an image from the database
      * @param image_id The id of the image
      * @param imageType The type of image (business or review)
      * @return A bitmap of the image
