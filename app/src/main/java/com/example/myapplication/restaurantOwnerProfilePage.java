@@ -15,7 +15,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.Database.CRUD_User;
+import com.example.myapplication.Database.DatabaseHelper;
+import com.example.myapplication.Entities.Owner;
+
 import java.util.ArrayList;
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Review;
 
 public class restaurantOwnerProfilePage extends AppCompatActivity {
 
@@ -23,6 +29,10 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
     RatingBar ratingBar;
     ImageView imageView;
     ArrayList<ReviewModel> reviewModels = new ArrayList<>();
+
+    CRUD_User userCrud = new CRUD_User(new DatabaseHelper(this));
+    Owner activeUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +46,22 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
         });
         imageView = (ImageView) findViewById(R.id.restaurantOwnerPicture);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_icon);
-        Bitmap scakedBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
-        Drawable userDrawable = new BitmapDrawable(getResources(), scakedBitmap);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
+        Drawable userDrawable = new BitmapDrawable(getResources(), scaledBitmap);
         imageView.setImageDrawable(userDrawable);
+        //activeUser = userCrud.getOwner("")
 
         textView = (TextView) findViewById(R.id.restaurantTitle);
         ratingBar = (RatingBar) findViewById(R.id.restaurantAverageRatingBar);
     }
 
-//    private void setUpReviewModels () {
-//        String[] reviewTitles = getResources().getStringArray(R.array.);
-//        String[] reviewRatings = getResources().getStringArray(R.array);
-//
+    private void setUpReviewModels () {
+        //String[] reviewTitles = getResources().getStringArray(R.array.);
+        //String[] reviewRatings = getResources().getStringArray(R.array);
+
 //        for (int i = 0; i < reviewTitles.length; i++){
 //            reviewModels.add(new ReviewModel(reviewTitles[i],
 //                    reviewRatings[i]));
 //        }
-//    }
+    }
 }
