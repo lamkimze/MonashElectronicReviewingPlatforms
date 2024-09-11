@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
@@ -49,6 +51,7 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        RecyclerView recyclerView = findViewById(R.id.ownerRecyclerView);
         imageView = (ImageView) findViewById(R.id.restaurantOwnerPicture);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_icon);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
@@ -58,17 +61,19 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
 
         textView = (TextView) findViewById(R.id.restaurantTitle);
         restaurant = businessCrud.getRestaurant(userCrud.getOwnersBusID(activeUser));
+        reviewModels = reviewCrud.getReviews(userCrud.getOwnersBusID(activeUser));
+        R_RecyclerViewAdapter adapter = new R_RecyclerViewAdapter(this,reviewModels);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         textView.setText(restaurant.getName());
+
+
         ratingBar = (RatingBar) findViewById(R.id.restaurantAverageRatingBar);
         ratingBar.setRating(restaurant.getStars());
+
         email = (TextView) findViewById(R.id.ownerEmail);
         email.setText(activeUser.getEmail());
     }
 
-    private void setUpReviewModels () {
-        activeUser = userCrud.getOwner(10011111);
 
-        ArrayList<ReviewModel> reviews = reviewCrud.getReviews(userCrud.getOwnersBusID(activeUser));
-
-    }
 }
