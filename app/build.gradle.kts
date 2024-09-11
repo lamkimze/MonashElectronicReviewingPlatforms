@@ -64,6 +64,7 @@ dependencies {
     implementation("org.reactivestreams:reactive-streams:1.0.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 
 
 }
