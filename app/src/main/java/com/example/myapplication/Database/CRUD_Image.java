@@ -1,5 +1,7 @@
 package com.example.myapplication.Database;
 
+import static java.lang.String.format;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,9 +11,11 @@ import com.example.myapplication.Enumerables.ImageType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CRUD_Image {
     DatabaseHelper dbHelper;
+    Locale locale = Locale.getDefault();
     CRUD_Image(DatabaseHelper dbHelper) {this.dbHelper = dbHelper;}
 
 
@@ -52,7 +56,7 @@ public class CRUD_Image {
         String tableName = imageType.getTableName();
 
         // Get the image from the database
-        String query = "SELECT image_data FROM " + tableName + " WHERE image_id = " + image_id;
+        String query = format(locale,"SELECT image_data FROM %s WHERE image_id = %d", tableName, image_id);
 
         Cursor cursor = db.rawQuery(query, null);
 
@@ -78,7 +82,7 @@ public class CRUD_Image {
         String tableName = imageType.getTableName();
         String foreignKey = imageType.getForeignKey();
 
-        String query = "SELECT image_id FROM " + tableName + " WHERE " + foreignKey + " = " + linkingID;
+        String query = format(locale,"SELECT image_id FROM %s WHERE %s = %d", tableName, foreignKey, linkingID);
 
         Cursor cursor = db.rawQuery(query, null);
 

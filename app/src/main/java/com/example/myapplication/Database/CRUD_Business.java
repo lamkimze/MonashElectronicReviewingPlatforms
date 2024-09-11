@@ -1,5 +1,6 @@
 package com.example.myapplication.Database;
 
+import static java.lang.String.*;
 import static java.lang.String.format;
 
 import android.annotation.SuppressLint;
@@ -11,10 +12,12 @@ import android.view.contentcapture.ContentCaptureCondition;
 import com.example.myapplication.Restaurant;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CRUD_Business {
 
     DatabaseHelper dbHelper;
+    Locale locale = Locale.getDefault();
 
     public CRUD_Business(DatabaseHelper dbHelper){
         this.dbHelper = dbHelper;
@@ -73,7 +76,7 @@ public class CRUD_Business {
     @SuppressLint("Range")
     public Restaurant getRestaurant(int bus_id) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectRestaurant = "SELECT * FROM business WHERE bus_id = " + bus_id + ";";
+        String selectRestaurant = format(locale,"SELECT * FROM business WHERE bus_id = %d;", bus_id);
         Cursor cursor = db.rawQuery(selectRestaurant, null);
         cursor.moveToFirst();
         Restaurant restaurant = new Restaurant(null, null, null);
@@ -110,12 +113,19 @@ public class CRUD_Business {
     public int getOwnerID(Restaurant restaurant) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         int bus_id = restaurant.getId();
-        @SuppressLint("DefaultLocale") String selectOwnerID = format("SELECT owner_id FROM business WHERE bus_id = %d;", bus_id);
+        String selectOwnerID = format(locale, "SELECT owner_id FROM business WHERE bus_id = %d;", bus_id);
         Cursor cursor = db.rawQuery(selectOwnerID, null);
         cursor.moveToFirst();
-        @SuppressLint("Range") int ownerID = cursor.getInt(cursor.getColumnIndex("owner_id"));
-        cursor.close();
-        return ownerID;
+
+        int ownerIdIndex = cursor.getColumnIndex("owner_id");
+        if (ownerIdIndex != -1) {
+            int ownerID = cursor.getInt(ownerIdIndex);
+            cursor.close();
+            return ownerID;
+        } else {
+            cursor.close();
+            return -1;
+        }
     }
 
     /**
@@ -126,7 +136,7 @@ public class CRUD_Business {
     public double getBusinessStarRating(Restaurant restaurant) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         int bus_id = restaurant.getId();
-        @SuppressLint("DefaultLocale") String selectStarRating = format("SELECT AVG(rating) FROM review WHERE bus_id = %d;", bus_id);
+        String selectStarRating = format(locale,"SELECT AVG(rating) FROM review WHERE bus_id = %d;", bus_id);
         Cursor cursor = db.rawQuery(selectStarRating, null);
         cursor.moveToFirst();
         @SuppressLint("Range") double starRating = cursor.getDouble(cursor.getColumnIndex("AVG(rating)"));
@@ -138,15 +148,18 @@ public class CRUD_Business {
      * Gets the most reviewed restaurants of the day
      * @return An ArrayList of the most reviewed restaurants
      */
-    @SuppressLint("Range")
     public ArrayList<Restaurant> getMostReviewedRestaurantsDaily() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selectMostReviewedRestaurants = "SELECT bus_id, COUNT(*) FROM review WHERE date = CURRENT_DATE GROUP BY bus_id ORDER BY COUNT(*) DESC;";
         Cursor cursor = db.rawQuery(selectMostReviewedRestaurants, null);
         ArrayList<Restaurant> mostReviewedRestaurants = new ArrayList<>();
+        // After
         while (cursor.moveToNext() && mostReviewedRestaurants.size() < 5) {
-            int bus_id = cursor.getInt(cursor.getColumnIndex("bus_id"));
-            mostReviewedRestaurants.add(getRestaurant(bus_id));
+            int busIdIndex = cursor.getColumnIndex("bus_id");
+            if (busIdIndex != -1) {
+                int bus_id = cursor.getInt(busIdIndex);
+                mostReviewedRestaurants.add(getRestaurant(bus_id));
+            }
         }
         cursor.close();
         return mostReviewedRestaurants;
@@ -159,7 +172,7 @@ public class CRUD_Business {
      */
     public void updateBusinessName(int bus_id, String bus_name) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        @SuppressLint("DefaultLocale") String updateBusinessName = format("UPDATE business SET bus_name = '%s' WHERE bus_id = %d;",
+        String updateBusinessName = format(locale,"UPDATE business SET bus_name = '%s' WHERE bus_id = %d;",
                 bus_name,
                 bus_id);
         db.execSQL(updateBusinessName);
@@ -172,7 +185,7 @@ public class CRUD_Business {
      */
     public void updateBusinessAddress(int bus_id, String bus_addr) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        @SuppressLint("DefaultLocale") String updateBusinessAddress = format("UPDATE business SET bus_addr = '%s' WHERE bus_id = %d;",
+        String updateBusinessAddress = format(locale,"UPDATE business SET bus_addr = '%s' WHERE bus_id = %d;",
                 bus_addr,
                 bus_id);
         db.execSQL(updateBusinessAddress);
@@ -184,7 +197,7 @@ public class CRUD_Business {
      */
     public void updateBusinessPhone(int bus_id, String bus_ph_nb) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        @SuppressLint("DefaultLocale") String updateBusinessPhone = format("UPDATE business SET bus_ph_nb = '%s' WHERE bus_id = %d;",
+        String updateBusinessPhone = format(locale,"UPDATE business SET bus_ph_nb = '%s' WHERE bus_id = %d;",
                 bus_ph_nb,
                 bus_id);
         db.execSQL(updateBusinessPhone);
@@ -197,7 +210,7 @@ public class CRUD_Business {
      */
     public void updateBusinessEmail(int bus_id, String bus_email) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        @SuppressLint("DefaultLocale") String updateBusinessEmail = format("UPDATE business SET bus_email = '%s' WHERE bus_id = %d;",
+        String updateBusinessEmail = format(locale, "UPDATE business SET bus_email = '%s' WHERE bus_id = %d;",
                 bus_email,
                 bus_id);
         db.execSQL(updateBusinessEmail);
@@ -210,7 +223,7 @@ public class CRUD_Business {
      */
     public void updateBusinessWebsite(int bus_id, String website_url) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        @SuppressLint("DefaultLocale") String updateBusinessWebsite = format("UPDATE business SET website_url = '%s' WHERE bus_id = %d;",
+        String updateBusinessWebsite = format(locale,"UPDATE business SET website_url = '%s' WHERE bus_id = %d;",
                 website_url,
                 bus_id);
         db.execSQL(updateBusinessWebsite);
@@ -221,7 +234,7 @@ public class CRUD_Business {
      */
     public void updateBusinessHours(int bus_id, String bus_hours) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        @SuppressLint("DefaultLocale") String updateBusinessHours = format("UPDATE business SET bus_hours = '%s' WHERE bus_id = %d;",
+        String updateBusinessHours = format(locale,"UPDATE business SET bus_hours = '%s' WHERE bus_id = %d;",
                 bus_hours,
                 bus_id);
         db.execSQL(updateBusinessHours);
@@ -233,7 +246,7 @@ public class CRUD_Business {
      */
     public void updateBusinessCuisine(int bus_id, String bus_cuisine_type) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        @SuppressLint("DefaultLocale") String updateBusinessCuisineType = format("UPDATE business SET bus_cuisine_type = '%s' WHERE bus_id = %d;",
+        String updateBusinessCuisineType = format(locale,"UPDATE business SET bus_cuisine_type = '%s' WHERE bus_id = %d;",
                 bus_cuisine_type,
                 bus_id);
         db.execSQL(updateBusinessCuisineType);
@@ -246,7 +259,7 @@ public class CRUD_Business {
      */
     public void assignOwnerToBusiness(int bus_id, int owner_id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        @SuppressLint("DefaultLocale") String updateBusinessOwner = format("UPDATE business SET owner_id = %d WHERE bus_id = %d;",
+        String updateBusinessOwner = format(locale,"UPDATE business SET owner_id = %d WHERE bus_id = %d;",
                 owner_id,
                 bus_id);
         db.execSQL(updateBusinessOwner);

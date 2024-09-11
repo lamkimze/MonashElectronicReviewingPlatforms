@@ -1,5 +1,7 @@
 package com.example.myapplication.Database;
 
+import static java.lang.String.*;
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -9,9 +11,11 @@ import com.example.myapplication.Enumerables.ImageType;
 import com.example.myapplication.ReviewModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CRUD_Review {
     DatabaseHelper dbHelper;
+    Locale locale = Locale.getDefault();
     CRUD_Review(DatabaseHelper dbHelper) {this.dbHelper = dbHelper;}
 
     // Create Methods
@@ -35,22 +39,34 @@ public class CRUD_Review {
 
 
     // Read Methods
-    @SuppressLint("Range")
     public ReviewModel getReview(int reviewId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         CRUD_Image crudImage = new CRUD_Image(dbHelper);
-        String selectReview = "SELECT * FROM review WHERE review_id = " + reviewId + ";";
+        String selectReview = format(locale,"SELECT * FROM review WHERE review_id = %d;", reviewId);
         Cursor cursor = db.rawQuery(selectReview, null);
         cursor.moveToFirst();
 
-        ReviewModel reviewModel =  new ReviewModel(cursor.getInt(cursor.getColumnIndex("rating")),
-                cursor.getString(cursor.getColumnIndex("title")),
-                crudImage.getImages(reviewId, ImageType.REVIEW),
-                cursor.getString(cursor.getColumnIndex("text")),
-                cursor.getInt(cursor.getColumnIndex("customer_id")),
-                cursor.getInt(cursor.getColumnIndex("bus_id")));
-        cursor.close();
-        return reviewModel;
+        int ratingIndex, titleIndex, textIndex, customerIndex, businessIndex;
+        ratingIndex = cursor.getColumnIndex("rating");
+        titleIndex = cursor.getColumnIndex("title");
+        textIndex = cursor.getColumnIndex("text");
+        customerIndex = cursor.getColumnIndex("customer_id");
+        businessIndex = cursor.getColumnIndex("bus_id");
+
+        // If the indexes are not found, return null
+        if (ratingIndex == -1 || titleIndex == -1 || textIndex == -1 || customerIndex == -1 || businessIndex == -1) {
+            cursor.close();
+            return null;
+        } else {
+            ReviewModel reviewModel =  new ReviewModel(cursor.getInt(ratingIndex),
+                    cursor.getString(titleIndex),
+                    crudImage.getImages(reviewId, ImageType.REVIEW),
+                    cursor.getString(textIndex),
+                    cursor.getInt(customerIndex),
+                    cursor.getInt(businessIndex));
+            cursor.close();
+            return reviewModel;
+        }
     }
 
     /**
@@ -58,14 +74,16 @@ public class CRUD_Review {
      * @param businessId the business to get the reviews for
      * @return an array list of all the review IDs
      */
-    @SuppressLint("Range")
     public ArrayList<Integer> getReviewIDs(int businessId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectReviews = "SELECT review_id FROM review WHERE bus_id = " + businessId + ";";
+        String selectReviews = format(locale,"SELECT review_id FROM review WHERE bus_id = %d;", businessId);
         Cursor cursor = db.rawQuery(selectReviews, null);
         ArrayList<Integer> reviewIDs = new ArrayList<>();
         while (cursor.moveToNext()) {
-            reviewIDs.add(cursor.getInt(cursor.getColumnIndex("review_id")));
+            int columnIndex = cursor.getColumnIndex("review_id");
+            if (columnIndex != -1) {
+                reviewIDs.add(cursor.getInt(columnIndex));
+            }
         }
         cursor.close();
         return reviewIDs;
