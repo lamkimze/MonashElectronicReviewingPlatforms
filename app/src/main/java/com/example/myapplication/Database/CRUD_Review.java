@@ -16,7 +16,7 @@ import java.util.Locale;
 public class CRUD_Review {
     DatabaseHelper dbHelper;
     Locale locale = Locale.getDefault();
-    CRUD_Review(DatabaseHelper dbHelper) {this.dbHelper = dbHelper;}
+    public CRUD_Review(DatabaseHelper dbHelper) {this.dbHelper = dbHelper;}
 
     // Create Methods
 
