@@ -27,10 +27,15 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
 
     TextView textView;
     RatingBar ratingBar;
+    TextView email;
     ImageView imageView;
-    ArrayList<ReviewModel> reviewModels = new ArrayList<>();
+    Restaurant restaurant;
 
+
+    ArrayList<ReviewModel> reviewModels = new ArrayList<>();
+    CRUD_Business businessCrud = new CRUD_Business(new DatabaseHelper(this));
     CRUD_User userCrud = new CRUD_User(new DatabaseHelper(this));
+    CRUD_Review reviewCrud = new CRUD_Review(new DatabaseHelper(this));
     Owner activeUser;
 
 
@@ -49,19 +54,21 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
         Drawable userDrawable = new BitmapDrawable(getResources(), scaledBitmap);
         imageView.setImageDrawable(userDrawable);
-        //activeUser = userCrud.getOwner("")
+        activeUser = userCrud.getOwner(10011111);
 
         textView = (TextView) findViewById(R.id.restaurantTitle);
+        restaurant = businessCrud.getRestaurant(userCrud.getOwnersBusID(activeUser));
+        textView.setText(restaurant.getName());
         ratingBar = (RatingBar) findViewById(R.id.restaurantAverageRatingBar);
+        ratingBar.setRating(restaurant.getStars());
+        email = (TextView) findViewById(R.id.ownerEmail);
+        email.setText(activeUser.getEmail());
     }
 
     private void setUpReviewModels () {
-        //String[] reviewTitles = getResources().getStringArray(R.array.);
-        //String[] reviewRatings = getResources().getStringArray(R.array);
+        activeUser = userCrud.getOwner(10011111);
 
-//        for (int i = 0; i < reviewTitles.length; i++){
-//            reviewModels.add(new ReviewModel(reviewTitles[i],
-//                    reviewRatings[i]));
-//        }
+        ArrayList<ReviewModel> reviews = reviewCrud.getReviews(userCrud.getOwnersBusID(activeUser));
+
     }
 }
