@@ -48,7 +48,7 @@ public class CRUD_Review {
             cursor.close();
             CRUD_Image crudImage = new CRUD_Image(dbHelper);
             try {
-                crudImage.insertImages(reviewId, review.getReviewImages(), ImageType.REVIEW);
+                crudImage.addImagesToReview(reviewId, review.getReviewImages());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -56,6 +56,7 @@ public class CRUD_Review {
 
     }
 
+    // Read Methods
 
     public ReviewModel getReview(int reviewId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -78,7 +79,7 @@ public class CRUD_Review {
         } else {
             ReviewModel reviewModel =  new ReviewModel(cursor.getInt(ratingIndex),
                     cursor.getString(titleIndex),
-                    crudImage.getImages(reviewId, ImageType.REVIEW),
+                    crudImage.getReviewImages(reviewId),
                     cursor.getString(textIndex),
                     cursor.getInt(customerIndex),
                     cursor.getInt(businessIndex));
