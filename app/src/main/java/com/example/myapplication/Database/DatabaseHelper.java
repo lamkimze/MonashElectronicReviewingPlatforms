@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME,  null, DATABASE_VERSION);
@@ -75,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "review_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "customer_id INTEGER NOT NULL, " +
                 "bus_id INTEGER NOT NULL, " +
-                "star_rating INTEGER NOT NULL, " +
+                "star_rating DECIMAL(1,2) NOT NULL, " +
                 "review_text TEXT, " +
                 "review_date DATE, " +
                 "FOREIGN KEY (customer_id) REFERENCES customer(customer_id), " +
@@ -178,7 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(insertCustomerData);
 
         String insertOwnerData = format("INSERT INTO owner (username, password, email, first_name, last_name, bus_id) VALUES\n" +
-                "('tstark011', '%s', 'tstark011@student.monash.edu', 'Tony', 'Stark');\n",
+                "('tstark011', '%s', 'tstark011@student.monash.edu', 'Tony', 'Stark', 2);\n",
                 hashedPassword
                 );
         db.execSQL(insertOwnerData);
