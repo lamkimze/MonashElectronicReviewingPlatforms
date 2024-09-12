@@ -1,0 +1,239 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="8dp"
+    app:contentPadding="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/userPhoto"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:srcCompat="@drawable/btn_rounded_corner">
+
+        </ImageView>
+
+
+        <TextView
+            android:id="@+id/reviewTags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Item bought"
+            android:textColor="#7B7B7B"
+            app:layout_constraintEnd_toStartOf="@+id/likeButton"
+            app:layout_constraintStart_toEndOf="@+id/userPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/detailReviewRating"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/reviewPosition"
+            android:layout_width="62dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/worker_tag"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="Position"
+            android:textColor="#3F51B5"
+            app:layout_constraintStart_toEndOf="@+id/reviewUsername"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/reviewUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Username"
+            android:textColor="#121212"
+            app:layout_constraintStart_toEndOf="@+id/userPhoto"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+        <ImageButton
+            android:id="@+id/dislikeButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@null"
+            android:onClick="onClickDislike"
+            app:layout_constraintEnd_toStartOf="@+id/dislikeCounters"
+            app:layout_constraintTop_toBottomOf="@+id/likeButton"
+            app:srcCompat="@drawable/uncliked_thumbs_down"
+            tools:ignore="MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/dislikeCounters"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="0"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/likeCounter"
+            tools:ignore="MissingConstraints" />
+
+        <ImageButton
+            android:id="@+id/likeButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@null"
+            android:onClick="onClickLike"
+            app:layout_constraintEnd_toStartOf="@+id/likeCounter"
+            app:layout_constraintTop_toBottomOf="@+id/reviewPosition"
+            app:srcCompat="@drawable/unclicked_thumbs_up"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/likeCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="0"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviewPosition"
+            tools:ignore="MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/CommentReviewTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="Review Title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviewTags"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/commentReviewContent"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:hint="Enter your comment..."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/CommentReviewTitle"
+            tools:ignore="MissingConstraints" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/button9"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="#D0CFCF"
+            android:textSize="10sp"
+            app:boxBackgroundMode="none"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:flow_verticalAlign="center"
+            app:layout_constraintEnd_toStartOf="@+id/button8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/commentImages"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="13dp"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:hint="Comment"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:textSize="12sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Add"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toBottomOf="@+id/button9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/commentImages" />
+
+        <TextView
+            android:id="@+id/commentTimeStamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="01/01/2024"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/commentImages"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:text="Uploaded Images..."
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/commentReviewContent" />
+
+        <RatingBar
+            android:id="@+id/detailReviewRating"
+            style="@android:style/Widget.Material.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:foregroundGravity="center"
+            app:layout_constraintStart_toEndOf="@+id/userPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/reviewUsername" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
