@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME,  null, DATABASE_VERSION);
@@ -32,29 +32,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Table creation statements
-        // Create customer table
-        String createCustomerTable = "CREATE TABLE customer (" +
-                "customer_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        // Create user table
+        String createUserTable = "CREATE TABLE user (" +
+                "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "username TEXT NOT NULL, " +
                 "password TEXT NOT NULL, " +
                 "email TEXT NOT NULL, " +
                 "first_name TEXT NOT NULL, " +
-                "last_name TEXT NOT NULL, " +
-                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
-        db.execSQL(createCustomerTable);
+                "last_name TEXT NOT NULL," +
+                "position_id INTEGER," +
+                "profile_image BLOB," +
+                "FOREIGN KEY (position_id) REFERENCES user_position(position_id));";
+        db.execSQL(createUserTable);
 
-        // Create owner table
-        String createOwnerTable = "CREATE TABLE owner (" +
-                "owner_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "username TEXT NOT NULL, " +
-                "password TEXT NOT NULL, " +
-                "email TEXT NOT NULL, " +
-                "first_name TEXT NOT NULL, " +
-                "last_name TEXT NOT NULL, " +
-                "bus_id INTEGER, " +
-                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+        // Create userPosition table
+        String createUserPositionTable = "CREATE TABLE user_position (" +
+                "position_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "user_id INTEGER NOT NULL," +
+                "position_name TEXT NOT NULL," +
+                "bus_id INTEGER NOT NULL," +
+                "FOREIGN KEY (user_id) REFERENCES user(user_id)," +
                 "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
-        db.execSQL(createOwnerTable);
+        db.execSQL(createUserPositionTable);
 
         // Create business table
         String createBusinessTable = "CREATE TABLE business (" +
@@ -64,12 +63,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "bus_ph_nb TEXT, " +
                 "bus_email TEXT, " +
                 "website_url TEXT, " +
-                "owner_id INTEGER, " +
                 "bus_hours TEXT, " +
                 "bus_cuisine_type TEXT, " +
-                "FOREIGN KEY (owner_id) REFERENCES owner(owner_id));";
+                "bus_image BLOB);";
         db.execSQL(createBusinessTable);
-
         // Create review table
         String createReviewTable = "CREATE TABLE review (" +
                 "review_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -78,17 +75,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "star_rating DECIMAL(1,2) NOT NULL, " +
                 "review_text TEXT, " +
                 "review_date DATE, " +
-                "FOREIGN KEY (customer_id) REFERENCES customer(customer_id), " +
+                "FOREIGN KEY (user_id) REFERENCES user(user_id), " +
                 "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
         db.execSQL(createReviewTable);
-
-        // Create business image table
-        String createBusinessImageTable = "CREATE TABLE business_image (" +
-                "image_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "bus_id INTEGER NOT NULL, " +
-                "image_data BLOB NOT NULL, " +  // Store the image data as a BLOB
-                "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
-        db.execSQL(createBusinessImageTable);
 
         // Create review image table
         String createReviewImageTable = "CREATE TABLE review_image (" +
@@ -98,24 +87,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (review_id) REFERENCES review(review_id));";
         db.execSQL(createReviewImageTable);
 
-        // Create customerProfileImage table
-        String createCustomerProfileImageTable = "CREATE TABLE customer_profile_image (" +
-                "image_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "customer_id INTEGER NOT NULL, " +
-                "image_data BLOB NOT NULL, " +  // Store the image data as a BLOB
-                "FOREIGN KEY (customer_id) REFERENCES customer(customer_id));";
-        db.execSQL(createCustomerProfileImageTable);
         // Create response table
         String createResponseTable = "CREATE TABLE response (" +
                 "response_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "review_id INTEGER, " +
-                "customer_id INTEGER, " +
+                "user_id INTEGER, " +
                 "response_text TEXT, " +
                 "response_date DATE, " +
-                "owner_id INTEGER, " +
                 "FOREIGN KEY (review_id) REFERENCES review(review_id), " +
-                "FOREIGN KEY (customer_id) REFERENCES customer(customer_id), " +
-                "FOREIGN KEY (owner_id) REFERENCES owner(owner_id));";
+                "FOREIGN KEY (user_id) REFERENCES user(user_id));";
         db.execSQL(createResponseTable);
 
         // Insert initial data
@@ -153,7 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(insertBusinessData);
 
         String hashedPassword = Password.hash("password123").withScrypt().getResult();
-        String insertCustomerData = format("INSERT INTO customer (username, password, email, first_name, last_name) VALUES\n" +
+        String insertCustomerData = format("INSERT INTO user (username, password, email, first_name, last_name) VALUES\n" +
                 "('jdoe001', '%s', 'jdoe001@student.monash.edu', 'John', 'Doe'),\n" +
                 "('asmith002', '%s', 'asmith002@student.monash.edu', 'Alice', 'Smith'),\n" +
                 "('bwong003', '%s', 'bwong003@student.monash.edu', 'Ben', 'Wong'),\n" +
@@ -177,11 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 );
         db.execSQL(insertCustomerData);
 
-        String insertOwnerData = format("INSERT INTO owner (username, password, email, first_name, last_name, bus_id) VALUES\n" +
-                "('tstark011', '%s', 'tstark011@student.monash.edu', 'Tony', 'Stark', 2);\n",
-                hashedPassword
-                );
-        db.execSQL(insertOwnerData);
+
     }
 
 

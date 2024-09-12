@@ -43,6 +43,12 @@ public class CRUD_Image {
         db.insert(tableName, null, contentValues);
     }
 
+    public void insertImages(int linkingID, ArrayList<Bitmap> images, ImageType imageType) throws IOException {
+        for (Bitmap image : images) {
+            insertImage(linkingID, imageType, image);
+        }
+    }
+
     // Read methods
 
     /**

@@ -22,7 +22,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
-import com.example.myapplication.Entities.Customer;
 import com.example.myapplication.Entities.User;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
@@ -134,9 +133,9 @@ public class userRegistrationPage extends AppCompatActivity {
                     if(stringPassword.equals(stringConPassword)){
                         if(stringEmail.matches("^[a-z]{4}[0-9]{4}@student\\.monash\\.edu$")){
                             try {
-                                Customer user = new Customer(stringUserName, stringEmail, stringFirstName, stringLastName);
+                                User user = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
 //                                user.setId(crudUser.getCustomerID(user));
-                                boolean isInserted =  crudUser.createUser(user, stringPassword);
+                                boolean isInserted =  crudUser.createUser(user, stringPassword, null);
                                 if (isInserted) {
                                     Toast.makeText(this, "Registration Successful !!", Toast.LENGTH_LONG).show();
                                     switchLoginPage();
