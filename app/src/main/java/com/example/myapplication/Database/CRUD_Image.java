@@ -16,7 +16,7 @@ import java.util.Locale;
 public class CRUD_Image {
     DatabaseHelper dbHelper;
     Locale locale = Locale.getDefault();
-    CRUD_Image(DatabaseHelper dbHelper) {this.dbHelper = dbHelper;}
+    public CRUD_Image(DatabaseHelper dbHelper) {this.dbHelper = dbHelper;}
 
 
     // Create methods

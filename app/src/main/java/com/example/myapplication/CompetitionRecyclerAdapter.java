@@ -1,5 +1,9 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -41,7 +45,7 @@ public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<Competition
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CustomViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.tvRestaurantName.setText(String.valueOf(data.get(position).getName()));
         holder.tvGoldMedal.setText(String.valueOf(data.get(position).getGoldMedalNo()));
         holder.tvSilverMedal.setText(String.valueOf(data.get(position).getSilverMedalNo()));
@@ -66,6 +70,17 @@ public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<Competition
         Bitmap scaledAnnotationBitmap = Bitmap.createScaledBitmap(annotationBitmap, 100, 100, true);
         Drawable annotationDrawable= new BitmapDrawable(holder.itemView.getResources(), scaledAnnotationBitmap);
         holder.ivRankingAnnotation.setImageDrawable(annotationDrawable);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int businessId = data.get(position).getId();
+                Context context = holder.itemView.getContext();
+                Intent toDetail = new Intent(context, restaurantDetailPage.class);
+                toDetail.putExtra("busId", businessId);
+                context.startActivity(toDetail);
+            }
+        });
     }
 
     @Override
@@ -97,6 +112,6 @@ public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<Competition
             ivRankingAnnotation = itemView.findViewById(R.id.placeChangeAnnotation);
         }
 
-
     }
+
 }
