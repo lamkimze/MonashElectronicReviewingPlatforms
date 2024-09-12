@@ -32,7 +32,7 @@ public class favouriteRestaurantsPage extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         List<RestaurantItem> items = new ArrayList<RestaurantItem>();
-        items.add(new RestaurantItem("Guzman y Gomez", "4.5", R.drawable.guzmanygomez));
+        items.add(new RestaurantItem("Guzman y Gomez", "4.5 ⭐", R.drawable.guzmanygomez));
         items.add(new RestaurantItem("Noodle Plus", "3.0", R.drawable.gyg_banner1));
         items.add(new RestaurantItem("Guzman y Gomez", "4.5", R.drawable.guzmanygomez));
         items.add(new RestaurantItem("Noodle Plus", "3.0", R.drawable.gyg_banner1));
