@@ -16,6 +16,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class profilePage extends AppCompatActivity {
     ImageView imageView;
+//    Button favouritesButton;
+//    Button editProfileButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,27 @@ public class profilePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+//        favouritesButton = findViewById(R.id.button7);
+//
+//        favouritesButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent i = new Intent(profilePage.this,favouriteRestaurantsPage.class);
+//                startActivity(i);
+//                finish();
+//            }
+//        });
+//
+//        editProfileButton = findViewById(R.id.editPageBtn);
+//
+//        editProfileButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent i = new Intent(profilePage.this,profilePageEditor.class);
+//                startActivity(i);
+//                finish();
+//            }
+//        });
 
         imageView = (ImageView) findViewById(R.id.imageView2);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_icon);
