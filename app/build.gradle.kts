@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -64,6 +63,10 @@ dependencies {
     implementation("org.reactivestreams:reactive-streams:1.0.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
-
-
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.github.Inconnu08:android-ratingreviews:1.2.0") {
+        exclude(group = "org.jetbrains", module = "annotations")
+        exclude(group = "org.jetbrains", module = "annotations-java5")
+    }
 }
+

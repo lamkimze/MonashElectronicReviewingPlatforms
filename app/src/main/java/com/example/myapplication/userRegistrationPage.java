@@ -10,7 +10,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,6 +23,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.Entities.Customer;
@@ -32,14 +37,21 @@ public class userRegistrationPage extends AppCompatActivity {
     ImageView profilePic;
     ActivityResultLauncher<Intent> imagePickLauncher;
     Uri selectedImageUri;
+    CRUD_Business crudBusiness;
+    CRUD_Image crudImage;
+    Restaurant verifyRestaurant;
+    TextView restaurantNameShowing;
+    LinearLayout restaurantVerify;
+    Button verificationButton;
 
     TextInputEditText etFirstName, etLastName, etUserName, etPassword, etConPassword, etEmail;
+    TextInputEditText etBusId;
     String stringFirstName, stringLastName, stringUserName, stringPassword, stringConPassword, stringEmail;
     String stringPosition;
     String [] positions = {"Fast Food Attendant", "Busser", "Runner", "Cashier", "DishWasher", "Barista", "Prep Cook",
             "Expeditor", "Pastry Cook", "Server", "Bartender", "Line Cook", "Kitchen Manager", "Sous Chef", "Catering Manager",
     "General Manager", "Maintenance Person", "Executive Chef", "Main Chef"};
-    AutoCompleteTextView autoCompleteTextView;
+    AutoCompleteTextView autoCompleteTextView, etPosition;
     ArrayAdapter<String> adapterItems;
     DatabaseHelper dbHelper;
     CRUD_User crudUser;
@@ -67,17 +79,17 @@ public class userRegistrationPage extends AppCompatActivity {
         etPassword = findViewById(R.id.regPassword);
         etConPassword = findViewById(R.id.regConPassword);
         etEmail = findViewById(R.id.regEmail);
+        etBusId = findViewById(R.id.restaurantCode);
+        etPosition = findViewById(R.id.positions);
+        restaurantNameShowing = findViewById(R.id.restaurantNameShowing);
+        restaurantVerify = findViewById(R.id.restaurantVerification);
+        restaurantVerify.setVisibility(View.GONE);
+        verificationButton = findViewById(R.id.button6);
 
         autoCompleteTextView = findViewById(R.id.positions);
         adapterItems = new ArrayAdapter<String>(this, R.layout.positions, positions);
         autoCompleteTextView.setAdapter(adapterItems);
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l){
-                stringPosition = adapterView.getItemAtPosition(position).toString();
-            }
-        });
         // Register the launcher for image picking
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
@@ -90,8 +102,28 @@ public class userRegistrationPage extends AppCompatActivity {
             }
         });
 
-        // Set the content view
-//        setContentView(R.layout.activity_registration_page);
+        verificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    String busId = etBusId.getText().toString();
+                    verifyRestaurant = crudBusiness.getRestaurant(Integer.parseInt(busId));
+                    if(verifyRestaurant != null){
+                        restaurantVerify.setVisibility(View.VISIBLE);
+                        restaurantNameShowing.setText(verifyRestaurant.getName());
+                    }
+                }catch (Exception e){
+
+                }
+            }
+        });
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l){
+                stringPosition = adapterView.getItemAtPosition(position).toString();
+            }
+        });
 
 
         picButton = findViewById(R.id.userPicUpload);
@@ -108,12 +140,7 @@ public class userRegistrationPage extends AppCompatActivity {
                         return null;
                     });
         });
-
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
+        loadBusiness();
 
     }
 
@@ -135,8 +162,9 @@ public class userRegistrationPage extends AppCompatActivity {
                         if(stringEmail.matches("^[a-z]{4}[0-9]{4}@student\\.monash\\.edu$")){
                             try {
                                 Customer user = new Customer(stringUserName, stringEmail, stringFirstName, stringLastName);
-//                                user.setId(crudUser.getCustomerID(user));
+                                user.setPosition(stringPosition);
                                 boolean isInserted =  crudUser.createUser(user, stringPassword);
+                                user.setId(crudUser.getCustomerID(user));
                                 if (isInserted) {
                                     Toast.makeText(this, "Registration Successful !!", Toast.LENGTH_LONG).show();
                                     switchLoginPage();
@@ -177,9 +205,15 @@ public class userRegistrationPage extends AppCompatActivity {
         startActivity(loginIntent);
     }
 
-//    public void onClickUploadPicture(View view){
-//        if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
-//        }
-//    }
+    public void loadBusiness(){
+        try {
+            dbHelper = new DatabaseHelper(this);
+            crudBusiness = new CRUD_Business(dbHelper); // or whatever initialization is required
+            crudImage = new CRUD_Image(dbHelper);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

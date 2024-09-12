@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.LauncherActivity;
 import android.content.DialogInterface;
@@ -26,6 +27,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Review;
+import com.example.myapplication.Database.DatabaseHelper;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -35,7 +39,13 @@ public class userReviewCreationPage extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TextView textView;
+    TextView restaurantName;
     ImageButton pick;
+    int busId;
+    DatabaseHelper dbHelper;
+    CRUD_Review crudReview;
+    CRUD_Business crudBusiness;
+    Restaurant reviewed_restaurant;
 
     ArrayList<Uri> uri = new ArrayList<>();
     RecyclerAdapter adapter;
@@ -48,6 +58,7 @@ public class userReviewCreationPage extends AppCompatActivity {
     ArrayList<Integer> cuisineProdList = new ArrayList<>();
     String [] cuisineArray = {"American","Chinese","Indian","Italian","Japanese","Korean","Mexican","Thai","Vietnamese"};
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +71,18 @@ public class userReviewCreationPage extends AppCompatActivity {
             return insets;
         });
 
+        busId = getIntent().getExtras().getInt("busId");
+        loadData();
+        reviewed_restaurant = crudBusiness.getRestaurant(busId);
+
+        restaurantName = findViewById(R.id.rcRestaurantName);
+        restaurantName.setText(reviewed_restaurant.getName());
+
         textView = findViewById(R.id.totalPhotos);
         recyclerView =findViewById(R.id.recyclerView_Gallery_Images);
         pick = findViewById(R.id.imageButton);
+
+
 
         adapter = new RecyclerAdapter(uri);
         recyclerView.setLayoutManager(new GridLayoutManager(userReviewCreationPage.this,4));
@@ -166,6 +186,16 @@ public class userReviewCreationPage extends AppCompatActivity {
                 String imageURL = data.getData().getPath();
                 uri.add(Uri.parse(imageURL));
             }
+        }
+    }
+
+    private void loadData(){
+        try{
+            dbHelper = new DatabaseHelper(this);
+            crudBusiness = new CRUD_Business(dbHelper);
+            crudReview = new CRUD_Review(dbHelper);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

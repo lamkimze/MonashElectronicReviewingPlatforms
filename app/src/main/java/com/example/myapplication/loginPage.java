@@ -55,8 +55,8 @@ public class loginPage extends AppCompatActivity {
                     loginUser = new Customer(stringUserName);
                     if(crudUser.verifyLogin(loginUser, stringPassword)){
                         Toast.makeText(loginPage.this, "Login Successful !!", Toast.LENGTH_LONG).show();
-                        sharedPreference();
                         Intent loginIntent = new Intent(getApplicationContext(), dashboardPage.class);
+                        loginIntent.putExtra("userId", loginUser.getId());
                         startActivity(loginIntent);
                     }
                     else{
@@ -66,17 +66,6 @@ public class loginPage extends AppCompatActivity {
             }
         });
 
-    }
-
-
-    public void sharedPreference(){
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(loginUser);
-        editor.putString("MyObject", json);
-        editor.commit();
-        editor.apply();
     }
 
 

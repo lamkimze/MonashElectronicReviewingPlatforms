@@ -2,33 +2,19 @@
     <!-- Base application theme. -->
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/lavender</item>
         <item name="colorPrimaryVariant">@color/lavender</item>
-        <item name="colorOnPrimary">@color/white</item>
-<!--        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>-->
         <item name="windowNoTitle">true</item>
-            <!-- Override the default button background color -->
-        <item name="colorButtonNormal">@color/mor_green</item>
-
-
-        <!-- Ensure text appearances are properly defined -->
-        <!--        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>>
     </style>
 
 
-    <!-- Rounded ImageView style -->
+     Rounded ImageView style
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
-<!--    <style name="AppBottomSheetDialogTheme"-->
-<!--        parent="Widget.Design.BottomSheet.Modal">-->
-<!--        <item name="android:background">@drawable/dialogbg</item>-->
-<!--    </style>-->
 
 </resources>

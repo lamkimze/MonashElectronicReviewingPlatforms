@@ -9,6 +9,7 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private ArrayList<Integer> favourites = new ArrayList<>();
+    private String position;
 
 
     // Constructor for when the user tries to log in
@@ -72,5 +73,15 @@ public abstract class User {
         return favourites;
     }
 
+    public String getPosition() {
+        return position;
+    }
 
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void setFavourites(ArrayList<Integer> favourites) {
+        this.favourites = favourites;
+    }
 }
