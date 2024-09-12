@@ -176,7 +176,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 hashedPassword
                 );
         db.execSQL(insertCustomerData);
+
+        String insertOwnerData = format("INSERT INTO owner (username, password, email, first_name, last_name, bus_id) VALUES\n" +
+                "('tstark011', '%s', 'tstark011@student.monash.edu', 'Tony', 'Stark');\n",
+                hashedPassword
+                );
+        db.execSQL(insertOwnerData);
     }
+
+
 
     /**
      * This method is called when the database needs to be upgraded.
