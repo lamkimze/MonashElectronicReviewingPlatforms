@@ -278,9 +278,9 @@ public class businessRegistrationPage extends AppCompatActivity {
     }
 
     private void registeredBusiness() {
-        User newUser = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
-        boolean isInserted = crudUser.createUser(newUser, stringPassword, null);
-        newOwner.setId(crudUser.getOwnerID(newOwner));
+        User newOwner = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
+        boolean isInserted = crudUser.createUser(newOwner, stringPassword, null);
+        newOwner.setId(crudUser.getUserID(newOwner));
 //        crudUser.assignOwnerToBus(newOwner, );
         if(isInserted){
             if (exist) {
