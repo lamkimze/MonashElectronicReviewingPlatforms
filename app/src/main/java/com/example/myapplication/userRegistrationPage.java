@@ -163,7 +163,7 @@ public class userRegistrationPage extends AppCompatActivity {
                                 User user = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
                                 user.setPosition(stringPosition);
                                 boolean isInserted =  crudUser.createUser(user, stringPassword, null);
-                                user.setId(crudUser.getCustomerID(user));
+                                user.setId(crudUser.getUserID(user));
                                 if (isInserted) {
                                     Toast.makeText(this, "Registration Successful !!", Toast.LENGTH_LONG).show();
                                     switchLoginPage();
