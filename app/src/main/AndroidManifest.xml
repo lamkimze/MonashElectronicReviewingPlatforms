@@ -45,7 +45,7 @@
             android:exported="false" />
         <activity
             android:name=".restaurantListPage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".restaurantDetailPage"
             android:exported="false" />

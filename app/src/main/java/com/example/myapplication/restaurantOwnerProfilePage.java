@@ -19,11 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
-import com.example.myapplication.Entities.Owner;
 
 import java.util.ArrayList;
 import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.CRUD_Review;
+import com.example.myapplication.Entities.User;
 
 public class restaurantOwnerProfilePage extends AppCompatActivity {
 
@@ -38,7 +38,7 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
     CRUD_Business businessCrud = new CRUD_Business(new DatabaseHelper(this));
     CRUD_User userCrud = new CRUD_User(new DatabaseHelper(this));
     CRUD_Review reviewCrud = new CRUD_Review(new DatabaseHelper(this));
-    Owner activeUser;
+    User activeUser;
 
 
     @Override
@@ -57,11 +57,11 @@ public class restaurantOwnerProfilePage extends AppCompatActivity {
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
         Drawable userDrawable = new BitmapDrawable(getResources(), scaledBitmap);
         imageView.setImageDrawable(userDrawable);
-        activeUser = userCrud.getOwner(10011111);
+        activeUser = userCrud.getUser(10011111);
 
         textView = (TextView) findViewById(R.id.restaurantTitle);
-        restaurant = businessCrud.getRestaurant(userCrud.getOwnersBusID(activeUser));
-        reviewModels = reviewCrud.getReviews(userCrud.getOwnersBusID(activeUser));
+        restaurant = businessCrud.getRestaurant(userCrud.getUserID(activeUser));
+        reviewModels = reviewCrud.getReviews(userCrud.getUserID(activeUser));
         R_RecyclerViewAdapter adapter = new R_RecyclerViewAdapter(this,reviewModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

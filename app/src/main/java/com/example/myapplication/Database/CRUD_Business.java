@@ -50,7 +50,6 @@ public class CRUD_Business {
     }
 
     // Read operations
-
     /**
      * Gets all the business ids from the database
      * @return An ArrayList of all the business ids
@@ -80,7 +79,7 @@ public class CRUD_Business {
         Cursor cursor = db.rawQuery(selectRestaurant, null);
         cursor.moveToFirst();
         Restaurant restaurant = new Restaurant(null, null, null);
-        restaurant.setId(cursor.getInt(cursor.getColumnIndex("bus_id")));
+        restaurant.setId(cursor.getInt(cursor.getColumnIndex("bus_id"))) ;
         restaurant.setName(cursor.getString(cursor.getColumnIndex("bus_name")));
         restaurant.setAddress(cursor.getString(cursor.getColumnIndex("bus_addr")));
         restaurant.setPhone(cursor.getString(cursor.getColumnIndex("bus_ph_nb")));

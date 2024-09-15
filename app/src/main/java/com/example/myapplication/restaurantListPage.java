@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -35,6 +36,8 @@ public class restaurantListPage extends AppCompatActivity {
             return insets;
         });
 
+    // Retrieve user_id from intent
+        int user_id = getIntent().getIntExtra("user_id", -1);
 
     // Initialize ListView and set the adapter
         restaurantListView = findViewById(R.id.restaurantListView);
@@ -55,5 +58,14 @@ public class restaurantListPage extends AppCompatActivity {
 
         // Notify the adapter that the data has changed
         restaurantListAdapter.notifyDataSetChanged();
+
+        // Set OnItemClickListener for the ListView
+        restaurantListView.setOnItemClickListener((parent, view, position, id) -> {
+            Restaurant restaurant = restaurants.get(position);
+            int businessID = restaurant.getId();
+            Intent restuarantIntent = new Intent(restaurantListPage.this, restaurantDetailPage.class);
+            restuarantIntent.putExtra("bus_id", businessID);
+            startActivity(restuarantIntent);
+        });
     }
 }

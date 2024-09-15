@@ -1,15 +1,20 @@
 package com.example.myapplication.Entities;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 
-public abstract class User {
+public class User {
     private int id;
     private String username;
     private String email;
     private String firstName;
     private String lastName;
+    private int positionID;
     private ArrayList<Integer> favourites = new ArrayList<>();
     private String position;
+    private Bitmap profilePicture;
+
 
 
     // Constructor for when the user tries to log in
@@ -65,10 +70,6 @@ public abstract class User {
         this.lastName = lastName;
     }
 
-    abstract public String getTableName();
-
-    abstract public String getPkName();
-
     public ArrayList<Integer> getFavourites() {
         return favourites;
     }
@@ -83,5 +84,20 @@ public abstract class User {
 
     public void setFavourites(ArrayList<Integer> favourites) {
         this.favourites = favourites;
+    }
+    public int getPositionID() {
+        return positionID;
+    }
+
+    public void setPositionID(int positionID) {
+        this.positionID = positionID;
+    }
+
+    public Bitmap getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(Bitmap profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

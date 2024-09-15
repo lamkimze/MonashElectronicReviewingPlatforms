@@ -17,14 +17,13 @@ public class ReviewModel {
     String pImage;
 
     String reviewTitle;
-    int reviewRating;
+    float reviewRating;
     ArrayList<Bitmap> reviewImages;
     String reviewText;
     int reviewerId;
     int businessId;
 
-
-    public ReviewModel(int reviewRating, String reviewTitle, ArrayList<Bitmap> reviewImages, String reviewText, int reviewerId, int businessId) {
+    public ReviewModel(float reviewRating, String reviewTitle, ArrayList<Bitmap> reviewImages, String reviewText, int reviewerId, int businessId) {
         this.reviewRating = reviewRating;
         this.reviewTitle = reviewTitle;
         this.reviewImages = reviewImages;
@@ -37,7 +36,7 @@ public class ReviewModel {
         return reviewTitle;
     }
 
-    public int getReviewRating() {
+    public float getReviewRating() {
         return reviewRating;
     }
 

@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
-import com.example.myapplication.Entities.Owner;
+import com.example.myapplication.Entities.User;
 import com.example.myapplication.databinding.ActivityBusinessRegistrationPageBinding;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
@@ -278,8 +278,8 @@ public class businessRegistrationPage extends AppCompatActivity {
     }
 
     private void registeredBusiness() {
-        Owner newOwner = new Owner(stringUserName, stringEmail, stringFirstName, stringLastName);
-        boolean isInserted = crudUser.createUser(newOwner, stringPassword);
+        User newUser = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
+        boolean isInserted = crudUser.createUser(newUser, stringPassword, null);
         newOwner.setId(crudUser.getOwnerID(newOwner));
 //        crudUser.assignOwnerToBus(newOwner, );
         if(isInserted){

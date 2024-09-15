@@ -34,11 +34,30 @@ public class CRUD_Review {
         values.put("text", review.getReviewText());
 
         db.insert("review", null, values);
+
+        // Get the review ID
+        String selectReview = format(locale,
+                "SELECT review_id FROM review WHERE bus_id = %d AND customer_id = %d;",
+                review.getBusinessId(), review.getReviewerId()
+        );
+        Cursor cursor = db.rawQuery(selectReview, null);
+        cursor.moveToFirst();
+        int reviewIndex = cursor.getColumnIndex("review_id");
+        if (reviewIndex != -1) {
+            int reviewId = cursor.getInt(reviewIndex);
+            cursor.close();
+            CRUD_Image crudImage = new CRUD_Image(dbHelper);
+            try {
+                crudImage.addImagesToReview(reviewId, review.getReviewImages());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
-
-
     // Read Methods
+
     public ReviewModel getReview(int reviewId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         CRUD_Image crudImage = new CRUD_Image(dbHelper);
@@ -60,7 +79,7 @@ public class CRUD_Review {
         } else {
             ReviewModel reviewModel =  new ReviewModel(cursor.getInt(ratingIndex),
                     cursor.getString(titleIndex),
-                    crudImage.getImages(reviewId, ImageType.REVIEW),
+                    crudImage.getReviewImages(reviewId),
                     cursor.getString(textIndex),
                     cursor.getInt(customerIndex),
                     cursor.getInt(businessIndex));

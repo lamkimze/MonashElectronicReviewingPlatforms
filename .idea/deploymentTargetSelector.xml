@@ -16,6 +16,9 @@
       <SelectionState runConfigName="reviewCompetitionRecordPage">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="Restauraunt List Page">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

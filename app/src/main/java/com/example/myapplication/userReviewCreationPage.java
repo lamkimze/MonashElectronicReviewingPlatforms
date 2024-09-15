@@ -7,14 +7,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.Manifest;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -27,11 +31,17 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Database.CRUD_Review;
+import com.example.myapplication.Database.DatabaseHelper;
+import com.example.myapplication.Database.DbBitmapUtility;
 import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.CRUD_Review;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.google.android.material.card.MaterialCardView;
 
+import org.w3c.dom.Text;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,6 +122,19 @@ public class userReviewCreationPage extends AppCompatActivity {
         selectCard.setOnClickListener(v -> {
             showCuisineProdDialog();
         });
+
+
+
+
+        // Submit button
+        Button submitButton = findViewById(R.id.button3);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitReview();
+            }
+        });
+
 
 
     }
@@ -197,5 +220,45 @@ public class userReviewCreationPage extends AppCompatActivity {
         }catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void submitReview() {
+        // Get the review information
+        int businessId = getIntent().getIntExtra("businessId", -1);
+        int customerId = getIntent().getIntExtra("customerId", -1);
+        if (businessId == -1 || customerId == -1) {
+            Toast.makeText(this, "Error: User ID not found", Toast.LENGTH_SHORT).show();
+        }
+        float rating = ((RatingBar) findViewById(R.id.ratingBar)).getRating();
+        String title =  ((TextView) findViewById(R.id.reviewTitle)).getText().toString();
+        String text = ((TextView) findViewById(R.id.reviewDetail)).getText().toString();
+
+        // turn image uris into bitmap array
+        ArrayList<Bitmap> images = new ArrayList<>();
+        for (Uri imageUri : uri) {
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                images.add(bitmap);
+            } catch (IOException e) {
+                Toast.makeText(this, "Error: Image could not be loaded", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        // create the review
+        ReviewModel review = new ReviewModel(rating, title, images, text, customerId, businessId);
+        CRUD_Review crudReview = new CRUD_Review(new DatabaseHelper(this));
+
+        // add the review to the database
+        try {
+            crudReview.createReview(review);
+            Toast.makeText(this, "Review created successfully", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Error: Review could not be created", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
     }
 }
