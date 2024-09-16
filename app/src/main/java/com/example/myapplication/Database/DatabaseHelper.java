@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME,  null, DATABASE_VERSION);
@@ -35,9 +35,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create user table
         String createUserTable = "CREATE TABLE user (" +
                 "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "username TEXT NOT NULL, " +
+                "username TEXT UNIQUE NOT NULL, " +
                 "password TEXT NOT NULL, " +
-                "email TEXT NOT NULL, " +
+                "email TEXT UNIQUE NOT NULL, " +
                 "first_name TEXT NOT NULL, " +
                 "last_name TEXT NOT NULL," +
                 "position_id INTEGER," +
@@ -73,8 +73,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "user_id INTEGER NOT NULL, " +
                 "bus_id INTEGER NOT NULL, " +
                 "star_rating DECIMAL(1,2) NOT NULL, " +
+                "review_title TEXT, " +
                 "review_text TEXT, " +
-                "review_date DATE, " +
+                "review_date DATE DEFAULT (datetime('now','localtime')), " +
                 "FOREIGN KEY (user_id) REFERENCES user(user_id), " +
                 "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
         db.execSQL(createReviewTable);
