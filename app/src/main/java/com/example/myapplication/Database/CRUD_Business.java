@@ -36,17 +36,30 @@ public class CRUD_Business {
      * @param bus_hours The hours of the business
      * @param bus_cuisine_type The cuisine type of the business
      */
-    public void createBusiness(String bus_name, String bus_addr, String bus_ph_nb, String bus_email, String website_url, String bus_hours, String bus_cuisine_type) {
+    public int createBusiness(String bus_name, String bus_addr, String bus_ph_nb, String bus_email, String website_url, String bus_hours, String bus_cuisine_type) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String insertBusinessData = format("INSERT INTO business (bus_name, bus_addr, bus_ph_nb, bus_email, website_url, bus_hours, bus_cuisine_type) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s');",
-                bus_name,
-                bus_addr,
-                bus_ph_nb,
-                bus_email,
-                website_url,
-                bus_hours,
-                bus_cuisine_type);
-        db.execSQL(insertBusinessData);
+        ContentValues values = new ContentValues();
+        values.put("bus_name", bus_name);
+        values.put("bus_addr", bus_addr);
+        values.put("bus_ph_nb", bus_ph_nb);
+        values.put("bus_email", bus_email);
+        values.put("website_url", website_url);
+        values.put("bus_hours", bus_hours);
+        values.put("bus_cuisine_type", bus_cuisine_type);
+        db.insert("business", null, values);
+        // return the id of the business as it is auto incremented so take the largest id in the table
+        String idSelectQuery = "SELECT MAX(bus_id) FROM business;";
+        Cursor cursor = db.rawQuery(idSelectQuery, null);
+        cursor.moveToFirst();
+        int index = cursor.getColumnIndex("MAX(bus_id)");
+        if (index != -1) {
+            int bus_id = cursor.getInt(index);
+            cursor.close();
+            return bus_id;
+        } else {
+            cursor.close();
+            return -1;
+        }
     }
 
     // Read operations
@@ -164,106 +177,131 @@ public class CRUD_Business {
         return mostReviewedRestaurants;
     }
     // Update operations
+
     /**
      * Updates the name of a business
      * @param bus_id The id of the business
      * @param bus_name The new name of the business
+     * @return bus_id The id of the business
      */
-    public void updateBusinessName(int bus_id, String bus_name) {
+    public int updateBusinessName(int bus_id, String bus_name) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String updateBusinessName = format(locale,"UPDATE business SET bus_name = '%s' WHERE bus_id = %d;",
-                bus_name,
-                bus_id);
-        db.execSQL(updateBusinessName);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("bus_name", bus_name);
+        String whereClause = "bus_id = ?";
+        String[] whereArgs = {String.valueOf(bus_id)};
+        db.update("business", contentValues, whereClause, whereArgs);
+        return bus_id;
     }
+
 
     /**
      * Updates the address of a business
      * @param bus_id The id of the business
      * @param bus_addr The new address of the business
+     * @return bus_id The id of the business
      */
-    public void updateBusinessAddress(int bus_id, String bus_addr) {
+    public int updateBusinessAddress(int bus_id, String bus_addr) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String updateBusinessAddress = format(locale,"UPDATE business SET bus_addr = '%s' WHERE bus_id = %d;",
-                bus_addr,
-                bus_id);
-        db.execSQL(updateBusinessAddress);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("bus_addr", bus_addr);
+        String whereClause = "bus_id = ?";
+        String[] whereArgs = {String.valueOf(bus_id)};
+        db.update("business", contentValues, whereClause, whereArgs);
+        return bus_id;
     }
+
     /**
      * Updates the phone number of a business
      * @param bus_id The id of the business
      * @param bus_ph_nb The new phone number of the business
+     * @return bus_id The id of the business
      */
-    public void updateBusinessPhone(int bus_id, String bus_ph_nb) {
+    public int updateBusinessPhone(int bus_id, String bus_ph_nb) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String updateBusinessPhone = format(locale,"UPDATE business SET bus_ph_nb = '%s' WHERE bus_id = %d;",
-                bus_ph_nb,
-                bus_id);
-        db.execSQL(updateBusinessPhone);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("bus_ph_nb", bus_ph_nb);
+        String whereClause = "bus_id = ?";
+        String[] whereArgs = {String.valueOf(bus_id)};
+        db.update("business", contentValues, whereClause, whereArgs);
+        return bus_id;
     }
 
     /**
      * Updates the email of a business
      * @param bus_id The id of the business
      * @param bus_email The new email of the business
+     * @return bus_id The id of the business
      */
-    public void updateBusinessEmail(int bus_id, String bus_email) {
+    public int  updateBusinessEmail(int bus_id, String bus_email) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String updateBusinessEmail = format(locale, "UPDATE business SET bus_email = '%s' WHERE bus_id = %d;",
-                bus_email,
-                bus_id);
-        db.execSQL(updateBusinessEmail);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("bus_email", bus_email);
+        String whereClause = "bus_id = ?";
+        String[] whereArgs = {String.valueOf(bus_id)};
+        db.update("business", contentValues, whereClause, whereArgs);
+        return bus_id;
     }
 
     /**
      * Updates the website of a business
      * @param bus_id The id of the business
      * @param website_url The new website of the business
+     * @return bus_id The id of the business
      */
-    public void updateBusinessWebsite(int bus_id, String website_url) {
+    public int updateBusinessWebsite(int bus_id, String website_url) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String updateBusinessWebsite = format(locale,"UPDATE business SET website_url = '%s' WHERE bus_id = %d;",
-                website_url,
-                bus_id);
-        db.execSQL(updateBusinessWebsite);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("website_url", website_url);
+        String whereClause = "bus_id = ?";
+        String[] whereArgs = {String.valueOf(bus_id)};
+        db.update("business", contentValues, whereClause, whereArgs);
+        return bus_id;
     }
-    /** Updates the hours of a business
+
+    /**
+     * Updates the hours of a business
      * @param bus_id The id of the business
      * @param bus_hours The new hours of the business
+     * @return bus_id The id of the business
      */
-    public void updateBusinessHours(int bus_id, String bus_hours) {
+    public int  updateBusinessHours(int bus_id, String bus_hours) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String updateBusinessHours = format(locale,"UPDATE business SET bus_hours = '%s' WHERE bus_id = %d;",
-                bus_hours,
-                bus_id);
-        db.execSQL(updateBusinessHours);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("bus_hours", bus_hours);
+        String whereClause = "bus_id = ?";
+        String[] whereArgs = {String.valueOf(bus_id)};
+        db.update("business", contentValues, whereClause, whereArgs);
+        return bus_id;
     }
+
     /**
      * Updates the cuisine type of a business
      * @param bus_id The id of the business
      * @param bus_cuisine_type The new cuisine type of the business
+     * @return bus_id The id of the business
      */
-    public void updateBusinessCuisine(int bus_id, String bus_cuisine_type) {
+    public int updateBusinessCuisine(int bus_id, String bus_cuisine_type) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String updateBusinessCuisineType = format(locale,"UPDATE business SET bus_cuisine_type = '%s' WHERE bus_id = %d;",
-                bus_cuisine_type,
-                bus_id);
-        db.execSQL(updateBusinessCuisineType);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("bus_cuisine_type", bus_cuisine_type);
+        String whereClause = "bus_id = ?";
+        String[] whereArgs = {String.valueOf(bus_id)};
+        db.update("business", contentValues, whereClause, whereArgs);
+        return bus_id;
     }
+
 
     /**
-     * Assigns an owner to a business
-     * @param bus_id The id of the business
-     * @param owner_id The id of the owner
+     * Updates the details of a restaurant using the business's name
+     * @param bus_name The name of the business
+     * @param bus_addr The address of the business
+     * @param bus_ph_nb The phone number of the business
+     * @param bus_email The email of the business
+     * @param website_url The website of the business
+     * @param bus_hours The hours of the business
+     * @param bus_cuisine_type The cuisine type of the business
      */
-    public void assignOwnerToBusiness(int bus_id, int owner_id) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String updateBusinessOwner = format(locale,"UPDATE business SET owner_id = %d WHERE bus_id = %d;",
-                owner_id,
-                bus_id);
-        db.execSQL(updateBusinessOwner);
-    }
-
     public void updateRestaurantDetail(String bus_name, String bus_addr, String bus_ph_nb, String bus_email, String website_url, String bus_hours, String bus_cuisine_type) {
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 
