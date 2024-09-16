@@ -3,8 +3,12 @@ package com.example.myapplication;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,12 +24,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.Entities.Customer;
 import com.example.myapplication.Entities.User;
+import com.example.myapplication.Enumerables.ImageType;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.io.IOException;
 
 public class userRegistrationPage extends AppCompatActivity {
     ImageView picButton;
@@ -43,6 +51,7 @@ public class userRegistrationPage extends AppCompatActivity {
     ArrayAdapter<String> adapterItems;
     DatabaseHelper dbHelper;
     CRUD_User crudUser;
+    CRUD_Image crudImage;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -54,7 +63,9 @@ public class userRegistrationPage extends AppCompatActivity {
         try {
             dbHelper = new DatabaseHelper(this);
             crudUser = new CRUD_User(dbHelper);
+            crudImage = new CRUD_Image(dbHelper);
             Toast.makeText(this, "Database initialized successfully!", Toast.LENGTH_LONG).show();
+
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Database initialization failed!", Toast.LENGTH_LONG).show();
@@ -137,6 +148,12 @@ public class userRegistrationPage extends AppCompatActivity {
                                 Customer user = new Customer(stringUserName, stringEmail, stringFirstName, stringLastName);
 //                                user.setId(crudUser.getCustomerID(user));
                                 boolean isInserted =  crudUser.createUser(user, stringPassword);
+                                try {
+                                    Bitmap bitmap = getBitmapFromUri(selectedImageUri);
+                                    crudImage.insertImage(crudUser.getCustomerID(user), ImageType.BUSINESS, bitmap);  // Assuming linkingID = 1
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                                 if (isInserted) {
                                     Toast.makeText(this, "Registration Successful !!", Toast.LENGTH_LONG).show();
                                     switchLoginPage();
@@ -168,6 +185,8 @@ public class userRegistrationPage extends AppCompatActivity {
         else{
             Toast.makeText(this, "Please insert your first name and last name!!", Toast.LENGTH_LONG).show();
         }
+
+
     }
 
 
@@ -175,6 +194,17 @@ public class userRegistrationPage extends AppCompatActivity {
     public void switchLoginPage(){
         Intent loginIntent = new Intent(this, loginPage.class);
         startActivity(loginIntent);
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            // For newer Android versions (API level 28 and above)
+            ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), uri);
+            return ImageDecoder.decodeBitmap(source);
+        } else {
+            // For older Android versions
+            return MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+        }
     }
 
 //    public void onClickUploadPicture(View view){

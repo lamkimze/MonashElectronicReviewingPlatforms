@@ -128,7 +128,7 @@ public class businessRegistrationPage extends AppCompatActivity {
                     businessPic.setImageURI(selectedImageUri);
                     try {
                         Bitmap bitmap = getBitmapFromUri(selectedImageUri);
-                        crudImage.insertImage(businessId, ImageType.BUSINESS, bitmap);  // Assuming linkingID = 1
+                        crudImage.insertImage(10, ImageType.BUSINESS, bitmap);  // Assuming linkingID = 1
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
