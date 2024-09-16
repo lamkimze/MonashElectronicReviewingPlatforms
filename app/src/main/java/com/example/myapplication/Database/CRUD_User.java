@@ -64,30 +64,43 @@ public class CRUD_User {
     public User loginUser(User user, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         // verify the login credentials
-        if (verifyLogin(user, password)) {
-            // use the users setter methods to set the user's information
-            String username = user.getUsername();
-            String selectUser = format("SELECT * FROM user WHERE username = '%s';", username);
-            Cursor cursor = db.rawQuery(selectUser, null);
-            cursor.moveToFirst();
-
-            // get the indices of the columns
-            int[] indices = {cursor.getColumnIndex("user_id"),
-                    cursor.getColumnIndex("email"),
-                    cursor.getColumnIndex("first_name"),
-                    cursor.getColumnIndex("last_name")};
-
-            // if all the indices are found, set the user's information
-            if (Arrays.stream(indices).noneMatch(i -> i == -1)) {
-                user.setId(cursor.getInt(indices[0]));
-                user.setEmail(cursor.getString(indices[1]));
-                user.setFirstName(cursor.getString(indices[2]));
-                user.setLastName(cursor.getString(indices[3]));
-                cursor.close();
-                return user;
-            }
+        if (!verifyLogin(user, password)) {
+            return null;
         }
-        return null;
+        // use the users setter methods to set the user's information
+        String username = user.getUsername();
+        String selectUser = format("SELECT * FROM user WHERE username = '%s';", username);
+        Cursor cursor = db.rawQuery(selectUser, null);
+        cursor.moveToFirst();
+
+        // get the indices of the columns
+        int userIDIndex = cursor.getColumnIndex("id");
+        int emailIndex = cursor.getColumnIndex("email");
+        int firstNameIndex = cursor.getColumnIndex("first_name");
+        int lastNameIndex = cursor.getColumnIndex("last_name");
+        int positionIDIndex = cursor.getColumnIndex("position_id");
+        int profilePicIndex = cursor.getColumnIndex("profile_picture");
+        int[] indices = {userIDIndex, emailIndex, firstNameIndex, lastNameIndex, positionIDIndex, profilePicIndex};
+        // check if any of the indices are -1 (user does not exist)
+        if (Arrays.stream(indices).anyMatch(i -> i == -1)) {
+            cursor.close();
+            return null;
+        }
+        // get the user's information
+        int userID = cursor.getInt(userIDIndex);
+        String email = cursor.getString(emailIndex);
+        String firstName = cursor.getString(firstNameIndex);
+        String lastName = cursor.getString(lastNameIndex);
+        int positionID = cursor.getInt(positionIDIndex);
+        Bitmap profilePic = DbBitmapUtility.getBlob(cursor.getBlob(profilePicIndex));
+        // create a new user object with the user's information
+        User loggedInUser = new User(username, email, firstName, lastName);
+        // set the user's ID, position ID, and profile picture
+        loggedInUser.setId(userID);
+        loggedInUser.setPositionID(positionID);
+        loggedInUser.setProfilePicture(profilePic);
+        cursor.close();
+        return loggedInUser;
     }
 
 
@@ -128,6 +141,39 @@ public class CRUD_User {
         }
         db.insert("user", null, contentValues);
         return true;
+    }
+
+    /**
+     * Method to create a user's position
+     * @param userID the ID of the user to create the position for
+     * @param busID the ID of the business the user is at
+     * @param position the position of the user at the business
+     * @return the ID of the user's position
+     */
+    public int createUserPosition(int userID, int busID, String position){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("user_id", userID);
+        contentValues.put("bus_id", busID);
+        contentValues.put("position", position);
+        db.insert("user_position", null, contentValues);
+
+        // return this user's position ID
+        String selectPosition = format(locale,"SELECT * FROM user_position WHERE user_id = %d AND bus_id = %d;", userID, busID);
+        Cursor cursor = db.rawQuery(selectPosition, null);
+        cursor.moveToFirst();
+        int positionIDIndex = cursor.getColumnIndex("position_id");
+        if (positionIDIndex == -1) {
+            cursor.close();
+            return -1;
+        }
+        int positionID = cursor.getInt(positionIDIndex);
+        cursor.close();
+
+        // set the user's position ID
+        assignPositionID(getUser(userID), positionID);
+
+        return positionID;
     }
 
 
