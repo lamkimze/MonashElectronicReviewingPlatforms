@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME,  null, DATABASE_VERSION);
@@ -171,14 +171,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop tables and recreate them
-        db.execSQL("DROP TABLE IF EXISTS business_image");
-        db.execSQL("DROP TABLE IF EXISTS review_image");
-        db.execSQL("DROP TABLE IF EXISTS response");
-        db.execSQL("DROP TABLE IF EXISTS review");
-        db.execSQL("DROP TABLE IF EXISTS business");
-        db.execSQL("DROP TABLE IF EXISTS owner");
-        db.execSQL("DROP TABLE IF EXISTS customer");
-        db.execSQL("DROP TABLE IF EXISTS customer_profile_image");
+        db.execSQL("DROP TABLE IF EXISTS user;");
+        db.execSQL("DROP TABLE IF EXISTS user_position;");
+        db.execSQL("DROP TABLE IF EXISTS business;");
+        db.execSQL("DROP TABLE IF EXISTS review;");
+        db.execSQL("DROP TABLE IF EXISTS review_image;");
+        db.execSQL("DROP TABLE IF EXISTS response;");
         onCreate(db);
     }
 
