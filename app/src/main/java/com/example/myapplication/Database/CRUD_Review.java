@@ -25,19 +25,21 @@ public class CRUD_Review {
      * @param review the review to be created
      */
     public void createReview(ReviewModel review) {
+        // insert the review into the database
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("bus_id", review.getBusinessId());
-        values.put("customer_id", review.getReviewerId());
-        values.put("rating", review.getReviewRating());
-        values.put("title", review.getReviewTitle());
-        values.put("text", review.getReviewText());
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("user_id", review.getReviewerId());
+        contentValues.put("bus_id", review.getBusinessId());
+        contentValues.put("star_rating", review.getReviewRating());
+        contentValues.put("review_title", review.getReviewTitle());
+        contentValues.put("review_text", review.getReviewText());
+        db.insert("review", null, contentValues);
 
-        db.insert("review", null, values);
+        // Insert the images into the database
 
         // Get the review ID
         String selectReview = format(locale,
-                "SELECT review_id FROM review WHERE bus_id = %d AND customer_id = %d;",
+                "SELECT review_id FROM review WHERE bus_id = %d AND user_id = %d;",
                 review.getBusinessId(), review.getReviewerId()
         );
         Cursor cursor = db.rawQuery(selectReview, null);
@@ -66,10 +68,10 @@ public class CRUD_Review {
         cursor.moveToFirst();
 
         int ratingIndex, titleIndex, textIndex, customerIndex, businessIndex;
-        ratingIndex = cursor.getColumnIndex("rating");
-        titleIndex = cursor.getColumnIndex("title");
-        textIndex = cursor.getColumnIndex("text");
-        customerIndex = cursor.getColumnIndex("customer_id");
+        ratingIndex = cursor.getColumnIndex("star_rating");
+        titleIndex = cursor.getColumnIndex("rewiew_title");
+        textIndex = cursor.getColumnIndex("review_text");
+        customerIndex = cursor.getColumnIndex("user_id");
         businessIndex = cursor.getColumnIndex("bus_id");
 
         // If the indexes are not found, return null
@@ -77,7 +79,8 @@ public class CRUD_Review {
             cursor.close();
             return null;
         } else {
-            ReviewModel reviewModel =  new ReviewModel(cursor.getInt(ratingIndex),
+            ReviewModel reviewModel =  new ReviewModel(
+                    cursor.getFloat(ratingIndex),
                     cursor.getString(titleIndex),
                     crudImage.getReviewImages(reviewId),
                     cursor.getString(textIndex),

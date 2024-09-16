@@ -3,17 +3,15 @@ package com.example.myapplication.Database;
 
 import static java.lang.String.format;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 
-import androidx.annotation.Nullable;
-
 import com.example.myapplication.Entities.User;
 import com.password4j.Password;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -74,7 +72,7 @@ public class CRUD_User {
         cursor.moveToFirst();
 
         // get the indices of the columns
-        int userIDIndex = cursor.getColumnIndex("id");
+        int userIDIndex = cursor.getColumnIndex("user_id");
         int emailIndex = cursor.getColumnIndex("email");
         int firstNameIndex = cursor.getColumnIndex("first_name");
         int lastNameIndex = cursor.getColumnIndex("last_name");
@@ -107,7 +105,13 @@ public class CRUD_User {
 
     // Create methods
 
-    public Boolean createUser(User user, String password, @Nullable Bitmap profilePic) {
+    /**
+     * Method to create a user in the database without a profile picture
+     * @param user the user to be created
+     * @param password the UN-HASHED password of the user
+     * @return true if the user was created, false otherwise
+     */
+    public Boolean createUser(User user, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String username = user.getUsername();
         String email = user.getEmail();
@@ -130,18 +134,39 @@ public class CRUD_User {
         contentValues.put("first_name", firstName);
         contentValues.put("last_name", lastName);
         contentValues.put("password", hashedPass);
-        if (profilePic != null) {
-            try {
-                // convert the bitmap to a byte array
-                byte[] profileImageBytes = DbBitmapUtility.getBytes(profilePic);
-                contentValues.put("profile_picture", profileImageBytes);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         db.insert("user", null, contentValues);
         return true;
     }
+
+    /**
+     * Method to create a user in the database with a profile picture
+     * @param user the user to be created
+     * @param password the UN-HASHED password of the user
+     * @param profileImage the profile picture of the user
+     * @return true if the user was created, false otherwise
+     * @throws IOException if the profile picture could not be inserted
+     */
+    public Boolean createUser(User user, String password, Bitmap profileImage) throws IOException {
+        // insert the user into the database
+        createUser(user, password);
+
+        // insert the profile picture into the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int userID = getUserID(user);
+        ContentValues contentValues = new ContentValues();
+        try {
+            contentValues.put("profile_picture", DbBitmapUtility.getBytes(profileImage));
+            db.update("user", contentValues,
+                    "user_id = ?",
+                    new String[]{String.valueOf(userID)}
+            );
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
 
     /**
      * Method to create a user's position
@@ -190,7 +215,7 @@ public class CRUD_User {
         String selectUser = format(locale,"SELECT * FROM user WHERE username = '%s';", username);
         Cursor cursor = db.rawQuery(selectUser, null);
         cursor.moveToFirst();
-        int index = cursor.getColumnIndex("id");
+        int index = cursor.getColumnIndex("user_id");
         if (index == -1) {
             cursor.close();
             return -1;
@@ -207,7 +232,7 @@ public class CRUD_User {
      */
     public User getUser(int userID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectUser = format(locale,"SELECT * FROM user WHERE id = %d;", userID);
+        String selectUser = format(locale,"SELECT * FROM user WHERE user_id = %d;", userID);
         Cursor cursor = db.rawQuery(selectUser, null);
         cursor.moveToFirst();
         int usernameIndex = cursor.getColumnIndex("username");
@@ -215,7 +240,7 @@ public class CRUD_User {
         int firstNameIndex = cursor.getColumnIndex("first_name");
         int lastNameIndex = cursor.getColumnIndex("last_name");
         int positionIDIndex = cursor.getColumnIndex("position_id");
-        int profilePicIndex = cursor.getColumnIndex("profile_picture");
+        int profilePicIndex = cursor.getColumnIndex("profile_image");
         if (usernameIndex == -1 || emailIndex == -1 || firstNameIndex == -1 || lastNameIndex == -1 || positionIDIndex == -1) {
             cursor.close();
             return null;
@@ -247,7 +272,10 @@ public class CRUD_User {
         int userID = getUserID(user);
         ContentValues contentValues = new ContentValues();
         contentValues.put("position_id", positionID);
-        db.update("user", contentValues, "id = ?", new String[]{String.valueOf(userID)});
+        db.update("user", contentValues,
+                "user_id = ?",
+                new String[]{String.valueOf(userID)}
+        );
     }
 
 }
