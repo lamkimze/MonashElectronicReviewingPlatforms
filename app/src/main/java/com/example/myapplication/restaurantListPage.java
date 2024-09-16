@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,8 +55,6 @@ public class restaurantListPage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
         // Notify the adapter that the data has changed
         restaurantListAdapter.notifyDataSetChanged();
 
@@ -64,7 +63,7 @@ public class restaurantListPage extends AppCompatActivity {
             Restaurant restaurant = restaurants.get(position);
             int businessID = restaurant.getId();
             Intent restuarantIntent = new Intent(restaurantListPage.this, restaurantDetailPage.class);
-            restuarantIntent.putExtra("bus_id", businessID);
+            restuarantIntent.putExtra("busId", businessID);
             startActivity(restuarantIntent);
         });
     }
