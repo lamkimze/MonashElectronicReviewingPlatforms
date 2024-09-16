@@ -12,7 +12,7 @@ public class Restaurant extends RestaurantReviewCompetition {
     private String email;
     private String website;
     private String hours;
-    private Double stars;
+    private float stars;
     private final Integer imageResource;
     private final String pictureUrl;
     private final String logoUrl;
@@ -24,7 +24,7 @@ public class Restaurant extends RestaurantReviewCompetition {
         this.pictureUrl = pictureUrl;
         this.logoUrl = logoUrl;
         this.imageResource = R.drawable.default_icon;
-        this.stars = 0.0;
+        this.stars = 0.0F;
     }
 
 
@@ -90,11 +90,11 @@ public class Restaurant extends RestaurantReviewCompetition {
         this.hours = hours;
     }
 
-    public Double getStars() {
+    public float getStars() {
         return stars;
     }
 
-    public void setStars(Double stars) {
+    public void setStars(float stars) {
         this.stars = stars;
     }
 

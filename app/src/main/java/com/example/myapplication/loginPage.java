@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
-import com.example.myapplication.Entities.Customer;
 import com.example.myapplication.Entities.User;
 import com.example.myapplication.databinding.ActivityLoginPageBinding;
 import com.google.gson.Gson;
@@ -52,11 +51,11 @@ public class loginPage extends AppCompatActivity {
                     Toast.makeText(loginPage.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    loginUser = new Customer(stringUserName);
+                    loginUser = new User(stringUserName);
                     if(crudUser.verifyLogin(loginUser, stringPassword)){
                         Toast.makeText(loginPage.this, "Login Successful !!", Toast.LENGTH_LONG).show();
-                        sharedPreference();
                         Intent loginIntent = new Intent(getApplicationContext(), dashboardPage.class);
+                        loginIntent.putExtra("userId", loginUser.getId());
                         startActivity(loginIntent);
                     }
                     else{
@@ -66,17 +65,6 @@ public class loginPage extends AppCompatActivity {
             }
         });
 
-    }
-
-
-    public void sharedPreference(){
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(loginUser);
-        editor.putString("MyObject", json);
-        editor.commit();
-        editor.apply();
     }
 
 

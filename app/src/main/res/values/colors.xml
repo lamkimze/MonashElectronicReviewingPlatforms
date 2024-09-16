@@ -11,6 +11,13 @@
     <color name="brown">#A98978</color>
     <color name="dark_blue">#2A4C65</color>
     <color name="dark_brown">#7D6252</color>
-    <color name="red">#FF0000</color>
+    <color name="background_light">#FFFFFF</color> <!-- White for light mode -->
+    <color name="background_dark">#121212</color> <!-- Near black for dark mode -->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#EEEEEE</color>
+    <color name="darkerGray">#DDDDDD</color>
+    <color name="red">#8B0000</color>
+
 
 </resources>

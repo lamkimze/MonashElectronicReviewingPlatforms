@@ -29,13 +29,11 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     CompetitionRecyclerAdapter recyclerAdapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    private RestaurantViewModel viewModel;
     private Button sortButton;
     private Button filterButton;
     private LinearLayout sortView;
     private LinearLayout filterView1;
     private LinearLayout filterView2;
-    private LinearLayout filterView3;
     boolean sortHidden = true;
     boolean filterHidden = true;
     private final ArrayList<String> selectedFilter = new ArrayList<>();

@@ -19,6 +19,7 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
     DrawerLayout drawerLayout;
     boolean isBackDisabled = false;
+    int userid;
 
 
     public void setContentView(View view){
@@ -26,6 +27,8 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         FrameLayout container = drawerLayout.findViewById(R.id.activityContainer);
         container.addView(view);
         super.setContentView(drawerLayout);
+
+//        userid = getIntent().getExtras().getInt("userId");
 
         Toolbar toolbar = drawerLayout.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,6 +95,7 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
     public void goToProfile(View view){
         Intent profileIntent = new Intent(this, profilePage.class);
+        profileIntent.putExtra("userid", userid);
         startActivity(profileIntent);
     }
 

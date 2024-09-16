@@ -37,6 +37,7 @@ import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.Entities.Owner;
 import com.example.myapplication.Enumerables.ImageType;
+import com.example.myapplication.Entities.User;
 import com.example.myapplication.databinding.ActivityBusinessRegistrationPageBinding;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
@@ -137,7 +138,7 @@ public class businessRegistrationPage extends AppCompatActivity {
         });
 
         // Set the content view
-        setContentView(R.layout.activity_business_registration_page);
+//        setContentView(R.layout.activity_business_registration_page);
 
 
         picButton = findViewById(R.id.userPicUpload);
@@ -300,9 +301,9 @@ public class businessRegistrationPage extends AppCompatActivity {
     }
 
     private void registeredBusiness() {
-        Owner newOwner = new Owner(stringUserName, stringEmail, stringFirstName, stringLastName);
-        boolean isInserted = crudUser.createUser(newOwner, stringPassword);
-//        newOwner.setId(crudUser.getOwnerID(newOwner));
+        User newOwner = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
+        boolean isInserted = crudUser.createUser(newOwner, stringPassword, null);
+        newOwner.setId(crudUser.getUserID(newOwner));
 //        crudUser.assignOwnerToBus(newOwner, );
         if(isInserted){
             if (exist) {
