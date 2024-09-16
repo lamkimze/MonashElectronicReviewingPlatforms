@@ -70,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create review table
         String createReviewTable = "CREATE TABLE review (" +
                 "review_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "customer_id INTEGER NOT NULL, " +
+                "user_id INTEGER NOT NULL, " +
                 "bus_id INTEGER NOT NULL, " +
                 "star_rating DECIMAL(1,2) NOT NULL, " +
                 "review_text TEXT, " +
