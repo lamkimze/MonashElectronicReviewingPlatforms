@@ -62,7 +62,6 @@ public class userRegistrationPage extends AppCompatActivity {
     ArrayAdapter<String> adapterItems;
     DatabaseHelper dbHelper;
     CRUD_User crudUser;
-    CRUD_Image crudImage;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -175,6 +174,10 @@ public class userRegistrationPage extends AppCompatActivity {
                                 user.setPosition(stringPosition);
                                 boolean isInserted =  crudUser.createUser(user, stringPassword, null);
                                 user.setId(crudUser.getUserID(user));
+                                if (selectedImageUri != null) {
+                                    Bitmap bitmap = getBitmapFromUri(selectedImageUri);
+                                    crudImage.setUserProfilePicture(user.getId(), bitmap);
+                                }
                                 if (isInserted) {
                                     Toast.makeText(this, "Registration Successful !!", Toast.LENGTH_LONG).show();
                                     switchLoginPage();

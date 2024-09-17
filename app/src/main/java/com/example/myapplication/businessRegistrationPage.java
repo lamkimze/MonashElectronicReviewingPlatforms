@@ -1,7 +1,5 @@
 package com.example.myapplication;
 
-import static android.provider.MediaStore.Images.Media.insertImage;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -35,7 +33,9 @@ import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
-import com.example.myapplication.Entities.Owner;
+//import com.example.myapplication.Entities.Owner;
+//import com.example.myapplication.Enumerables.ImageType;
+//import com.example.myapplication.Entities.Owner;
 import com.example.myapplication.Enumerables.ImageType;
 import com.example.myapplication.Entities.User;
 import com.example.myapplication.databinding.ActivityBusinessRegistrationPageBinding;
@@ -127,12 +127,13 @@ public class businessRegistrationPage extends AppCompatActivity {
                     selectedImageUri = data.getData();
                     // Update the ImageView with the selected image
                     businessPic.setImageURI(selectedImageUri);
-                    try {
-                        Bitmap bitmap = getBitmapFromUri(selectedImageUri);
-                        crudImage.insertImage(10, ImageType.BUSINESS, bitmap);  // Assuming linkingID = 1
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        Bitmap bitmap = getBitmapFromUri(selectedImageUri);
+//                        crudImage.insertImage(10, ImageType.BUSINESS, bitmap);  // Assuming linkingID = 1
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+
                 }
             }
         });
@@ -155,10 +156,6 @@ public class businessRegistrationPage extends AppCompatActivity {
                         return null;
                     });
         });
-
-//        businessPic.buildDrawingCache();
-//        Bitmap bitmap = businessPic.getDrawingCache();
-//        crudImage.insertImage(1, ImageType.BUSINESS, bitmap);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -302,7 +299,7 @@ public class businessRegistrationPage extends AppCompatActivity {
 
     private void registeredBusiness() {
         User newOwner = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
-        boolean isInserted = crudUser.createUser(newOwner, stringPassword, null);
+        boolean isInserted = crudUser.createUser(newOwner, stringPassword,null);
         newOwner.setId(crudUser.getUserID(newOwner));
 //        crudUser.assignOwnerToBus(newOwner, );
         if(isInserted){
