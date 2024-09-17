@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.myapplication.Enumerables.ImageType;
+import com.example.myapplication.Response;
 import com.example.myapplication.ReviewModel;
 
 import java.util.ArrayList;
@@ -58,8 +59,27 @@ public class CRUD_Review {
 
     }
 
+    /**
+     * Method to create a response in the database
+     * @param response the response to be created
+     * @return the response that was created
+     */
+    public void createResponse(Response response) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("review_id", response.getReviewID());
+        contentValues.put("user_id", response.getUserID());
+        contentValues.put("response_text", response.getResponseText());
+        db.insert("response", null, contentValues);
+    }
+
     // Read Methods
 
+    /**
+     * Method to get a review from the database
+     * @param reviewId the ID of the review to get
+     * @return the review with the given ID
+     */
     public ReviewModel getReview(int reviewId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         CRUD_Image crudImage = new CRUD_Image(dbHelper);
@@ -92,13 +112,47 @@ public class CRUD_Review {
     }
 
     /**
+     * Method to get a response from the database
+     * @param responseID the ID of the response to get
+     * @return the response with the given ID
+     */
+    public Response getResponse(int responseID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectResponse = format(locale,
+                "SELECT * FROM response WHERE response_id = %d;",
+                responseID
+        );
+        Cursor cursor = db.rawQuery(selectResponse, null);
+        cursor.moveToFirst();
+        int responseIndex, reviewIndex, userIndex, textIndex, dateIndex;
+        responseIndex = cursor.getColumnIndex("response_id");
+        reviewIndex = cursor.getColumnIndex("review_id");
+        userIndex = cursor.getColumnIndex("user_id");
+        textIndex = cursor.getColumnIndex("response_text");
+        dateIndex = cursor.getColumnIndex("response_date");
+        Response response = new Response(
+                cursor.getInt(responseIndex),
+                cursor.getInt(reviewIndex),
+                cursor.getInt(userIndex),
+                cursor.getString(textIndex)
+        );
+        response.setResponseDate(cursor.getString(dateIndex));
+        cursor.close();
+        return response;
+    }
+
+
+    /**
      * Method to get all the review IDs for a business
      * @param businessId the business to get the reviews for
      * @return an array list of all the review IDs
      */
     public ArrayList<Integer> getReviewIDs(int businessId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectReviews = format(locale,"SELECT review_id FROM review WHERE bus_id = %d;", businessId);
+        String selectReviews = format(locale,
+                "SELECT review_id FROM review WHERE bus_id = %d;",
+                businessId
+        );
         Cursor cursor = db.rawQuery(selectReviews, null);
         ArrayList<Integer> reviewIDs = new ArrayList<>();
         while (cursor.moveToNext()) {
@@ -110,6 +164,30 @@ public class CRUD_Review {
         cursor.close();
         return reviewIDs;
     }
+
+    /**
+     * Method to get all the response IDs for a review
+     * @param reviewID the review to get the responses for
+     * @return an array list of all the response IDs
+     */
+    public ArrayList<Integer> getResponseIDs(int reviewID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectResponses = format(locale,
+                "SELECT response_id FROM response WHERE review_id = %d;",
+                reviewID
+        );
+        Cursor cursor = db.rawQuery(selectResponses, null);
+        ArrayList<Integer> responseIDs = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            int columnIndex = cursor.getColumnIndex("response_id");
+            if (columnIndex != -1) {
+                responseIDs.add(cursor.getInt(columnIndex));
+            }
+        }
+        cursor.close();
+        return responseIDs;
+    }
+
 
     /**
      * Method to get all the reviews for a business
@@ -124,6 +202,23 @@ public class CRUD_Review {
         }
         return reviews;
     }
+
+    /**
+     * Method to get all the responses for a review
+     * @param reviewID the review to get the responses for
+     * @return an array list of all the responses
+     */
+    public ArrayList<Response> getResponses(int reviewID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        ArrayList<Integer> responseIDs = getResponseIDs(reviewID);
+        ArrayList<Response> responses = new ArrayList<>();
+        for (int responseID : responseIDs) {
+            responses.add(getResponse(responseID));
+        }
+        return responses;
+    }
+
+
 
 
 
