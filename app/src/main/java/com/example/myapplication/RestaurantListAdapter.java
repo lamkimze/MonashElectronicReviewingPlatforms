@@ -6,7 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.DatabaseHelper;
 
 import java.util.List;
 
@@ -56,6 +60,10 @@ public class RestaurantListAdapter extends BaseAdapter {
         // Display the restaurant location in the TextView with the ID restaurantLocation
         TextView locationTextView = convertView.findViewById(R.id.restaurantLocation);
         locationTextView.setText(restaurant.getAddress());
+
+        // Get the average rating of the restaurant and display it within Rating bar
+        RatingBar ratingBar = convertView.findViewById(R.id.restaurantRating);
+        ratingBar.setRating(restaurant.getStars());
 
 
         return convertView;

@@ -48,7 +48,7 @@ public class profilePage extends AppCompatActivity {
         }
 
         userid = getIntent().getExtras().getInt("userId");
-        user = crudUser.getCustomer(userid);
+        user = crudUser.getUser(userid);
 
         username = findViewById(R.id.textView19);
         userEmail = findViewById(R.id.userProfileEmailAddress);

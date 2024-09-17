@@ -172,7 +172,7 @@ public class userRegistrationPage extends AppCompatActivity {
                             try {
                                 User user = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
                                 user.setPosition(stringPosition);
-                                boolean isInserted =  crudUser.createUser(user, stringPassword, null);
+                                boolean isInserted =  crudUser.createUser(user, stringPassword);
                                 user.setId(crudUser.getUserID(user));
                                 if (selectedImageUri != null) {
                                     Bitmap bitmap = getBitmapFromUri(selectedImageUri);

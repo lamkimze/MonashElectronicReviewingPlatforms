@@ -101,6 +101,8 @@ public class CRUD_Business {
         restaurant.setHours(cursor.getString(cursor.getColumnIndex("bus_hours")));
         restaurant.setCuisine(cursor.getString(cursor.getColumnIndex("bus_cuisine_type")));
         cursor.close();
+        // Set the star rating of the restaurant
+        restaurant.setStars(getBusinessStarRating(restaurant));
         return restaurant;
     }
 
@@ -145,13 +147,14 @@ public class CRUD_Business {
      * @param restaurant The restaurant to calculate the star rating of
      * @return The star rating of the business in double format
      */
-    public double getBusinessStarRating(Restaurant restaurant) {
+    public float getBusinessStarRating(Restaurant restaurant) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         int bus_id = restaurant.getId();
-        String selectStarRating = format(locale,"SELECT AVG(rating) FROM review WHERE bus_id = %d;", bus_id);
+        String selectStarRating = format(locale,"SELECT AVG(star_rating) FROM review WHERE bus_id = %d;", bus_id);
         Cursor cursor = db.rawQuery(selectStarRating, null);
         cursor.moveToFirst();
-        @SuppressLint("Range") double starRating = cursor.getDouble(cursor.getColumnIndex("AVG(rating)"));
+        int starRatingIndex = cursor.getColumnIndex("AVG(star_rating)");
+        float starRating = cursor.getFloat(starRatingIndex);
         cursor.close();
         return starRating;
     }

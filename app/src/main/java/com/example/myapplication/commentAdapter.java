@@ -54,7 +54,7 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         int uid = postList.get(position).getReviewerId();
-        User currentUser = crudUser.getCustomer(uid);
+        User currentUser = crudUser.getUser(uid);
         String uDp = postList.get(position).getuDp();
         String uName = currentUser.getUsername();
         String uEmail = currentUser.getEmail();
