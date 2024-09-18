@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.renderscript.ScriptGroup;
 import android.view.Gravity;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
@@ -31,6 +33,11 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Image;
+import com.example.myapplication.Database.CRUD_Review;
+import com.example.myapplication.Database.CRUD_User;
+import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.databinding.ActivityDashboardPageBinding;
 import com.google.android.material.navigation.NavigationView;
 
@@ -44,6 +51,14 @@ public class dashboardPage extends DrawerBaseActivity {
     ActivityDashboardPageBinding activityDashboardPageBinding;
     ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
+
+    DatabaseHelper dbHelper;
+    CRUD_Business crudBusiness;
+    CRUD_User crudUser;
+    CRUD_Image crudImage;
+    CRUD_Review crudReview;
+
+    ArrayList<Restaurant> top5 = new ArrayList<>();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -120,6 +135,31 @@ public class dashboardPage extends DrawerBaseActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.option_menu, menu);
         return true;
+    }
+
+    private void initializeDatabase() {
+
+        try {
+            dbHelper = new DatabaseHelper(this);
+            crudBusiness = new CRUD_Business(dbHelper);
+            crudUser = new CRUD_User(dbHelper);
+            crudImage = new CRUD_Image(dbHelper);
+            crudReview = new CRUD_Review(dbHelper);
+            ArrayList<Restaurant> dashboardRestaurantsTop5 = crudBusiness.getTop5RatedBusinesses();
+            top5.addAll(dashboardRestaurantsTop5);
+
+            // Notify success on the main thread
+            new Handler(Looper.getMainLooper()).post(() ->
+                    Toast.makeText(this, "Database initialized successfully!", Toast.LENGTH_LONG).show()
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            // Notify failure on the main thread
+            new Handler(Looper.getMainLooper()).post(() ->
+                    Toast.makeText(this, "Database initialization failed!", Toast.LENGTH_LONG).show()
+            );
+        }
     }
 
 
