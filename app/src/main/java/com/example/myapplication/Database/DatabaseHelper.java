@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 16;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME,  null, DATABASE_VERSION);
@@ -159,6 +159,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(insertCustomerData);
 
 
+
+        String insertReview = "INSERT INTO review (user_id, bus_id, star_rating, review_title, review_text, review_date) VALUES\n" +
+                "(1, 1, 4.5, 'Excellent Experience', 'The food was amazing and the service was great!', datetime('now','localtime')),\n" +
+                "(2, 2, 3.0, 'Good but slow', 'The food was nice, but the service took too long.', datetime('now','localtime')),\n" +
+                "(3, 3, 4.0, 'Very nice place', 'I really enjoyed my meal, would come back!', datetime('now','localtime')),\n" +
+                "(4, 4, 2.5, 'Mediocre experience', 'The food was bland, nothing special.', datetime('now','localtime')),\n" +
+                "(5, 5, 5.0, 'Perfect!', 'Everything was perfect, highly recommend!', datetime('now','localtime')),\n" +
+                "(6, 6, 4.0, 'Good food', 'The food was very tasty, but the ambiance could be improved.', datetime('now','localtime')),\n" +
+                "(7, 7, 3.5, 'Average', 'The place was okay, food could have been better.', datetime('now','localtime')),\n" +
+                "(8, 8, 4.5, 'Awesome!', 'Loved the food and the place was cozy.', datetime('now','localtime')),\n" +
+                "(9, 9, 4.0, 'Great food', 'Really enjoyed the meal, will come back!', datetime('now','localtime')),\n" +
+                "(10, 10, 2.0, 'Not worth it', 'The food was cold and the service was rude.', datetime('now','localtime')),\n" +
+                "(1, 1, 4.2, 'Good vibes', 'Nice place to chill and grab a meal.', datetime('now','localtime')),\n" +
+                "(2, 2, 3.8, 'Decent', 'Good meal but could improve on customer service.', datetime('now','localtime')),\n" +
+                "(3, 3, 4.7, 'Amazing food!', 'The food was exceptional, would highly recommend!', datetime('now','localtime')),\n" +
+                "(4, 4, 2.8, 'Needs improvement', 'Food was okay, but service could be better.', datetime('now','localtime')),\n" +
+                "(5, 5, 5.0, 'Fantastic', 'Everything was great, from food to service!', datetime('now','localtime')),\n" +
+                "(6, 6, 3.6, 'Quite good', 'Decent food, but ambiance could be better.', datetime('now','localtime')),\n" +
+                "(7, 7, 4.4, 'Really good', 'The food was quite tasty, had a good time!', datetime('now','localtime')),\n" +
+                "(8, 8, 3.2, 'Not bad', 'It was okay, nothing too special.', datetime('now','localtime')),\n" +
+                "(9, 9, 4.1, 'Enjoyable', 'Had a good time, would recommend to friends.', datetime('now','localtime')),\n" +
+                "(10, 10, 2.9, 'Could be better', 'Food was okay but the service was a bit slow.', datetime('now','localtime')),\n" +
+                "(1, 5, 4.8, 'Wonderful', 'The food was great and the service was excellent!', datetime('now','localtime')),\n" +
+                "(2, 6, 4.5, 'Good experience', 'Enjoyed the meal, will come again.', datetime('now','localtime')),\n" +
+                "(3, 7, 4.9, 'Fantastic!', 'Best meal I have had in a long time!', datetime('now','localtime')),\n" +
+                "(4, 8, 2.4, 'Not great', 'The food was undercooked and bland.', datetime('now','localtime')),\n" +
+                "(5, 9, 5.0, 'Loved it!', 'This is my new favorite place!', datetime('now','localtime')),\n" +
+                "(6, 10, 3.0, 'Just okay', 'The food was okay, but not worth the price.', datetime('now','localtime')),\n" +
+                "(7, 1, 4.6, 'Great time', 'I had a great time here, would come again!', datetime('now','localtime')),\n" +
+                "(8, 2, 3.9, 'Pretty good', 'Good food, decent service, overall good.', datetime('now','localtime')),\n" +
+                "(9, 3, 4.5, 'Really good', 'Loved the meal and the staff were very friendly.', datetime('now','localtime')),\n" +
+                "(10, 4, 3.2, 'Not bad', 'Could be better but still a good time.', datetime('now','localtime')),\n" +
+                "(1, 10, 4.0, 'Good place', 'Had a fun time, food was tasty!', datetime('now','localtime')),\n" +
+                "(2, 9, 4.8, 'Amazing', 'Everything was fantastic!', datetime('now','localtime')),\n" +
+                "(3, 8, 4.7, 'Loved it!', 'Will definitely come back again!', datetime('now','localtime')),\n" +
+                "(4, 7, 2.5, 'Disappointing', 'The food was not up to standard.', datetime('now','localtime')),\n" +
+                "(5, 6, 4.9, 'Highly recommend', 'Best meal I have had in a while!', datetime('now','localtime')),\n" +
+                "(6, 5, 3.4, 'Okayish', 'It was okay but not worth the price.', datetime('now','localtime')),\n" +
+                "(7, 4, 4.3, 'Pretty good', 'I enjoyed the food and ambiance!', datetime('now','localtime')),\n" +
+                "(8, 3, 4.7, 'Great!', 'Loved the meal, will come back.', datetime('now','localtime')),\n" +
+                "(9, 2, 2.6, 'Could be better', 'Not the best experience, food was cold.', datetime('now','localtime')),\n" +
+                "(10, 1, 5.0, 'Amazing!', 'Best food I have ever had!', datetime('now','localtime'));\n";
+        db.execSQL(insertReview);
     }
 
 
