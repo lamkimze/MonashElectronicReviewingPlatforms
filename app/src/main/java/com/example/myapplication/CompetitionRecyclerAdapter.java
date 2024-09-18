@@ -26,6 +26,7 @@ import java.util.List;
 public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<CompetitionRecyclerAdapter.CustomViewHolder> {
 
     List<Restaurant> data = new ArrayList<Restaurant>();
+    int userid;
 
     public void setData(ArrayList<Restaurant> data){
         this.data = data;
@@ -78,6 +79,7 @@ public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<Competition
                 Context context = holder.itemView.getContext();
                 Intent toDetail = new Intent(context, restaurantDetailPage.class);
                 toDetail.putExtra("busId", businessId);
+                toDetail.putExtra("userId", userid);
                 context.startActivity(toDetail);
             }
         });

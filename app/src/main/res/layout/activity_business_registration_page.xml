@@ -5,18 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F5F6"
+    tools:context=".businessRegistrationPage"
     android:fillViewport="true">
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".businessRegistrationPage">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/restaurantTitle"
-        android:layout_width="279dp"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="34dp"
         android:gravity="center"
         android:text="Business Sign Up"
@@ -26,8 +27,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--     +++++-->
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="92dp"
@@ -38,27 +41,37 @@
         app:layout_constraintTop_toBottomOf="@+id/restaurantTitle"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Business picture upload"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.415"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/restaurantTitle" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/userPicUpload"
-        android:layout_width="133dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="8dp"
-        android:src="@android:drawable/ic_menu_camera"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Business picture upload"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.415"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/restaurantTitle" />
+
+            <ImageButton
+                android:id="@+id/userPicUpload"
+                android:layout_width="133dp"
+                android:layout_height="59dp"
+                android:layout_marginStart="63dp"
+                android:layout_marginTop="8dp"
+                android:foregroundGravity="center"
+                android:src="@android:drawable/ic_menu_camera"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView8"
@@ -74,8 +87,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/firstNameLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
@@ -84,7 +97,6 @@
         app:helperText="Required*"
         app:helperTextTextColor="@color/red"
         android:outlineProvider="none"
-        android:theme="@style/AppTheme"
         app:boxBackgroundColor="#00BCD4"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -112,7 +124,6 @@
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:theme="@style/AppTheme"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -141,7 +152,6 @@
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:theme="@style/AppTheme"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -169,7 +179,6 @@
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:theme="@style/AppTheme"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -182,23 +191,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usernameLayout"
-        app:endIconMode="password_toggle"
-        tools:ignore="MissingConstraints">
+        app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/bisRegPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
             android:background="#D9EBFA"
             android:inputType="text|textPassword"
-            android:shadowColor="#D6D7D7" />
+            android:shadowColor="#D6D7D7"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/conPasswordLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -235,7 +243,6 @@
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:helperText="Required*"
         app:helperTextTextColor="@color/red"
-        android:theme="@style/AppTheme"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -251,14 +258,12 @@
             android:id="@+id/bisRegEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
             android:background="#D9EBFA"
             android:inputType="text|textEmailAddress"
             android:shadowColor="#D6D7D7" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-<!--    ++++-->
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
@@ -269,26 +274,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailLayout" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="240sp"
-        android:layout_height="49sp"
-        android:layout_marginTop="270dp"
-        android:layout_marginBottom="60dp"
-        android:onClick="onClickBusinessSubmit"
-        android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operatingEndLayout" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/restaurantNameLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:theme="@style/AppTheme"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -316,7 +309,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/restaurantAddressLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -326,7 +319,6 @@
         app:helperText="Required*"
         app:helperTextTextColor="@color/red"
         android:inputType="text"
-        android:theme="@style/AppTheme"
         app:boxBackgroundColor="#D6D7D7"
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -347,7 +339,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/restaurantURLLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="66dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -355,7 +347,6 @@
         android:hint="Restaurant Website URL"
         app:startIconDrawable="@drawable/website"
         android:inputType="text"
-        android:theme="@style/AppTheme"
         app:boxBackgroundColor="#D6D7D7"
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -377,7 +368,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/restaurantPhoneLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="66dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -385,7 +376,6 @@
         android:hint="Business Phone Number"
         app:startIconDrawable="@drawable/phone"
         android:inputType="text"
-        android:theme="@style/AppTheme"
         app:boxBackgroundColor="#D6D7D7"
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -407,7 +397,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cuisineTypeLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="66dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -415,7 +405,6 @@
         android:hint="Cuisine Type"
         app:startIconDrawable="@drawable/food_type"
         android:inputType="text"
-        android:theme="@style/AppTheme"
         app:boxBackgroundColor="#D6D7D7"
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -450,7 +439,7 @@
         app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:theme="@style/AppTheme"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:hint="@string/select"
@@ -468,81 +457,103 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/operatingStartLayout"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:theme="@style/AppTheme"
-        android:layout_margin="16dp"
-        android:hint="Start Time"
-        app:startIconDrawable="@drawable/time"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        tools:ignore="MissingConstraints">
+        android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/operatingStart"
-            android:layout_width="145dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/operatingStartLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
-            android:inputType="datetime|time" />
+            android:layout_weight="1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:theme="@style/AppTheme"
+            android:hint="Start Time"
+            app:startIconDrawable="@drawable/time"
+            android:inputType="text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            tools:ignore="MissingConstraints">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/operatingStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="250dp"
+                android:inputType="datetime|time" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/operatingEndLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        android:hint="End Time"
-        android:inputType="text"
-        android:theme="@style/AppTheme"
-        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        app:layout_constraintStart_toEndOf="@+id/operatingStartLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:startIconDrawable="@drawable/time"
-        tools:ignore="MissingConstraints">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/operatingEnd"
-            android:layout_width="145dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/operatingEndLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
-            android:inputType="datetime|time" />
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:hint="End Time"
+            android:inputType="text"
+            android:theme="@style/AppTheme"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintStart_toEndOf="@+id/operatingStartLayout"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            app:startIconDrawable="@drawable/time"
+            tools:ignore="MissingConstraints">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/operatingEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="datetime|time" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="0dp"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/purple"
+            android:onClick="onClickAddButton"
+            android:text="Add"
+            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/operatingEndLayout"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="onClickAddButton"
-        android:text="Add"
-        app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/operatingEndLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
-
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="231dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/operatingEndLayout" />
+    </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/purple"
+        android:onClick="onClickBusinessSubmit"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/operatingEndLayout" />
+</LinearLayout>
 </ScrollView>

@@ -35,7 +35,7 @@ import java.util.Random;
 
 public class restaurantDetailPage extends AppCompatActivity {
 
-    int busId;
+    int busId, userId;
     Restaurant selected_restaurant;
     TextView restaurantName;
     TextView tvCuisineType;
@@ -62,6 +62,7 @@ public class restaurantDetailPage extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_detail_page);
 
         busId = getIntent().getExtras().getInt("busId");
+        userId = getIntent().getExtras().getInt("userId");
 
         loadData();
         selected_restaurant = crudBusiness.getRestaurant(busId);
@@ -71,6 +72,7 @@ public class restaurantDetailPage extends AppCompatActivity {
         layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
         commentAdapter = new commentAdapter();
+        commentAdapter.postList = crudReview.getReviews(busId);
         recyclerView.setAdapter(commentAdapter);
 
         restaurantName = findViewById(R.id.detailRestaurantName);
@@ -102,8 +104,8 @@ public class restaurantDetailPage extends AppCompatActivity {
 //                filterOn =
 //            }
 //        });
-
-
+//
+//
 //        restaurantImage.setImageResource(crudImage.get);
 
 
@@ -132,7 +134,6 @@ public class restaurantDetailPage extends AppCompatActivity {
         };
 
         ratingReviews.createRatingBars(100, BarLabels.STYPE1, color, raters);
-        
     }
 
     private void loadData() {
@@ -151,6 +152,8 @@ public class restaurantDetailPage extends AppCompatActivity {
     public void onClickCreateReview(View view){
         Intent createReviewIntent = new Intent(this, userReviewCreationPage.class);
         createReviewIntent.putExtra("busId", busId);
+        createReviewIntent.putExtra("userId", userId);
+
         startActivity(createReviewIntent);
     }
 

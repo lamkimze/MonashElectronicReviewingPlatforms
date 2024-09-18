@@ -62,8 +62,8 @@ public class RestaurantListAdapter extends BaseAdapter {
         locationTextView.setText(restaurant.getAddress());
 
         // Get the average rating of the restaurant and display it within Rating bar
-        RatingBar ratingBar = convertView.findViewById(R.id.restaurantRating);
-        ratingBar.setRating(restaurant.getStars());
+//        RatingBar ratingBar = convertView.findViewById(R.id.restaurantRating);
+//        ratingBar.setRating(restaurant.getStars());
 
 
         return convertView;
