@@ -323,4 +323,58 @@ public class CRUD_Business {
         db.update("business", values, whereClause, whereArgs);
     }
 
+
+    /**
+     * Method to get the average rating of a business
+     * @return array list of top rated businesses
+     */
+    public ArrayList<Restaurant> getTop5RatedBusinesses() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Query to get businesses and their average ratings, sorted in descending order by rating
+        String query = "SELECT b.bus_id, b.bus_name, b.bus_addr, b.bus_ph_nb, b.bus_email, b.website_url, b.bus_hours, b.bus_cuisine_type, AVG(r.star_rating) AS avg_rating " +
+                "FROM business b " +
+                "JOIN review r ON b.bus_id = r.bus_id " +
+                "GROUP BY b.bus_id " +
+                "ORDER BY avg_rating DESC " +
+                "LIMIT 5;";
+
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<Restaurant> topRatedRestaurants = new ArrayList<>();
+
+        // Iterate through the results and populate the restaurant objects
+        while (cursor.moveToNext()) {
+            int busIdIndex = cursor.getColumnIndex("bus_id");
+            int busNameIndex = cursor.getColumnIndex("bus_name");
+            int busAddrIndex = cursor.getColumnIndex("bus_addr");
+            int busPhoneIndex = cursor.getColumnIndex("bus_ph_nb");
+            int busEmailIndex = cursor.getColumnIndex("bus_email");
+            int busWebsiteIndex = cursor.getColumnIndex("website_url");
+            int busHoursIndex = cursor.getColumnIndex("bus_hours");
+            int busCuisineIndex = cursor.getColumnIndex("bus_cuisine_type");
+            int avgRatingIndex = cursor.getColumnIndex("avg_rating");
+
+            if (busIdIndex != -1 && avgRatingIndex != -1) {
+                // Create a Restaurant object for each result
+                Restaurant restaurant = new Restaurant(
+                        cursor.getString(busNameIndex),
+                        cursor.getString(busAddrIndex),
+                        cursor.getString(busPhoneIndex)
+                );
+                restaurant.setId(cursor.getInt(busIdIndex));
+                restaurant.setEmail(cursor.getString(busEmailIndex));
+                restaurant.setWebsite(cursor.getString(busWebsiteIndex));
+                restaurant.setHours(cursor.getString(busHoursIndex));
+                restaurant.setCuisine(cursor.getString(busCuisineIndex));
+                restaurant.setStars(cursor.getFloat(avgRatingIndex));
+
+                // Add the restaurant to the list
+                topRatedRestaurants.add(restaurant);
+            }
+        }
+
+        cursor.close();
+        return topRatedRestaurants;
+    }
+
 }
