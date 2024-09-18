@@ -32,9 +32,14 @@ import java.util.Locale;
 
 public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder> {
     Context context;
-    List<ReviewModel> postList = new ArrayList<>();
+    List<ReviewModel> postList;
     CRUD_User crudUser;
     DatabaseHelper databaseHelper;
+
+    public commentAdapter(Context context, List<ReviewModel> postList) {
+        this.context = context;  // Initialize context here
+        this.postList = postList;
+    }
 
     @NonNull
     @Override

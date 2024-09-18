@@ -71,8 +71,7 @@ public class restaurantDetailPage extends AppCompatActivity {
         layoutManager.setStackFromEnd(true);
         layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
-        commentAdapter = new commentAdapter();
-        commentAdapter.postList = crudReview.getReviews(busId);
+        commentAdapter = new commentAdapter(getApplicationContext(), crudReview.getReviews(busId));
         recyclerView.setAdapter(commentAdapter);
 
         restaurantName = findViewById(R.id.detailRestaurantName);

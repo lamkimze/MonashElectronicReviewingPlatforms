@@ -90,10 +90,12 @@ public class CRUD_Review {
 
         int ratingIndex, titleIndex, textIndex, customerIndex, businessIndex;
         ratingIndex = cursor.getColumnIndex("star_rating");
-        titleIndex = cursor.getColumnIndex("rewiew_title");
+        titleIndex = cursor.getColumnIndex("review_title");
         textIndex = cursor.getColumnIndex("review_text");
         customerIndex = cursor.getColumnIndex("user_id");
         businessIndex = cursor.getColumnIndex("bus_id");
+
+
 
         // If the indexes are not found, return null
         if (ratingIndex == -1 || titleIndex == -1 || textIndex == -1 || customerIndex == -1 || businessIndex == -1) {
