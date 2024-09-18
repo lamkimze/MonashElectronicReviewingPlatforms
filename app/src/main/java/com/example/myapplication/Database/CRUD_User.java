@@ -57,48 +57,27 @@ public class CRUD_User {
      * then we set the rest of the user's information
      * @param user the user trying to login
      * @param password the UN-HASHED password attempt of the user
-     * @return the user object with all the user's information
+     * @return the users id
      */
-    public User loginUser(User user, String password) {
+    public int loginUser(User user, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         // verify the login credentials
         if (!verifyLogin(user, password)) {
-            return null;
+            return -1;
         }
-        // use the users setter methods to set the user's information
+        // get the user's ID
         String username = user.getUsername();
-        String selectUser = format("SELECT * FROM user WHERE username = '%s';", username);
+        String selectUser = format(locale,"SELECT * FROM user WHERE username = '%s';", username);
         Cursor cursor = db.rawQuery(selectUser, null);
         cursor.moveToFirst();
-
-        // get the indices of the columns
         int userIDIndex = cursor.getColumnIndex("user_id");
-        int emailIndex = cursor.getColumnIndex("email");
-        int firstNameIndex = cursor.getColumnIndex("first_name");
-        int lastNameIndex = cursor.getColumnIndex("last_name");
-        int positionIDIndex = cursor.getColumnIndex("position_id");
-        int profilePicIndex = cursor.getColumnIndex("profile_picture");
-        int[] indices = {userIDIndex, emailIndex, firstNameIndex, lastNameIndex, positionIDIndex, profilePicIndex};
-        // check if any of the indices are -1 (user does not exist)
-        if (Arrays.stream(indices).anyMatch(i -> i == -1)) {
+        if (userIDIndex == -1) {
             cursor.close();
-            return null;
+            return -1;
         }
-        // get the user's information
         int userID = cursor.getInt(userIDIndex);
-        String email = cursor.getString(emailIndex);
-        String firstName = cursor.getString(firstNameIndex);
-        String lastName = cursor.getString(lastNameIndex);
-        int positionID = cursor.getInt(positionIDIndex);
-        Bitmap profilePic = DbBitmapUtility.getBlob(cursor.getBlob(profilePicIndex));
-        // create a new user object with the user's information
-        User loggedInUser = new User(username, email, firstName, lastName);
-        // set the user's ID, position ID, and profile picture
-        loggedInUser.setId(userID);
-        loggedInUser.setPositionID(positionID);
-        loggedInUser.setProfilePicture(profilePic);
         cursor.close();
-        return loggedInUser;
+        return userID;
     }
 
 
@@ -249,14 +228,17 @@ public class CRUD_User {
         String email = cursor.getString(emailIndex);
         String firstName = cursor.getString(firstNameIndex);
         String lastName = cursor.getString(lastNameIndex);
-        int positionID = cursor.getInt(positionIDIndex);
-        Bitmap profilePic = DbBitmapUtility.getBlob(cursor.getBlob(profilePicIndex));
-        // create a new user object with the user's information
         User user = new User(username, email, firstName, lastName);
+        int positionID = cursor.getInt(positionIDIndex);
+        byte[] profilePicBlob = cursor.getBlob(profilePicIndex);
+        if (profilePicBlob != null) {
+            Bitmap profilePic = DbBitmapUtility.getBlob(profilePicBlob);
+            user.setProfilePicture(profilePic);
+        }
+        // create a new user object with the user's information
         // set the user's ID, position ID, and profile picture
         user.setId(userID);
         user.setPositionID(positionID);
-        user.setProfilePicture(profilePic);
         cursor.close();
         return user;
     }
