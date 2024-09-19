@@ -16,7 +16,7 @@ public class DbBitmapUtility {
     }
 
     // convert from byte array to bitmap
-    public static Bitmap getBlob(byte[] image) {
+    public static Bitmap getBitmap(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 }
