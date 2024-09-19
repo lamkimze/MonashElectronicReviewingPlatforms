@@ -5,12 +5,14 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +60,7 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        Log.e("Reviewer Id", String.valueOf(postList.get(position).getReviewerId()));
         int uid = postList.get(position).getReviewerId();
         User currentUser = crudUser.getUser(uid);
         String uDp = postList.get(position).getuDp();
@@ -69,18 +72,20 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
         String pDescription = postList.get(position).getReviewText();
         String pImage = postList.get(position).getpImage();
         String pTimeStamp = postList.get(position).getTimestamp();
+        float rating = postList.get(position).getReviewRating();
 
 //        convert timestamp to dd/mm/yyyy hh:mm am/pm
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTimeInMillis(Long.parseLong(pTimeStamp));
-        String pTime = DateFormat.format("dd/mm/yyyy hh:mm aa", calendar).toString();
+//        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+//        calendar.setTimeInMillis(Long.parseLong(pTimeStamp));
+//        String pTime = DateFormat.format("dd/mm/yyyy hh:mm aa", calendar).toString();
 
 
 //        set Data
         holder.uNameTv.setText(uName);
-        holder.pTimeTv.setText(pTime);
+//        holder.pTimeTv.setText(pTime);
         holder.pTitleTv.setText(pTitle);
         holder.pDescriptionTv.setText(pDescription);
+        holder.ratingBar.setRating(rating);
 
 //        set user dp
         try{
@@ -90,13 +95,12 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
         }
 
 //        set post image
-        if(pImage.equals("noImage")){
+        if(pImage == null){
             holder.pImageIv.setVisibility(View.GONE);
         }else{
             try{
                 Picasso.get().load(pImage).into(holder.pImageIv);
             }catch (Exception e){
-
             }
         }
 
@@ -141,12 +145,13 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
         TextView uNameTv, pTimeTv, pTitleTv, pDescriptionTv, pLikesTv;
         ImageButton moreBtn;
         Button likeBtn, commentBVtn, shareBtn;
+        RatingBar ratingBar;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             uPictureIv = itemView.findViewById(R.id.uPictureIv);
-//            pImageIv = itemView.findViewById(R.id.pImageIv);
+            pImageIv = itemView.findViewById(R.id.pImageTv);
             uNameTv = itemView.findViewById(R.id.uNameTv);
             pTimeTv = itemView.findViewById(R.id.pTimeTv);
             pTitleTv = itemView.findViewById(R.id.pTitleTv);
@@ -156,6 +161,7 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
             likeBtn = itemView.findViewById(R.id.likeBtn);
             commentBVtn = itemView.findViewById(R.id.commentBtn);
             shareBtn = itemView.findViewById(R.id.shareBtn);
+            ratingBar = itemView.findViewById(R.id.detailReviewRating);
 
         }
     }

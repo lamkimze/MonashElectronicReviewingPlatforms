@@ -109,6 +109,8 @@ public class CRUD_Review {
                     cursor.getString(textIndex),
                     cursor.getInt(customerIndex),
                     cursor.getInt(businessIndex));
+            reviewModel.setReviewId(cursor.getColumnIndex("user_id"));
+            reviewModel.setReviewId(cursor.getColumnIndex("review_id"));
             cursor.close();
             return reviewModel;
         }
@@ -221,8 +223,17 @@ public class CRUD_Review {
         return responses;
     }
 
-
-
-
+//    /**
+//     * Method to get the reviewerId
+//     *
+//     */
+//    public int getReviewerId(ReviewModel review){
+//        int userId;
+//        SQLiteDatabase db = dbHelper.getReadableDatabase();
+//
+//
+//
+//        return userId;
+//    }
 
 }
