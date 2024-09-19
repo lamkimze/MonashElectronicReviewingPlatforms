@@ -243,22 +243,33 @@ public class CRUD_User {
         return user;
     }
 
-    public Position getUserPoistion(int userID, int busID){
+    public Position getUserPoistion(int userID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectPosition = format(locale,"SELECT * FROM user_position WHERE user_id = %d AND bus_id = %d;", userID, busID);
-        Cursor cursor = db.rawQuery(selectPosition, null);
-        cursor.moveToFirst();
-        int positionIndex = cursor.getColumnIndex("position_name");
-        int positionIDIndex = cursor.getColumnIndex("position_id");
-        if (positionIndex == -1 || positionIDIndex == -1) {
-            cursor.close();
+        String selectUser = format(locale,"SELECT * FROM user WHERE user_id = %d;", userID);
+        Cursor userCursor = db.rawQuery(selectUser, null);
+        userCursor.moveToFirst();
+        int positionIDIndex = userCursor.getColumnIndex("position_id");
+
+        if (positionIDIndex == -1) {
+            userCursor.close();
             return null;
         }
-        String position = cursor.getString(positionIndex);
-        int positionID = cursor.getInt(positionIDIndex);
-        Position userPosition = new Position(positionID, userID, busID, position);
-        cursor.close();
-        return userPosition;
+        int positionID = userCursor.getInt(positionIDIndex);
+        userCursor.close();
+        // get the position
+        String selectPosition = format(locale,"SELECT * FROM user_position WHERE position_id = %d;", positionID);
+        Cursor positionCursor = db.rawQuery(selectPosition, null);
+        positionCursor.moveToFirst();
+        int busIDIndex = positionCursor.getColumnIndex("bus_id");
+        int positionNameIndex = positionCursor.getColumnIndex("position_name");
+        if (busIDIndex == -1 || positionNameIndex == -1) {
+            positionCursor.close();
+            return null;
+        }
+        int busID = positionCursor.getInt(busIDIndex);
+        String positionName = positionCursor.getString(positionNameIndex);
+        positionCursor.close();
+        return new Position(positionID, userID, busID, positionName);
     }
 
 
