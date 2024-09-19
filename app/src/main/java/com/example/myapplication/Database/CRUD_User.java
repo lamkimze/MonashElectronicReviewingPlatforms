@@ -9,10 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 
 import com.example.myapplication.Entities.User;
+import com.example.myapplication.Position;
 import com.password4j.Password;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Locale;
 
 
@@ -232,7 +232,7 @@ public class CRUD_User {
         int positionID = cursor.getInt(positionIDIndex);
         byte[] profilePicBlob = cursor.getBlob(profilePicIndex);
         if (profilePicBlob != null) {
-            Bitmap profilePic = DbBitmapUtility.getBlob(profilePicBlob);
+            Bitmap profilePic = DbBitmapUtility.getBitmap(profilePicBlob);
             user.setProfilePicture(profilePic);
         }
         // create a new user object with the user's information
@@ -242,6 +242,25 @@ public class CRUD_User {
         cursor.close();
         return user;
     }
+
+    public Position getUserPoistion(int userID, int busID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectPosition = format(locale,"SELECT * FROM user_position WHERE user_id = %d AND bus_id = %d;", userID, busID);
+        Cursor cursor = db.rawQuery(selectPosition, null);
+        cursor.moveToFirst();
+        int positionIndex = cursor.getColumnIndex("position_name");
+        int positionIDIndex = cursor.getColumnIndex("position_id");
+        if (positionIndex == -1 || positionIDIndex == -1) {
+            cursor.close();
+            return null;
+        }
+        String position = cursor.getString(positionIndex);
+        int positionID = cursor.getInt(positionIDIndex);
+        Position userPosition = new Position(positionID, userID, busID, position);
+        cursor.close();
+        return userPosition;
+    }
+
 
     // Update methods
     /**
@@ -259,6 +278,8 @@ public class CRUD_User {
                 new String[]{String.valueOf(userID)}
         );
     }
+
+
 
 }
 
