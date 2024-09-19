@@ -128,4 +128,12 @@ public class ReviewModel {
     public void setpImage(String pImage) {
         this.pImage = pImage;
     }
+
+    public void setReviewerId(int reviewerId) {
+        this.reviewerId = reviewerId;
+    }
+
+    public void setBusinessId(int businessId) {
+        this.businessId = businessId;
+    }
 }
