@@ -159,7 +159,7 @@ public class CRUD_User {
         ContentValues contentValues = new ContentValues();
         contentValues.put("user_id", userID);
         contentValues.put("bus_id", busID);
-        contentValues.put("position", position);
+        contentValues.put("position_name", position);
         db.insert("user_position", null, contentValues);
 
         // return this user's position ID
