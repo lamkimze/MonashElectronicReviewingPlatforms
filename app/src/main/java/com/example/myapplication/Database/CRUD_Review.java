@@ -88,17 +88,18 @@ public class CRUD_Review {
         Cursor cursor = db.rawQuery(selectReview, null);
         cursor.moveToFirst();
 
-        int ratingIndex, titleIndex, textIndex, customerIndex, businessIndex;
+        int reviewIndex, ratingIndex, titleIndex, textIndex, customerIndex, businessIndex;
         ratingIndex = cursor.getColumnIndex("star_rating");
         titleIndex = cursor.getColumnIndex("review_title");
         textIndex = cursor.getColumnIndex("review_text");
         customerIndex = cursor.getColumnIndex("user_id");
         businessIndex = cursor.getColumnIndex("bus_id");
+        reviewIndex = cursor.getColumnIndex("review_id");
 
 
 
         // If the indexes are not found, return null
-        if (ratingIndex == -1 || titleIndex == -1 || textIndex == -1 || customerIndex == -1 || businessIndex == -1) {
+        if (reviewIndex == -1 || ratingIndex == -1 || titleIndex == -1 || textIndex == -1 || customerIndex == -1 || businessIndex == -1) {
             cursor.close();
             return null;
         } else {
@@ -108,9 +109,10 @@ public class CRUD_Review {
                     crudImage.getReviewImages(reviewId),
                     cursor.getString(textIndex),
                     cursor.getInt(customerIndex),
-                    cursor.getInt(businessIndex));
-            reviewModel.setReviewerId(cursor.getColumnIndex("user_id"));
-            reviewModel.setReviewId(cursor.getColumnIndex("review_id"));
+                    cursor.getInt(businessIndex)
+            );
+            reviewModel.setReviewerId(cursor.getInt(customerIndex));
+            reviewModel.setReviewId(cursor.getInt(reviewIndex));
             cursor.close();
             return reviewModel;
         }
