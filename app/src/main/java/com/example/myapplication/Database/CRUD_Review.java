@@ -109,7 +109,7 @@ public class CRUD_Review {
                     cursor.getString(textIndex),
                     cursor.getInt(customerIndex),
                     cursor.getInt(businessIndex));
-            reviewModel.setReviewId(cursor.getColumnIndex("user_id"));
+            reviewModel.setReviewerId(cursor.getColumnIndex("user_id"));
             reviewModel.setReviewId(cursor.getColumnIndex("review_id"));
             cursor.close();
             return reviewModel;
