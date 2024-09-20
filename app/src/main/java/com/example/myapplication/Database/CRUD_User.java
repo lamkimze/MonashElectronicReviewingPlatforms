@@ -245,30 +245,23 @@ public class CRUD_User {
 
     public Position getUserPoistion(int userID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectUser = format(locale,"SELECT * FROM user WHERE user_id = %d;", userID);
-        Cursor userCursor = db.rawQuery(selectUser, null);
-        userCursor.moveToFirst();
-        int positionIDIndex = userCursor.getColumnIndex("position_id");
-
-        if (positionIDIndex == -1) {
-            userCursor.close();
+        // get user position id
+        int positionID = getUser(userID).getPositionID();
+        // check if position id is defined
+        if (positionID <= 0) {
             return null;
         }
-        int positionID = userCursor.getInt(positionIDIndex);
-        userCursor.close();
-        // get the position
-        String selectPosition = format(locale,"SELECT * FROM user_position WHERE position_id = %d;", positionID);
-        Cursor positionCursor = db.rawQuery(selectPosition, null);
-        positionCursor.moveToFirst();
-        int busIDIndex = positionCursor.getColumnIndex("bus_id");
-        int positionNameIndex = positionCursor.getColumnIndex("position_name");
-        if (busIDIndex == -1 || positionNameIndex == -1) {
-            positionCursor.close();
+        String positionSelect = format(locale, "SELECT * FROM user_position WHERE position_id = %d", positionID);
+        Cursor cursor = db.rawQuery(positionSelect, null);
+        cursor.moveToFirst();
+        int businessIndex = cursor.getColumnIndex("bus_id");
+        int positionNameIndex = cursor.getColumnIndex("position_name");
+        if (businessIndex == -1 || positionNameIndex == -1) {
             return null;
         }
-        int busID = positionCursor.getInt(busIDIndex);
-        String positionName = positionCursor.getString(positionNameIndex);
-        positionCursor.close();
+        int busID = cursor.getInt(businessIndex);
+        String positionName = cursor.getString(positionNameIndex);
+        cursor.close();
         return new Position(positionID, userID, busID, positionName);
     }
 

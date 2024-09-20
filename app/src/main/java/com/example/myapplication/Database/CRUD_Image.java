@@ -152,8 +152,8 @@ public class CRUD_Image {
             contentValues.put("profile_image", imageBytes);
             String whereClause = format(locale, "user_id = %d", userID);
             db.update("user", contentValues, whereClause, null);
-        } catch (IOException e) {
-            return;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -171,7 +171,7 @@ public class CRUD_Image {
             contentValues.put("bus_image", imageBytes);
             String whereClause = format(locale, "bus_id = %d", businessID);
             db.update("business", contentValues, whereClause, null);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return;
         }
     }
@@ -190,7 +190,7 @@ public class CRUD_Image {
             contentValues.put("image_data", imageBytes);
             String whereClause = format(locale, "review_id = %d", reviewID);
             db.update("review_image", contentValues, whereClause, null);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return;
         }
     }
