@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.RestaurantListAdapter;
 import java.util.ArrayList;
