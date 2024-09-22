@@ -136,10 +136,34 @@ public class CompetitionRecordsFragment extends Fragment {
         seekBar5.setEnabled(false);
 
 
-        Bitmap gygBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez);
-        Bitmap scaledGygBitmap = Bitmap.createScaledBitmap(gygBitmap, 90, 90, true);
-        Drawable gygDrawable= new BitmapDrawable(getResources(), scaledGygBitmap);
-        seekBar1.setThumb(gygDrawable);
+//        Bitmap gygBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez);
+//        Bitmap scaledGygBitmap = Bitmap.createScaledBitmap(gygBitmap, 90, 90, true);
+//        Drawable gygDrawable= new BitmapDrawable(getResources(), scaledGygBitmap);
+//        seekBar1.setThumb(gygDrawable);
+        Bitmap number1Bitmap = crudImage.getBusinessImage(top5.get(0).getId());
+        Bitmap number1ScaledBitmap = Bitmap.createScaledBitmap(number1Bitmap, 90, 90, true);
+        Drawable number1Drawable = new BitmapDrawable(getResources(), number1ScaledBitmap);
+        seekBar1.setThumb(number1Drawable);
+
+        Bitmap number2Bitmap = crudImage.getBusinessImage(top5.get(1).getId());
+        Bitmap number2ScaledBitmap = Bitmap.createScaledBitmap(number2Bitmap, 90, 90, true);
+        Drawable number2Drawable = new BitmapDrawable(getResources(), number2ScaledBitmap);
+        seekBar2.setThumb(number2Drawable);
+
+        Bitmap number3Bitmap = crudImage.getBusinessImage(top5.get(2).getId());
+        Bitmap number3ScaledBitmap = Bitmap.createScaledBitmap(number3Bitmap, 90, 90, true);
+        Drawable number3Drawable = new BitmapDrawable(getResources(), number3ScaledBitmap);
+        seekBar3.setThumb(number3Drawable);
+
+        Bitmap number4Bitmap = crudImage.getBusinessImage(top5.get(3).getId());
+        Bitmap number4ScaledBitmap = Bitmap.createScaledBitmap(number4Bitmap, 90, 90, true);
+        Drawable number4Drawable = new BitmapDrawable(getResources(), number4ScaledBitmap);
+        seekBar4.setThumb(number4Drawable);
+
+        Bitmap number5Bitmap = crudImage.getBusinessImage(top5.get(4).getId());
+        Bitmap number5ScaledBitmap = Bitmap.createScaledBitmap(number5Bitmap, 90, 90, true);
+        Drawable number5Drawable = new BitmapDrawable(getResources(), number5ScaledBitmap);
+        seekBar5.setThumb(number5Drawable);
 
 
         Timer t = new Timer();
