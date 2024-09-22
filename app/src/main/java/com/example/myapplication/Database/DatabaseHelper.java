@@ -76,6 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "review_title TEXT, " +
                 "review_text TEXT, " +
                 "review_date DATE DEFAULT (datetime('now','localtime')), " +
+                "review_tags TEXT, " +
                 "FOREIGN KEY (user_id) REFERENCES user(user_id), " +
                 "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
         db.execSQL(createReviewTable);

@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,6 +24,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_margin="8dp"
                 android:id="@+id/uPictureIv"
                 android:src="@drawable/person_icon"/>
 
@@ -45,6 +47,7 @@
                     android:layout_height="wrap_content"/>
 
                     <TextView
+                        android:id="@+id/positionTag"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@drawable/worker_tag"
@@ -69,11 +72,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#B3B1B1"
-                    android:text="item tag"/>
             </LinearLayout>
             <ImageButton
                 android:id="@+id/moreBtn"
@@ -83,33 +81,46 @@
                 android:src="@drawable/baseline_more_horiz_24"/>
 
         </LinearLayout>
-        <TextView
-            android:id="@+id/pTitleTv"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:autoLink="all"/>
 
         <TextView
+            android:id="@+id/pTitleTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/pDescriptionTv"
-            android:text="The desccription of the post"
+            android:autoLink="all"
+            android:paddingTop="16dp"
+            android:text="Title"
             android:textColor="@color/black"
-            android:autoLink="all"/>
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/pDescriptionTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:paddingTop="8dp"
+            android:text="The desccription of the post"
+            android:textColor="#504F4F"
+            android:textSize="16dp" />
 
         <ImageView
             android:id="@+id/pImageTv"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@color/white"/>
+        <TextView
+            android:id="@+id/itemTag"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#B3B1B1"
+            android:text="item tag"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pLikesTv"
+                android:layout_marginTop="8dp"
                 android:paddingLeft="10dp"
                 android:text="1.2k Likes"
                 android:textColor="@color/red"/>
@@ -125,15 +136,16 @@
             android:gravity="center">
 
             <Button
-                android:id="@+id/likeBtn"
+                android:id="@+id/agreeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/white"
-                android:textColor="@color/black"
+                android:drawableLeft="@drawable/unclicked_thumbs_up"
                 android:drawablePadding="5dp"
-                android:text="Like"
-                android:drawableLeft="@drawable/unclicked_thumbs_up"/>
+                android:text="Agree"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
             <Button
                 android:id="@+id/commentBtn"
@@ -141,20 +153,23 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/white"
-                android:textColor="@color/black"
                 android:drawableLeft="@drawable/baseline_comment_24"
                 android:drawablePadding="5dp"
-                android:text="Comment"/>
+                android:text="Comment"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
             <Button
-                android:id="@+id/shareBtn"
+                android:id="@+id/disagreeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/white"
-                android:drawableLeft="@drawable/nav_share"
+                android:drawableLeft="@drawable/uncliked_thumbs_down"
                 android:drawablePadding="5dp"
+                android:text="Disagree"
                 android:textColor="@color/black"
-                android:text="Share"/>
+                android:textSize="13sp" />
         </LinearLayout>
 
         <TextView

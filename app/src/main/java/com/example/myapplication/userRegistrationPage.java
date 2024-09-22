@@ -3,8 +3,12 @@ package com.example.myapplication;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,7 +50,7 @@ public class userRegistrationPage extends AppCompatActivity {
     TextInputEditText etFirstName, etLastName, etUserName, etPassword, etConPassword, etEmail;
     TextInputEditText etBusId;
     String stringFirstName, stringLastName, stringUserName, stringPassword, stringConPassword, stringEmail;
-    String stringPosition;
+    String stringPosition, busId;
     String [] positions = {"Fast Food Attendant", "Busser", "Runner", "Cashier", "DishWasher", "Barista", "Prep Cook",
             "Expeditor", "Pastry Cook", "Server", "Bartender", "Line Cook", "Kitchen Manager", "Sous Chef", "Catering Manager",
     "General Manager", "Maintenance Person", "Executive Chef", "Main Chef"};
@@ -105,7 +109,7 @@ public class userRegistrationPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try{
-                    String busId = etBusId.getText().toString();
+                    busId = etBusId.getText().toString();
                     verifyRestaurant = crudBusiness.getRestaurant(Integer.parseInt(busId));
                     if(verifyRestaurant != null){
                         restaurantVerify.setVisibility(View.VISIBLE);
@@ -164,7 +168,16 @@ public class userRegistrationPage extends AppCompatActivity {
                                 user.setPosition(stringPosition);
                                 boolean isInserted =  crudUser.createUser(user, stringPassword);
                                 user.setId(crudUser.getUserID(user));
+                                Log.e("User id", String.valueOf(crudUser.getUserID(user)) );
                                 if (isInserted) {
+                                    crudUser.createUserPosition(crudUser.getUserID(user), Integer.parseInt(busId), stringPosition);
+                                    Bitmap profilePicture;
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                        profilePicture = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getApplicationContext().getContentResolver(), selectedImageUri));
+                                    }else {
+                                        profilePicture = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImageUri);
+                                    }
+                                    crudImage.setUserProfilePicture(crudUser.getUserID(user), profilePicture);
                                     Toast.makeText(this, "Registration Successful !!", Toast.LENGTH_LONG).show();
                                     switchLoginPage();
                                 } else {

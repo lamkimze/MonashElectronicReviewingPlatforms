@@ -11,7 +11,12 @@ import android.util.Log;
 import com.example.myapplication.Enumerables.ImageType;
 import com.example.myapplication.Response;
 import com.example.myapplication.ReviewModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -35,6 +40,12 @@ public class CRUD_Review {
         contentValues.put("star_rating", review.getReviewRating());
         contentValues.put("review_title", review.getReviewTitle());
         contentValues.put("review_text", review.getReviewText());
+
+        Gson gson = new Gson();
+        String[] allTags = review.getTags();
+        String gsonTags = gson.toJson(allTags);
+
+        contentValues.put("review_tags", gsonTags);
         db.insert("review", null, contentValues);
 
         // Insert the images into the database
@@ -88,18 +99,19 @@ public class CRUD_Review {
         Cursor cursor = db.rawQuery(selectReview, null);
         cursor.moveToFirst();
 
-        int reviewIndex, ratingIndex, titleIndex, textIndex, customerIndex, businessIndex;
+        int tagsIndex, reviewIdIndex, ratingIndex, titleIndex, textIndex, customerIndex, businessIndex, timestampIndex;
         ratingIndex = cursor.getColumnIndex("star_rating");
         titleIndex = cursor.getColumnIndex("review_title");
         textIndex = cursor.getColumnIndex("review_text");
         customerIndex = cursor.getColumnIndex("user_id");
         businessIndex = cursor.getColumnIndex("bus_id");
-        reviewIndex = cursor.getColumnIndex("review_id");
-
+        timestampIndex = cursor.getColumnIndex("review_date");
+        reviewIdIndex = cursor.getColumnIndex("review_id");
+        tagsIndex = cursor.getColumnIndex("review_tags");
 
 
         // If the indexes are not found, return null
-        if (reviewIndex == -1 || ratingIndex == -1 || titleIndex == -1 || textIndex == -1 || customerIndex == -1 || businessIndex == -1) {
+        if (tagsIndex == -1 || reviewIdIndex == -1 || timestampIndex == -1 || ratingIndex == -1 || titleIndex == -1 || textIndex == -1 || customerIndex == -1 || businessIndex == -1) {
             cursor.close();
             return null;
         } else {
@@ -109,10 +121,16 @@ public class CRUD_Review {
                     crudImage.getReviewImages(reviewId),
                     cursor.getString(textIndex),
                     cursor.getInt(customerIndex),
-                    cursor.getInt(businessIndex)
-            );
+                    cursor.getInt(businessIndex));
             reviewModel.setReviewerId(cursor.getInt(customerIndex));
-            reviewModel.setReviewId(cursor.getInt(reviewIndex));
+            reviewModel.setReviewId(cursor.getInt(reviewIdIndex));
+            reviewModel.setTimestamp(cursor.getString(timestampIndex));
+
+            Gson gson = new Gson();
+            Type type = new TypeToken<String[]>() {}.getType();
+            String[] tags = gson.fromJson(cursor.getString(tagsIndex), type);
+            reviewModel.setTags(tags);
+
             cursor.close();
             return reviewModel;
         }

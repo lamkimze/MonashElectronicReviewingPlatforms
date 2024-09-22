@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.util.Range;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -30,6 +32,7 @@ import com.taufiqrahman.reviewratings.BarLabels;
 import com.taufiqrahman.reviewratings.RatingReviews;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -40,19 +43,23 @@ public class restaurantDetailPage extends AppCompatActivity {
     TextView restaurantName;
     TextView tvCuisineType;
     ImageView restaurantImage;
-    List<ReviewModel> postList = new ArrayList<>();
+    TextView averageRatingTv;
+    RatingBar averageRatingBar;
+    TextView totalRatings;
+    RatingReviews ratingReviews;
     commentAdapter commentAdapter;
     RecyclerView recyclerView;
     DatabaseHelper dbHelper;
     CRUD_Business crudBusiness;
     CRUD_Review crudReview;
     CRUD_Image crudImage;
-    String [] filters = {"5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"};
-    String [] sorts = {"Likes", "Reply", "Dislike"};
+    String [] filters = {"5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star", "Staff Replied"};
+    String [] sorts = {"Likes", "Reply", "Dislike", "Time: Recent-Old", "Time: Old-Recent", "Ratings: high-low", "Ratings: low-high"};
     ArrayAdapter<String> filterAdapter;
     ArrayAdapter<String> sortAdapter;
     AutoCompleteTextView autoCompleteTextViewFilter, autoCompleteTextViewSort;
     String sortOn;
+    ArrayList listReview = new ArrayList();
     ArrayList<String> filterOn = new ArrayList<>();
 
     @Override
@@ -64,6 +71,7 @@ public class restaurantDetailPage extends AppCompatActivity {
         busId = getIntent().getExtras().getInt("busId");
         userId = getIntent().getExtras().getInt("userId");
 
+
         loadData();
         selected_restaurant = crudBusiness.getRestaurant(busId);
         recyclerView = findViewById(R.id.commentRecyclerView);
@@ -71,13 +79,23 @@ public class restaurantDetailPage extends AppCompatActivity {
         layoutManager.setStackFromEnd(true);
         layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
-        commentAdapter = new commentAdapter(getApplicationContext(), crudReview.getReviews(busId));
+        commentAdapter = new commentAdapter();
+        commentAdapter.context = getApplicationContext();
+        commentAdapter.setData(listReview);
+        commentAdapter.busId = busId;
         recyclerView.setAdapter(commentAdapter);
 
         restaurantName = findViewById(R.id.detailRestaurantName);
         tvCuisineType = findViewById(R.id.tvCuisineType);
         restaurantImage = findViewById(R.id.detailRestaurantLogo);
+        averageRatingTv = findViewById(R.id.averageRating);
+        averageRatingBar = findViewById(R.id.averageRatingBar);
+        ratingReviews = findViewById(R.id.rating_reviews);
+        totalRatings = findViewById(R.id.total_rating);
 
+        totalRatings.setText(String.valueOf(crudReview.getReviews(busId).size()));
+        averageRatingTv.setText(String.valueOf(selected_restaurant.getStars()));
+        averageRatingBar.setRating(selected_restaurant.getStars());
         restaurantName.setText(selected_restaurant.getName());
         tvCuisineType.setText(selected_restaurant.getCuisine());
 
@@ -95,6 +113,8 @@ public class restaurantDetailPage extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Get the selected item
                 sortOn = adapterView.getItemAtPosition(position).toString();
+                sortingSelected(sortOn);
+                Log.e("Sort On", sortOn);
             }
         });
 
@@ -106,7 +126,9 @@ public class restaurantDetailPage extends AppCompatActivity {
 //
 //
 //        restaurantImage.setImageResource(crudImage.get);
-
+        if(sortOn != null){
+            sortingSelected(sortOn);
+        }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -141,6 +163,7 @@ public class restaurantDetailPage extends AppCompatActivity {
             crudReview = new CRUD_Review(dbHelper);
             crudBusiness = new CRUD_Business(dbHelper);
             crudImage = new CRUD_Image(dbHelper);
+            listReview.addAll(crudReview.getReviews(busId));
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,5 +181,47 @@ public class restaurantDetailPage extends AppCompatActivity {
 
     public void onClickBookmark(View view){
     }
+
+    private void sortingSelected(String selectedSort){
+        switch(selectedSort){
+            case "Likes":
+                Collections.sort(listReview, ReviewModel.likesAscending);
+                commentAdapter.notifyDataSetChanged();
+                break;
+
+            case "Reply":
+                Collections.sort(listReview, ReviewModel.replyAscending);
+                commentAdapter.notifyDataSetChanged();
+                break;
+
+            case "Dislike":
+                Collections.sort(listReview, ReviewModel.dislikesAscending);
+                commentAdapter.notifyDataSetChanged();
+                break;
+
+            case "Time: Recent-Old":
+                Collections.sort(listReview, ReviewModel.timeAscending);
+                commentAdapter.notifyDataSetChanged();
+                break;
+
+            case "Time: Old-Recent":
+                Collections.sort(listReview, ReviewModel.timeAscending);
+                Collections.reverse(listReview);
+                commentAdapter.notifyDataSetChanged();
+                break;
+
+            case "Ratings: high-low":
+                Collections.sort(listReview, ReviewModel.ratingAscending);
+                commentAdapter.notifyDataSetChanged();
+                break;
+
+            case "Ratings: low-high":
+                Collections.sort(listReview, ReviewModel.ratingAscending);
+                Collections.reverse(listReview);
+                commentAdapter.notifyDataSetChanged();
+                break;
+        }
+    }
+
 
 }

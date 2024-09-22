@@ -66,7 +66,6 @@ public class userReviewCreationPage extends AppCompatActivity {
     String stringTags;
     String stringReviewTitle;
     String stringReviewContent;
-    ArrayList<String> tags = new ArrayList<>();
     ArrayList<Uri> uri = new ArrayList<>();
 
 
@@ -166,6 +165,7 @@ public class userReviewCreationPage extends AppCompatActivity {
 
                 // Save review to database
                 try {
+                    reviewModel.setTags(stringTags.split(" "));
                     crudReview.createReview(reviewModel);
                 } catch (Exception e) {
                     e.printStackTrace();

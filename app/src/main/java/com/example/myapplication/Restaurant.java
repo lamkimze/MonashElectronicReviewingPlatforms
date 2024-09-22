@@ -29,8 +29,6 @@ public class Restaurant extends RestaurantReviewCompetition {
 
 
 //    getters and setters
-
-
     public int getId() {
         return id;
     }
@@ -150,4 +148,5 @@ public class Restaurant extends RestaurantReviewCompetition {
             return Double.compare(rating1, rating2);
         }
     };
+
 }
