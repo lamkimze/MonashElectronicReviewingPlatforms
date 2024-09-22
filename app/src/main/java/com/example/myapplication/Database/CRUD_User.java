@@ -90,7 +90,7 @@ public class CRUD_User {
         String firstName = cursor.getString(firstNameIndex);
         String lastName = cursor.getString(lastNameIndex);
         int positionID = cursor.getInt(positionIDIndex);
-        Bitmap profilePic = DbBitmapUtility.getBlob(cursor.getBlob(profilePicIndex));
+        Bitmap profilePic = DbBitmapUtility.getBitmap(cursor.getBlob(profilePicIndex));
         // create a new user object with the user's information
         User loggedInUser = new User(username, email, firstName, lastName);
         // set the user's ID, position ID, and profile picture
@@ -250,7 +250,7 @@ public class CRUD_User {
         String firstName = cursor.getString(firstNameIndex);
         String lastName = cursor.getString(lastNameIndex);
         int positionID = cursor.getInt(positionIDIndex);
-        Bitmap profilePic = DbBitmapUtility.getBlob(cursor.getBlob(profilePicIndex));
+        Bitmap profilePic = DbBitmapUtility.getBitmap(cursor.getBlob(profilePicIndex));
         // create a new user object with the user's information
         User user = new User(username, email, firstName, lastName);
         // set the user's ID, position ID, and profile picture

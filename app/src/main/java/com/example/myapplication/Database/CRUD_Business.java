@@ -376,5 +376,4 @@ public class CRUD_Business {
         cursor.close();
         return topRatedRestaurants;
     }
-
 }

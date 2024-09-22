@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 
 import com.example.myapplication.Entities.User;
-import com.example.myapplication.Enumerables.ImageType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,9 +40,13 @@ public class CRUD_Image {
             cursor.close();
             return null;
         }
-        Bitmap image = DbBitmapUtility.getBlob(cursor.getBlob(index));
+        byte[] profileImageBLOB = cursor.getBlob(index);
+        if (profileImageBLOB == null) {
+            cursor.close();
+            return null;
+        }
         cursor.close();
-        return image;
+        return DbBitmapUtility.getBitmap(profileImageBLOB);
     }
 
     /**
@@ -62,7 +65,7 @@ public class CRUD_Image {
             cursor.close();
             return null;
         }
-        Bitmap image = DbBitmapUtility.getBlob(cursor.getBlob(index));
+        Bitmap image = DbBitmapUtility.getBitmap(cursor.getBlob(index));
         cursor.close();
         return image;
     }
@@ -109,9 +112,13 @@ public class CRUD_Image {
             cursor.close();
             return null;
         }
-        Bitmap image = DbBitmapUtility.getBlob(cursor.getBlob(index));
+        byte[] reviewImageBLOB = cursor.getBlob(index);
+        if (reviewImageBLOB == null) {
+            cursor.close();
+            return null;
+        }
         cursor.close();
-        return image;
+        return DbBitmapUtility.getBitmap(reviewImageBLOB);
     }
 
     /**
