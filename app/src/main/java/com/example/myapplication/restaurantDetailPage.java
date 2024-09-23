@@ -69,7 +69,7 @@ public class restaurantDetailPage extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_detail_page);
 
         busId = getIntent().getExtras().getInt("busId");
-        userId = getIntent().getExtras().getInt("userId");
+        userId = getIntent().getExtras().getInt("userID");
 
 
         loadData();

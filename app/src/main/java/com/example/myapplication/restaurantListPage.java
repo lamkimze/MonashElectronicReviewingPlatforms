@@ -39,7 +39,7 @@ public class restaurantListPage extends AppCompatActivity {
         });
 
     // Retrieve user_id from intent
-        int user_id = getIntent().getIntExtra("user_id", -1);
+        int userID = getIntent().getIntExtra("userID", 5);
 
     // Initialize ListView and set the adapter
         restaurantListView = findViewById(R.id.restaurantListView);
@@ -64,6 +64,7 @@ public class restaurantListPage extends AppCompatActivity {
             Restaurant restaurant = restaurants.get(position);
             int businessID = restaurant.getId();
             Intent restuarantIntent = new Intent(restaurantListPage.this, restaurantDetailPage.class);
+            restuarantIntent.putExtra("userID", userID);
             restuarantIntent.putExtra("busId", businessID);
             startActivity(restuarantIntent);
         });
