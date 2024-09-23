@@ -100,6 +100,12 @@ public class CRUD_Business {
         restaurant.setWebsite(cursor.getString(cursor.getColumnIndex("website_url")));
         restaurant.setHours(cursor.getString(cursor.getColumnIndex("bus_hours")));
         restaurant.setCuisine(cursor.getString(cursor.getColumnIndex("bus_cuisine_type")));
+
+        byte[] imageBlob = cursor.getBlob(cursor.getColumnIndex("bus_image"));
+        if (imageBlob != null) {
+            restaurant.setBusinessImage(DbBitmapUtility.getBitmap(imageBlob));
+        }
+
         cursor.close();
         // Set the star rating of the restaurant
         restaurant.setStars(getBusinessStarRating(restaurant));
@@ -305,7 +311,7 @@ public class CRUD_Business {
      * @param bus_hours The hours of the business
      * @param bus_cuisine_type The cuisine type of the business
      */
-    public void updateRestaurantDetail(String bus_name, String bus_addr, String bus_ph_nb, String bus_email, String website_url, String bus_hours, String bus_cuisine_type) {
+    public int updateRestaurantDetail(String bus_name, String bus_addr, String bus_ph_nb, String bus_email, String website_url, String bus_hours, String bus_cuisine_type) {
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -321,6 +327,17 @@ public class CRUD_Business {
         String[] whereArgs = {bus_name};
 
         db.update("business", values, whereClause, whereArgs);
+
+        // get the id of the business
+        String selectBusinessId = format(locale,
+                "SELECT bus_id FROM business WHERE bus_name = %s;",
+                bus_name
+        );
+        Cursor cursor = db.rawQuery(selectBusinessId, null);
+        cursor.moveToFirst();
+        @SuppressLint("Range") int bus_id = cursor.getInt(cursor.getColumnIndex("bus_id"));
+        cursor.close();
+        return bus_id;
     }
 
 }

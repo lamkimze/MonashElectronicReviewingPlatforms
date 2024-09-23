@@ -49,9 +49,13 @@ public class RestaurantListAdapter extends BaseAdapter {
         // Get the Restaurant object at the specified position in the list
         Restaurant restaurant = restaurants.get(position);
 
-//        Get the restaurant icon
+        // Display the restaurant icon in the ImageView with the ID restaurantIcon
         ImageView iconImageView = convertView.findViewById(R.id.restaurantIcon);
-        iconImageView.setImageResource(restaurant.getImageResource());
+        if (restaurant.getBusinessImage() != null) {
+            iconImageView.setImageBitmap(restaurant.getBusinessImage());
+        } else {
+            iconImageView.setImageResource(restaurant.getImageResource());
+        }
 
         // Display the restaurant name in the TextView with the ID restaurantName
         TextView nameTextView = convertView.findViewById(R.id.restaurantName);
