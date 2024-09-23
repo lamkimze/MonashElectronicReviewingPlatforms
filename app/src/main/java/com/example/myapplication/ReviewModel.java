@@ -50,6 +50,10 @@ public class ReviewModel {
         return reviewImages;
     }
 
+    public void addReviewImage(Bitmap reviewImage) {
+        this.reviewImages.add(reviewImage);
+    }
+
     public String getReviewText() {
         return reviewText;
     }

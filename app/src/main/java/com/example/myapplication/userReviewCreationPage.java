@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -9,9 +11,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.Manifest;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -42,6 +47,7 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class userReviewCreationPage extends AppCompatActivity {
@@ -62,7 +68,7 @@ public class userReviewCreationPage extends AppCompatActivity {
     Button submitButton;
 
     //    Converting to respective data style
-    int rating;
+    float rating;
     String stringTags;
     String stringReviewTitle;
     String stringReviewContent;
@@ -158,11 +164,26 @@ public class userReviewCreationPage extends AppCompatActivity {
             public void onClick(View view) {
                 stringReviewTitle = reviewTitle.getText().toString();
                 stringReviewContent = reviewContent.getText().toString();
-                rating = (int) ratingBar.getRating();
+                rating = ratingBar.getRating();
                 stringTags = tagsInputEditText.getText().toString();
 
                 ReviewModel reviewModel = new ReviewModel(rating, stringReviewTitle, new ArrayList<Bitmap>(), stringReviewContent, reviewerId, busId);
 
+                // Add images to review
+                for (Uri imageUri : uri) {
+                    try {
+                        Bitmap image = null;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            image = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), imageUri));
+                        } else {
+                            image = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                        }
+                        reviewModel.addReviewImage(image);
+                    } catch (Exception e) {
+                        Toast.makeText(userReviewCreationPage.this, "Error adding image to review: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("userReviewCreationPage", "Error adding image to review: " + e.getMessage());
+                    }
+                }
                 // Save review to database
                 try {
                     reviewModel.setTags(stringTags.split(" "));
@@ -174,8 +195,8 @@ public class userReviewCreationPage extends AppCompatActivity {
 
                 // Start the next activity
                 Intent submitIntent = new Intent(getApplicationContext(), restaurantDetailPage.class);
-                submitIntent.putExtra("bus_id", busId);
-                submitIntent.putExtra("user_id", reviewerId);
+                submitIntent.putExtra("busID", busId);
+                submitIntent.putExtra("userID", reviewerId);
                 startActivity(submitIntent);
             }
         });
@@ -247,19 +268,19 @@ public class userReviewCreationPage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1 && resultCode == RESULT_OK){
-            if(data.getClipData() != null){
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            if (data.getClipData() != null) {
                 int count = data.getClipData().getItemCount();
 
-                for(int i = 0; i < count; i++){
-                    uri.add(data.getClipData().getItemAt(i).getUri());
+                for (int i = 0; i < count; i++) {
+                    Uri imageUri = data.getClipData().getItemAt(i).getUri();
+                    uri.add(imageUri);
                 }
                 adapter.notifyDataSetChanged();
-                textView.setText("Photos ("+uri.size()+")");
-
-            }else if(data.getData() != null){
-                String imageURL = data.getData().getPath();
-                uri.add(Uri.parse(imageURL));
+                textView.setText(String.format(Locale.ENGLISH,"Photos (%d)", uri.size()));
+            } else if (data.getData() != null) {
+                Uri imageUri = data.getData();
+                uri.add(imageUri);
             }
         }
     }

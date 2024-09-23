@@ -188,8 +188,8 @@ public class CRUD_Image {
         try {
             byte[] imageBytes = DbBitmapUtility.getBytes(image);
             contentValues.put("image_data", imageBytes);
-            String whereClause = format(locale, "review_id = %d", reviewID);
-            db.update("review_image", contentValues, whereClause, null);
+            contentValues.put("review_id", reviewID);
+            db.insert("review_image", null, contentValues);
         } catch (IOException e) {
             return;
         }
