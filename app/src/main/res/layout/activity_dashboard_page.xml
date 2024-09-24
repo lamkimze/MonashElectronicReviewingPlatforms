@@ -38,17 +38,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView30"
         tools:ignore="MissingConstraints" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPagerHighestImprovement"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="9dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView31"
-        tools:ignore="MissingConstraints" />
-
     <TextView
         android:id="@+id/textView30"
         android:layout_width="wrap_content"
@@ -92,6 +81,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reviewList"
+        android:layout_width="409dp"
+        android:layout_height="199dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView31"
+        tools:layout_editor_absoluteX="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
