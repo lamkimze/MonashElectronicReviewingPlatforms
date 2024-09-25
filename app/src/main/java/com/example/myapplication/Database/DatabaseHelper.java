@@ -58,7 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create business table
         String createBusinessTable = "CREATE TABLE business (" +
                 "bus_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "bus_name TEXT NOT NULL, " +
+                "bus_name TEXT UNIQUE NOT NULL, " +
                 "bus_addr TEXT NOT NULL, " +
                 "bus_ph_nb TEXT, " +
                 "bus_email TEXT, " +
