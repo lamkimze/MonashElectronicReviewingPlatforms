@@ -206,4 +206,38 @@ public class CRUD_Image {
             addImageToReview(reviewID, image);
         }
     }
+
+    /**
+     * Method to get the profile picture of a user by user_id
+     * @param userId the ID of the user
+     * @return the profile picture of the user as a Bitmap
+     */
+    public Bitmap getProfilePictureByUserId(int userId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Query the database to get the profile_image for the user with the given user_id
+        String selectUser = format(locale, "SELECT profile_image FROM user WHERE user_id = %d;", userId);
+        Cursor cursor = db.rawQuery(selectUser, null);
+
+        // Check if a result was found
+        if (cursor.moveToFirst()) {
+            // Get the index of the profile_image column
+            int index = cursor.getColumnIndex("profile_image");
+
+            // If profile_image exists, retrieve it
+            if (index != -1) {
+                byte[] profileImageBLOB = cursor.getBlob(index);
+
+                // If the profile image exists and is not null, return it as a Bitmap
+                if (profileImageBLOB != null) {
+                    cursor.close();
+                    return DbBitmapUtility.getBitmap(profileImageBLOB);
+                }
+            }
+        }
+
+        // Close the cursor if no result is found
+        cursor.close();
+        return null;
+    }
 }
