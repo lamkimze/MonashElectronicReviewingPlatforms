@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 
 import com.example.myapplication.Enumerables.ImageType;
 import com.example.myapplication.Response;
@@ -216,6 +217,95 @@ public class CRUD_Review {
             responses.add(getResponse(responseID));
         }
         return responses;
+    }
+
+    /**
+     * Method to get the 5 latest reviews from the database
+     * @return an ArrayList of the 5 latest reviews
+     */
+    public ArrayList<ReviewModel> getLatestReviews() {
+        ArrayList<ReviewModel> reviews = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        CRUD_Image crudImage = new CRUD_Image(dbHelper);
+
+        // SQL query to select the 5 latest reviews ordered by review_date in descending order
+        String selectLatestReviews = "SELECT * FROM review ORDER BY review_date DESC LIMIT 5;";
+        Cursor cursor = null;
+
+        try {
+            // Execute query
+            cursor = db.rawQuery(selectLatestReviews, null);
+
+            // Check if cursor is not null and contains data
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    // Check and get the index of each column
+                    int reviewIdIndex = cursor.getColumnIndex("review_id");
+                    int ratingIndex = cursor.getColumnIndex("star_rating");
+                    int titleIndex = cursor.getColumnIndex("review_title");
+                    int textIndex = cursor.getColumnIndex("review_text");
+                    int customerIndex = cursor.getColumnIndex("user_id");
+                    int businessIndex = cursor.getColumnIndex("bus_id");
+
+                    // Verify that the necessary columns are available
+                    if (reviewIdIndex != -1 && ratingIndex != -1 && titleIndex != -1 &&
+                            textIndex != -1 && customerIndex != -1 && businessIndex != -1) {
+
+                        // Get review ID to fetch associated images
+                        int reviewId = cursor.getInt(reviewIdIndex);
+                        ArrayList<Bitmap> reviewImages = crudImage.getReviewImages(reviewId);
+
+                        // Create a ReviewModel object
+                        ReviewModel reviewModel = new ReviewModel(
+                                cursor.getFloat(ratingIndex),
+                                cursor.getString(titleIndex),
+                                reviewImages,
+                                cursor.getString(textIndex),
+                                cursor.getInt(customerIndex),
+                                cursor.getInt(businessIndex)
+                        );
+
+                        // Add the review to the list
+                        reviews.add(reviewModel);
+                    }
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the exception for debugging
+        } finally {
+            if (cursor != null) {
+                cursor.close();  // Always close the cursor to avoid memory leaks
+            }
+        }
+
+        return reviews;
+    }
+
+    /**
+     * Method to get the review date from the database
+     * @param reviewId the ID of the review to get the date for
+     * @return the date of the review as a String, or null if not found
+     */
+    public String getReviewDate(int reviewId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // SQL query to select the review date based on the review ID
+        String selectReviewDate = format(locale, "SELECT review_date FROM review WHERE review_id = %d;", reviewId);
+        Cursor cursor = db.rawQuery(selectReviewDate, null);
+
+        // If a review is found, return the review date
+        if (cursor.moveToFirst()) {
+            int reviewDateIndex = cursor.getColumnIndex("review_date");
+            if (reviewDateIndex != -1) {
+                String reviewDate = cursor.getString(reviewDateIndex);
+                cursor.close();
+                return reviewDate;
+            }
+        }
+
+        // Close the cursor and return null if no review is found
+        cursor.close();
+        return null;  // Indicating no review found
     }
 
 
