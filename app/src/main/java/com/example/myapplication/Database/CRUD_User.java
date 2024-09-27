@@ -278,6 +278,44 @@ public class CRUD_User {
         );
     }
 
+    /**
+     * Method to get the full name of a user (first name and last name) by user ID
+     * @param userID the ID of the user
+     * @return the full name of the user as a String in the format "FirstName LastName", or null if the user is not found
+     */
+    public String getFullName(int userID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Query to get the first name and last name based on the user ID
+        String selectUser = format(locale, "SELECT first_name, last_name FROM user WHERE user_id = %d;", userID);
+        Cursor cursor = db.rawQuery(selectUser, null);
+
+        // Check if the query returned any result
+        if (cursor.moveToFirst()) {
+            // Get the indices of the first and last name columns
+            int firstNameIndex = cursor.getColumnIndex("first_name");
+            int lastNameIndex = cursor.getColumnIndex("last_name");
+
+            // If either index is invalid, close the cursor and return null
+            if (firstNameIndex == -1 || lastNameIndex == -1) {
+                cursor.close();
+                return null;
+            }
+
+            // Retrieve the first and last names from the cursor
+            String firstName = cursor.getString(firstNameIndex);
+            String lastName = cursor.getString(lastNameIndex);
+
+            // Close the cursor and return the full name as "FirstName LastName"
+            cursor.close();
+            return firstName + " " + lastName;
+        }
+
+        // If no user is found, close the cursor and return null
+        cursor.close();
+        return null;
+    }
+
 }
 
 
