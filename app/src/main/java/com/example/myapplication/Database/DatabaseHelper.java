@@ -27,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 51;
 
     private final Context context;
 
@@ -113,115 +113,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         insertBusinessData(db);
-//        try {
-//            Bitmap artichoke = BitmapFactory.decodeResource(context.getResources(), R.drawable.artichokeandwhitebait);
-//            byte[] busArtichokeImageByteArray = DbBitmapUtility.getBytes(artichoke);
-//            Bitmap boost = BitmapFactory.decodeResource(context.getResources(), R.drawable.artichokeandwhitebait);
-//            byte[] busBoostImageByteArray = DbBitmapUtility.getBytes(boost);
-//            Bitmap cinque = BitmapFactory.decodeResource(context.getResources(), R.drawable.artichokeandwhitebait);
-//            byte[] busCinqueImageByteArray = DbBitmapUtility.getBytes(boost);
-//            Bitmap secular = BitmapFactory.decodeResource(context.getResources(), R.drawable.artichokeandwhitebait);
-//            byte[] busSecularImageByteArray = DbBitmapUtility.getBytes(boost);
-//            String insertBusinessData = String.format("INSERT INTO business (bus_name, bus_addr, bus_ph_nb, bus_email, website_url, bus_hours, bus_cuisine_type, bus_image) VALUES\n" +
-//                            "('Artichoke & Whitebait', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '95432523', 'artichokewhitebait@gmail.com', 'artichokeandwhitebait.com.au', 'Mon–Fri: 7am – 5pm', 'Australian', '%s'),\n" + // Image available
-//                            "('Boost Juice Clayton', 'Northern Plaza, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, NULL, 'boostjuice.com.au', 'Mon–Thu: 8am – 6pm,Fri: 8am – 5.30pm,Sat–Sun: 12–4pm', 'Beverage', '%s'),\n" + // Image available
-//                            "('Café Cinque Lire', 'The Strip, 15 Innovation Walk, Clayton campus', '954007780', 'cinqueliremonash@yahoo.com.au', NULL, 'Mon–Thu: 6.30am – 5pm, Fri: 6.30am – 6.30pm', 'Italian', '%s'),\n" + // No image
-//                            "('Church of Secular Coffee', '32 Exhibition Walk, Clayton campus', '99050888', 'churchofsecularcoffe@monash.edu', NULL, 'Mon–Fri: 8am – 3pm', 'Cafe', '%s'),\n" + // No image
-//                            "('Coffee Point', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99055714', 'cater@monashcatering.com.au', 'www.monashcateringonline.com.au', 'Mon–Fri: 7:30am – 5pm', 'Cafe', NULL),\n" + // No image
-//                            "('The Count''s', 'The Ian Potter Centre for Performing Arts, 48 Exhibition Walk, Clayton campus', '90686150', 'enquiries@thecounts.com.au', 'www.monash.edu/performing-arts-centres/eat-drink-clayton-campus', 'Mon–Fri: 11am – 3pm', 'Cafe', NULL),\n" + // No image
-//                            "('The Den', 'Cellar West Room, Campus Centre, 21 Chancellor''s Walk, Clayton campus', '95446611', NULL, NULL, 'Mon–Fri: 7:30am – 6:30pm', 'Cafe', NULL),\n" + // No image
-//                            "('Grafalis Cafe', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '0406278975', 'grafalismonash@gmail.com', NULL, 'Mon–Fri: 7:30am – 5:30pm', 'Cafe', NULL),\n" + // No image
-//                            "('Guzman y Gomez', 'Ground Floor, Campus Centre, Clayton campus', '99881409', 'monash@gyg.com.au', 'guzmanygomez.com', 'Mon–Sat: 8am – 10pm, Sun: 9am - 10pm', 'Mexican', NULL),\n" + // No image
-//                            "('The Halls Café', 'Halls of Residence, 58 College Walk, Clayton campus', '99056498', 'mrs.rsto@monash.edu', 'mrs.monash.edu.au/oncampus/operations/cafe.html', 'Mon-Fri: 12pm - 2:30pm', 'Cafe', NULL),\n" + // No image
-//                            "('Joe''s Pizzeria', '28 Sports Walk, Logan Hall, Clayton campus', '95586546', 'joesloganhall@gmail.com', 'www.joesloganhall.com.au', 'Mon–Fri: 11am – 9pm, Sat–Sun: 12pm – 8pm', 'Italian', NULL),\n" + // No image
-//                            "('Ma Long Kitchen and Dumplings', 'Ma Long Kitchen and Dumplings', '95487173', 'info@malongkitchen.com.au', 'www.malongkitchen.com.au', 'Mon–Fri: 9.30am – 6pm', 'Chinese', NULL),\n" + // No image
-//                            "('Monash Meeting Point', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99055714', 'cater@monashcatering.com.au', 'www.monashcateringonline.com.au', 'Mon–Fri: 7:30am – 5pm', 'International', NULL),\n" + // No image
-//                            "('The Monash Merchant', '28 Sports Walk, Clayton campus', '99052292 / 99052289', 'supermarket@monash.edu', NULL, 'Mon–Fri: 9am – 9:30pm, Sat–Sun: 11am – 6pm', 'Convenience Store', NULL),\n" + // No image
-//                            "('Neptune''s Seafood Catch', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton Campus', '0421942161', 'larry.ma.catering.group@gmail.com', NULL, 'Mon-Fri: 8am - 7pm', 'British', NULL),\n" + // No image
-//                            "('Nesso Café', 'Ground Floor, Learning and Teaching Building', '0430210102', 'nessocatering@gmail.com', 'www.cafenessoltb.com.au', 'Mon–Fri: 7am – 5:30pm', 'Cafe', NULL),\n" + // No image
-//                            "('Noodle Noodle', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99058058', NULL, NULL, 'Mon–Fri: 8am – 7pm', 'Chinese', NULL),\n" + // No image
-//                            "('Noodle Plus', 'Ground Floor, Learning and Teaching Building', NULL, NULL, NULL, 'Mon–Tue: 10am – 6.30pm', 'Chinese', NULL),\n" + // No image
-//                            "('PappaRich', 'Ground Floor, Campus Centre, 21 Chancellors Walk', '96454667', NULL, 'papparich.net.au', 'Mon–Sun: 10am – 7pm', 'Malaysian', NULL),\n" + // No image
-//                            "('Peri Peri', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99055714', 'cater@monashcatering.com.au', 'www.monashcateringonline.com.au', 'Mon–Fri: 8:30am – 5:30pm', 'Portugese', NULL),\n" + // No image
-//                            "('Roll''d', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, 'info@rolld.com.au', 'rolld.com.au', 'Mon–Fri: 8am – 3pm', 'Vietnamese', NULL),\n" + // No image
-//                            "('Sammy''s (Clayton)', 'Ground Floor, Monash Sport, 42 Scenic Boulevard, Clayton campus', NULL, NULL, NULL, 'Mon–Fri: 8am – 3pm, Sat: 8am – 1pm', 'Cafe', NULL),\n" + // No image
-//                            "('Schnitz', '28 Sports Walk, Clayton campus', '95435609', 'feedback@schnitz.com.au', 'schnitz.com.au', 'Mon–Sun: 10am – 9pm', 'German', NULL),\n" + // No image
-//                            "('Secret Garden Eatery', '13 College Walk, Andrew Hargrave Library, Clayton campus', '95487362', 'info@secretgardeneatery.com.au', 'secretgardeneatery.com.au', 'Mon-Fri: 7am - 4pm', 'Cafe', NULL),\n" + // No image
-//                            "('Sharetea', '32 Exhibition Walk, Clayton campus', NULL, 'marketing@sharetea.com.au', NULL, 'Mon–Fri: 10:30am – 6pm', 'Beverage', NULL),\n" + // No image
-//                            "('Sir John''s', 'Level 1, Campus Centre, 21 Chancellors Walk, Clayton campus', '99053035', 'msa-sirjohns@monash.edu', 'www.sirjohnsbar.com', 'Mon: 12am – 5pm, Tue–Thu: 12am – 7pm, Fri: 12am – 5pm', 'Bar', NULL),\n" + // No image
-//                            "('Subway', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '85540500', 'monashuni@subcatering.com.au', 'www.subway.com.au', 'Mon–Fri: 9am – 5pm', 'American', NULL),\n" + // No image
-//                            "('Sushi Sushi', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, 'info@sushisushi.com.au', 'sushisushi.com.au', 'Mon–Fri: 8am – 6pm', 'Japanese', NULL),\n" + // No image
-//                            "('Swift''s Café', 'Matheson Library, 40 Exhibition Walk, Clayton campus', '90686150', 'enquiries@thecounts.com.au', NULL, 'Mon–Fri: 8am – 4pm, Sat-Sun: 11am - 2pm', 'Cafe', NULL),\n" + // No image
-//                            "('Wholefoods', 'Level 1, Campus Centre, 21 Chancellors Walk, Clayton campus', '99024350', 'msa-wholefoods@monash.edu', 'monashwholefoods.org', 'Cafe: Mon–Fri: 9am – 4pm, Kitchen: Mon–Fri: 11:30am – 2:30pm', 'Vegetarian', NULL);",
-//                    busArtichokeImageByteArray,
-//                    busBoostImageByteArray,
-//                    busCinqueImageByteArray,
-//                    busSecularImageByteArray);
-//            db.execSQL(insertBusinessData);
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        insertUserData(db);
 
 
-        // Insert initial data
-//        String insertBusinessData = "INSERT INTO business (bus_name, bus_addr, bus_ph_nb, bus_email, website_url, bus_hours, bus_cuisine_type, bus_image) VALUES\n" +
-//                "('Artichoke & Whitebait', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '95432523', 'artichokewhitebait@gmail.com', 'artichokeandwhitebait.com.au', 'Mon–Fri: 7am – 5pm', 'Australian', busArtichokeImageByteArray),\n" +
-//                "('Boost Juice Clayton', 'Northern Plaza, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, NULL, 'boostjuice.com.au', 'Mon–Thu: 8am – 6pm,Fri: 8am – 5.30pm,Sat–Sun: 12–4pm', 'Beverage',busBoostImageByteArray),\n" +
-//                "('Café Cinque Lire', 'The Strip, 15 Innovation Walk, Clayton campus', '954007780', 'cinqueliremonash@yahoo.com.au', NULL, 'Mon–Thu: 6.30am – 5pm, Fri: 6.30am – 6.30pm', 'Italian'),\n" +
-//                "('Church of Secular Coffee', '32 Exhibition Walk, Clayton campus', '99050888', 'churchofsecularcoffe@monash.edu', NULL, 'Mon–Fri: 8am – 3pm', 'Cafe'),\n" +
-//                "('Coffee Point', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99055714', 'cater@monashcatering.com.au', 'www.monashcateringonline.com.au', 'Mon–Fri: 7:30am – 5pm', 'Cafe'),\n" +
-//                "('The Count''s', 'The Ian Potter Centre for Performing Arts, 48 Exhibition Walk, Clayton campus', '90686150', 'enquiries@thecounts.com.au', 'www.monash.edu/performing-arts-centres/eat-drink-clayton-campus', 'Mon–Fri: 11am – 3pm', 'Cafe'),\n" +
-//                "('The Den', 'Cellar West Room, Campus Centre, 21 Chancellor''s Walk, Clayton campus', '95446611', NULL, NULL, 'Mon–Fri: 7:30am – 6:30pm', 'Cafe'),\n" +
-//                "('Grafalis Cafe', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '0406278975', 'grafalismonash@gmail.com', NULL, 'Mon–Fri: 7:30am – 5:30pm', 'Cafe'),\n" +
-//                "('Guzman y Gomez', 'Ground Floor, Campus Centre, Clayton campus', '99881409', 'monash@gyg.com.au', 'guzmanygomez.com', 'Mon–Sat: 8am – 10pm, Sun: 9am - 10pm', 'Mexican'),\n" +
-//                "('The Halls Café', 'Halls of Residence, 58 College Walk, Clayton campus', '99056498', 'mrs.rsto@monash.edu', 'mrs.monash.edu.au/oncampus/operations/cafe.html', 'Mon-Fri: 12pm - 2:30pm', 'Cafe'),\n" +
-//                "('Joe''s Pizzeria', '28 Sports Walk, Logan Hall, Clayton campus', '95586546', 'joesloganhall@gmail.com', 'www.joesloganhall.com.au', 'Mon–Fri: 11am – 9pm, Sat–Sun: 12pm – 8pm', 'Italian'),\n" +
-//                "('Ma Long Kitchen and Dumplings', 'Ma Long Kitchen and Dumplings', '95487173', 'info@malongkitchen.com.au', 'www.malongkitchen.com.au', 'Mon–Fri: 9.30am – 6pm', 'Chinese'),\n" +
-//                "('Monash Meeting Point', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99055714', 'cater@monashcatering.com.au', 'www.monashcateringonline.com.au', 'Mon–Fri: 7:30am – 5pm', 'International'),\n" +
-//                "('The Monash Merchant', '28 Sports Walk, Clayton campus', '99052292 / 99052289', 'supermarket@monash.edu', NULL, 'Mon–Fri: 9am – 9:30pm, Sat–Sun: 11am – 6pm', 'Convenience Store'),\n" +
-//                "('Neptune''s Seafood Catch', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton Campus', '0421942161', 'larry.ma.catering.group@gmail.com', NULL, 'Mon-Fri: 8am - 7pm', 'British'),\n" +
-//                "('Nesso Café', 'Ground Floor, Learning and Teaching Building', '0430210102', 'nessocatering@gmail.com', 'www.cafenessoltb.com.au', 'Mon–Fri: 7am – 5:30pm', 'Cafe'),\n" +
-//                "('Noodle Noodle', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99058058', NULL, NULL, 'Mon–Fri: 8am – 7pm', 'Chinese'),\n" +
-//                "('Noodle Plus', 'Ground Floor, Learning and Teaching Building', NULL, NULL, NULL, 'Mon–Tue: 10am – 6.30pm', 'Chinese'),\n" +
-//                "('PappaRich', 'Ground Floor, Campus Centre, 21 Chancellors Walk', '96454667', NULL, 'papparich.net.au', 'Mon–Sun: 10am – 7pm', 'Malaysian'),\n" +
-//                "('Peri Peri', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '99055714', 'cater@monashcatering.com.au', 'www.monashcateringonline.com.au', 'Mon–Fri: 8:30am – 5:30pm', 'Portugese'),\n" +
-//                "('Roll''d', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, 'info@rolld.com.au', 'rolld.com.au', 'Mon–Fri: 8am – 3pm', 'Vietnamese'),\n" +
-//                "('Sammy''s (Clayton)', 'Ground Floor, Monash Sport, 42 Scenic Boulevard, Clayton campus', NULL, NULL, NULL, 'Mon–Fri: 8am – 3pm, Sat: 8am – 1pm', 'Cafe'),\n" +
-//                "('Schnitz', '28 Sports Walk, Clayton campus', '95435609', 'feedback@schnitz.com.au', 'schnitz.com.au', 'Mon–Sun: 10am – 9pm', 'German'),\n" +
-//                "('Secret Garden Eatery', '13 College Walk, Andrew Hargrave Library, Clayton campus', '95487362', 'info@secretgardeneatery.com.au', 'secretgardeneatery.com.au', 'Mon-Fri: 7am - 4pm', 'Cafe'),\n" +
-//                "('Sharetea', '32 Exhibition Walk, Clayton campus', NULL, 'marketing@sharetea.com.au', NULL, 'Mon–Fri: 10:30am – 6pm', 'Beverage'),\n" +
-//                "('Sir John''s', 'Level 1, Campus Centre, 21 Chancellors Walk, Clayton campus', '99053035', 'msa-sirjohns@monash.edu', 'www.sirjohnsbar.com', 'Mon: 12am – 5pm, Tue–Thu: 12am – 7pm, Fri: 12am – 5pm', 'Bar'),\n" +
-//                "('Subway', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', '85540500', 'monashuni@subcatering.com.au', 'www.subway.com.au', 'Mon–Fri: 9am – 5pm', 'American'),\n" +
-//                "('Sushi Sushi', 'Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus', NULL, 'info@sushisushi.com.au', 'sushisushi.com.au', 'Mon–Fri: 8am – 6pm', 'Japanese'),\n" +
-//                "('Swift''s Café', 'Matheson Library, 40 Exhibition Walk, Clayton campus', '90686150', 'enquiries@thecounts.com.au', NULL, 'Mon–Fri: 8am – 4pm, Sat-Sun: 11am - 2pm', 'Cafe'),\n" +
-//                "('Wholefoods', 'Level 1, Campus Centre, 21 Chancellors Walk, Clayton campus', '99024350', 'msa-wholefoods@monash.edu', 'monashwholefoods.org', 'Cafe: Mon–Fri: 9am – 4pm, Kitchen: Mon–Fri: 11:30am – 2:30pm', 'Vegetarian');";
-
-
-        String hashedPassword = Password.hash("password123").withScrypt().getResult();
-        String insertCustomerData = format("INSERT INTO user (username, password, email, first_name, last_name) VALUES\n" +
-                "('jdoe001', '%s', 'jdoe001@student.monash.edu', 'John', 'Doe'),\n" +
-                "('asmith002', '%s', 'asmith002@student.monash.edu', 'Alice', 'Smith'),\n" +
-                "('bwong003', '%s', 'bwong003@student.monash.edu', 'Ben', 'Wong'),\n" +
-                "('charris004', '%s', 'charris004@student.monash.edu', 'Carol', 'Harris'),\n" +
-                "('dlee005', '%s', 'dlee005@student.monash.edu', 'David', 'Lee'),\n" +
-                "('emma006', '%s', 'emma006@student.monash.edu', 'Emma', 'Brown'),\n" +
-                "('fclark007', '%s', 'fclark007@student.monash.edu', 'Frank', 'Clark'),\n" +
-                "('gwhite008', '%s', 'gwhite008@student.monash.edu', 'Grace', 'White'),\n" +
-                "('hking009', '%s', 'hking009@student.monash.edu', 'Henry', 'King'),\n" +
-                "('ijones010', '%s', 'ijones010@student.monash.edu', 'Irene', 'Jones');\n",
-                hashedPassword,
-                hashedPassword,
-                hashedPassword,
-                hashedPassword,
-                hashedPassword,
-                hashedPassword,
-                hashedPassword,
-                hashedPassword,
-                hashedPassword,
-                hashedPassword
-                );
-        db.execSQL(insertCustomerData);
+//        String hashedPassword = Password.hash("password123").withScrypt().getResult();
+//        String insertCustomerData = format("INSERT INTO user (username, password, email, first_name, last_name) VALUES\n" +
+//                "('jdoe001', '%s', 'jdoe001@student.monash.edu', 'John', 'Doe'),\n" +
+//                "('asmith002', '%s', 'asmith002@student.monash.edu', 'Alice', 'Smith'),\n" +
+//                "('bwong003', '%s', 'bwong003@student.monash.edu', 'Ben', 'Wong'),\n" +
+//                "('charris004', '%s', 'charris004@student.monash.edu', 'Carol', 'Harris'),\n" +
+//                "('dlee005', '%s', 'dlee005@student.monash.edu', 'David', 'Lee'),\n" +
+//                "('emma006', '%s', 'emma006@student.monash.edu', 'Emma', 'Brown'),\n" +
+//                "('fclark007', '%s', 'fclark007@student.monash.edu', 'Frank', 'Clark'),\n" +
+//                "('gwhite008', '%s', 'gwhite008@student.monash.edu', 'Grace', 'White'),\n" +
+//                "('hking009', '%s', 'hking009@student.monash.edu', 'Henry', 'King'),\n" +
+//                "('ijones010', '%s', 'ijones010@student.monash.edu', 'Irene', 'Jones');\n",
+//                hashedPassword,
+//                hashedPassword,
+//                hashedPassword,
+//                hashedPassword,
+//                hashedPassword,
+//                hashedPassword,
+//                hashedPassword,
+//                hashedPassword,
+//                hashedPassword,
+//                hashedPassword
+//                );
+//        db.execSQL(insertCustomerData);
 
 
 
@@ -290,7 +208,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
     }
 
@@ -681,6 +599,165 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("bus_cuisine_type", "Vegetarian");
         values.put("bus_image", busWholefoodsImageByteArray);  // No image
         db.insert("business", null, values);
+    }
+
+    private void insertUserData(SQLiteDatabase db) {
+        // Prepare the byte arrays for the user profile images
+        Bitmap userProfileImage1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user1);
+        byte[] userProfileImageByteArray1 = getBitmapAsByteArray(userProfileImage1);
+
+        Bitmap userProfileImage2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user2);
+        byte[] userProfileImageByteArray2 = getBitmapAsByteArray(userProfileImage2);
+
+        Bitmap userProfileImage3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user3);
+        byte[] userProfileImageByteArray3 = getBitmapAsByteArray(userProfileImage3);
+
+        Bitmap userProfileImage4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user4);
+        byte[] userProfileImageByteArray4 = getBitmapAsByteArray(userProfileImage4);
+
+        Bitmap userProfileImage5 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user5);
+        byte[] userProfileImageByteArray5 = getBitmapAsByteArray(userProfileImage5);
+
+        Bitmap userProfileImage6 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user6);
+        byte[] userProfileImageByteArray6 = getBitmapAsByteArray(userProfileImage6);
+
+        Bitmap userProfileImage7 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user7);
+        byte[] userProfileImageByteArray7 = getBitmapAsByteArray(userProfileImage7);
+
+        Bitmap userProfileImage8 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user8);
+        byte[] userProfileImageByteArray8 = getBitmapAsByteArray(userProfileImage8);
+
+        Bitmap userProfileImage9 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user9);
+        byte[] userProfileImageByteArray9 = getBitmapAsByteArray(userProfileImage9);
+
+        Bitmap userProfileImage10 = BitmapFactory.decodeResource(context.getResources(), R.drawable.user10);
+        byte[] userProfileImageByteArray10 = getBitmapAsByteArray(userProfileImage10);
+
+        // Define a common password to hash
+        String commonPassword = "password123";
+
+        // Create ContentValues for each user and insert them into the database
+        ContentValues values = new ContentValues();
+
+        // Insert data for User 1
+        String hashedPassword1 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "jdoe001");
+        values.put("password", hashedPassword1);
+        values.put("email", "jdoe001@student.monash.edu");
+        values.put("first_name", "John");
+        values.put("last_name", "Doe");
+        values.putNull("position_id");  // Set position_id as null if not applicable
+        values.put("profile_image", userProfileImageByteArray1);
+        db.insert("user", null, values);
+        values.clear();
+
+        // Insert data for User 2
+        String hashedPassword2 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "asmith002");
+        values.put("password", hashedPassword2);
+        values.put("email", "asmith002@student.monash.edu");
+        values.put("first_name", "Alice");
+        values.put("last_name", "Smith");
+        values.putNull("position_id");
+        values.put("profile_image", userProfileImageByteArray2);
+        db.insert("user", null, values);
+        values.clear();
+
+        // Insert data for User 3
+        String hashedPassword3 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "bwong003");
+        values.put("password", hashedPassword3);
+        values.put("email", "bwong003@student.monash.edu");
+        values.put("first_name", "Ben");
+        values.put("last_name", "Wong");
+        values.putNull("position_id");
+        values.put("profile_image", userProfileImageByteArray3);
+        db.insert("user", null, values);
+        values.clear();
+
+        // Insert data for User 4
+        String hashedPassword4 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "charris004");
+        values.put("password", hashedPassword4);
+        values.put("email", "charris004@student.monash.edu");
+        values.put("first_name", "Carol");
+        values.put("last_name", "Harris");
+        values.putNull("position_id");
+        values.put("profile_image", userProfileImageByteArray4);
+        db.insert("user", null, values);
+        values.clear();
+
+        // Insert data for User 5
+        String hashedPassword5 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "dlee005");
+        values.put("password", hashedPassword5);
+        values.put("email", "dlee005@student.monash.edu");
+        values.put("first_name", "David");
+        values.put("last_name", "Lee");
+        values.putNull("position_id");
+        values.put("profile_image", userProfileImageByteArray5);
+        db.insert("user", null, values);
+        values.clear();
+
+        // Insert data for User 6
+        String hashedPassword6 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "emma006");
+        values.put("password", hashedPassword6);
+        values.put("email", "emma006@student.monash.edu");
+        values.put("first_name", "Emma");
+        values.put("last_name", "Brown");
+        values.putNull("position_id");
+        values.put("profile_image", userProfileImageByteArray6);
+        db.insert("user", null, values);
+        values.clear();
+
+        // Insert data for User 7
+        String hashedPassword7 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "fclark007");
+        values.put("password", hashedPassword7);
+        values.put("email", "fclark007@student.monash.edu");
+        values.put("first_name", "Frank");
+        values.put("last_name", "Clark");
+        values.putNull("position_id");
+        values.put("profile_image", userProfileImageByteArray7);
+        db.insert("user", null, values);
+        values.clear();
+
+        // Insert data for User 8
+        String hashedPassword8 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "gwhite008");
+        values.put("password", hashedPassword8);
+        values.put("email", "gwhite008@student.monash.edu");
+        values.put("first_name", "Grace");
+        values.put("last_name", "White");
+        values.putNull("position_id");
+        values.put("profile_image", userProfileImageByteArray8);
+        db.insert("user", null, values);
+        values.clear();
+
+        // Insert data for User 9
+        String hashedPassword9 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "hking009");
+        values.put("password", hashedPassword9);
+        values.put("email", "hking009@student.monash.edu");
+        values.put("first_name", "Henry");
+        values.put("last_name", "King");
+        values.putNull("position_id");
+        values.put("profile_image", userProfileImageByteArray9);
+        db.insert("user", null, values);
+        values.clear();
+
+        // Insert data for User 10
+        String hashedPassword10 = Password.hash(commonPassword).withScrypt().getResult();
+        values.put("username", "ijones010");
+        values.put("password", hashedPassword10);
+        values.put("email", "ijones010@student.monash.edu");
+        values.put("first_name", "Irene");
+        values.put("last_name", "Jones");
+        values.putNull("position_id");
+        values.put("profile_image", userProfileImageByteArray10);
+        db.insert("user", null, values);
+        values.clear();
     }
 
 
