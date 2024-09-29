@@ -23,16 +23,13 @@
             android:name=".samplePostDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".userRegistrationPage"
-            android:exported="false" />
-        <activity
             android:name=".favouriteRestaurantsPage"
             android:exported="false" />
         <activity
-            android:name=".userReviewCreationPage"
+            android:name=".businessRegistrationPage"
             android:exported="false" />
         <activity
-            android:name=".dashboardPage"
+            android:name=".userRegistrationPage"
             android:exported="false" />
         <activity
             android:name=".ownerReviewRespondPage"
@@ -53,13 +50,13 @@
             android:name=".reviewCompetitionRecordPage"
             android:exported="false" />
         <activity
-            android:name=".businessRegistrationPage"
+            android:name=".loginPage"
             android:exported="false" />
         <activity
             android:name=".restaurantOwnerProfilePage"
             android:exported="false" />
         <activity
-            android:name=".loginPage"
+            android:name=".dashboardPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
