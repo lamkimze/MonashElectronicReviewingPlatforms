@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.renderscript.ScriptGroup;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -51,6 +53,11 @@ public class dashboardPage extends DrawerBaseActivity {
     ActivityDashboardPageBinding activityDashboardPageBinding;
     ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
+    private RecyclerView recyclerView;
+    private dashboardReviewCardAdapter adapter;
+    private ArrayList<dashboardReviewCard> reviewArrayList;
+    private ArrayList<ReviewModel> reviewLatestFiveList;
+
 
     DatabaseHelper dbHelper;
     CRUD_Business crudBusiness;
@@ -104,7 +111,38 @@ public class dashboardPage extends DrawerBaseActivity {
                 slideHandler.postDelayed(slideRunnable, 3000);
             }
         });
+        initializeDatabase();
 
+        initializeCardView();
+
+
+    }
+
+    private void initializeCardView() {
+        recyclerView = findViewById(R.id.reviewList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        reviewArrayList = new ArrayList<>();
+
+        adapter = new dashboardReviewCardAdapter(this, reviewArrayList);
+        recyclerView.setAdapter(adapter);
+
+        CreateDataForCards();
+
+    }
+
+
+    private void CreateDataForCards() {
+        reviewLatestFiveList = crudReview.getLatestReviews();
+        for (ReviewModel review : reviewLatestFiveList) {
+            Bitmap profilePic = crudImage.getProfilePictureByUserId(review.getReviewerId());
+            ArrayList<Bitmap> reviewImages = crudImage.getReviewImages(review.getReviewId());
+            dashboardReviewCard reviewCard = new dashboardReviewCard(review.getReviewTitle(), review.getReviewRating(), new ArrayList<Bitmap>(), review.getReviewText(), review.getReviewerId(), review.getBusinessId(), review.getReviewId(), profilePic, crudReview.getReviewDate(review.getReviewId()), crudUser.getFullName(review.getReviewerId()));
+//            dashboardReviewCard reviewCard = new dashboardReviewCard("review.getReviewTitle()", 3f, new ArrayList<Bitmap>(), "review.getReviewText()", 1, 2, 3, BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez), "2020-10-2", "Jamie");
+            reviewArrayList.add(reviewCard);
+        }
+        dashboardReviewCard review = new dashboardReviewCard("Great food", 4.5f, new ArrayList<Bitmap>(), "The food was amazing, I would definitely recommend this place to anyone who loves good food", 1, 1, 1, BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez), "2021-10-10", "John Doe");
+        reviewArrayList.add(review);
+        reviewArrayList.add(review);
     }
 
 
@@ -147,6 +185,12 @@ public class dashboardPage extends DrawerBaseActivity {
             crudReview = new CRUD_Review(dbHelper);
             ArrayList<Restaurant> dashboardRestaurantsTop5 = crudBusiness.getTop5RatedBusinesses();
             top5.addAll(dashboardRestaurantsTop5);
+//            if (crudReview != null) {
+//                ArrayList<ReviewModel> crudReviewLatestReviews = crudReview.getLatestReviews();
+//            } else {
+//                // Log an error or handle the null case
+//                Log.e("dashboardPage", "CRUD_Review is null");
+//            }
 
             // Notify success on the main thread
             new Handler(Looper.getMainLooper()).post(() ->
