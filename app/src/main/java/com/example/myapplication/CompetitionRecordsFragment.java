@@ -36,6 +36,7 @@ public class CompetitionRecordsFragment extends Fragment {
 
     ArrayList<Restaurant> listRestaurant = new ArrayList<>();
     FunctionalLibraries functionalLibraries = new FunctionalLibraries();
+    int userId;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

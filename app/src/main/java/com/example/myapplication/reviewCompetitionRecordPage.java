@@ -38,6 +38,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
     boolean filterHidden = true;
     private final ArrayList<String> selectedFilter = new ArrayList<>();
     String currentSearchText = "";
+    int userId;
 
     private boolean westernBool, southEastAsianBool, asianBool, cafe_beverageBool, otherBool = false;
     private Button all, western, southEastAsian, asian, cafe_beverage, others;
@@ -51,6 +52,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
         activityReviewCompetitionRecordPageBinding = ActivityReviewCompetitionRecordPageBinding.inflate(this.getLayoutInflater());
         allocateActivityTitle("Review Competition Records");
         setContentView(activityReviewCompetitionRecordPageBinding.getRoot());
+        userId = getIntent().getExtras().getInt("userId");
 
         try {
             dbHelper = new DatabaseHelper(this);
@@ -82,6 +84,7 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerAdapter = new CompetitionRecyclerAdapter();
+        recyclerAdapter.userid =userId;
         recyclerAdapter.setData(listRestaurant);
         recyclerView.setAdapter(recyclerAdapter);
 

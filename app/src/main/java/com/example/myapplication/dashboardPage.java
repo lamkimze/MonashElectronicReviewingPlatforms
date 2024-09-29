@@ -53,6 +53,7 @@ public class dashboardPage extends DrawerBaseActivity {
     ActivityDashboardPageBinding activityDashboardPageBinding;
     ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
+    int userId;
     private RecyclerView recyclerView;
     private dashboardReviewCardAdapter adapter;
     private ArrayList<dashboardReviewCard> reviewArrayList;
@@ -74,6 +75,7 @@ public class dashboardPage extends DrawerBaseActivity {
         activityDashboardPageBinding = ActivityDashboardPageBinding.inflate(getLayoutInflater());
         setContentView(activityDashboardPageBinding.getRoot());
         allocateActivityTitle("Electronic Review Platform");
+        userId = getIntent().getExtras().getInt("userId");
 
         onPostCreate(savedInstanceState);
         viewPager2 = findViewById(R.id.viewPager);
@@ -167,6 +169,7 @@ public class dashboardPage extends DrawerBaseActivity {
 
     public void onClickCompetitionReview(View view){
         Intent reviewCompetition = new Intent(this, reviewCompetitionRecordPage.class);
+        reviewCompetition.putExtra("userId", userId);
         startActivity(reviewCompetition);
     }
 

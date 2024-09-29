@@ -302,14 +302,14 @@ public class businessRegistrationPage extends AppCompatActivity {
         User newOwner = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
         boolean isInserted = crudUser.createUser(newOwner, stringPassword,null);
         newOwner.setId(crudUser.getUserID(newOwner));
-//        crudUser.assignOwnerToBus(newOwner, );
         if(isInserted){
             if (exist) {
                 crudBusiness.updateRestaurantDetail(stringRestaurantName, stringAddress, stringPhoneNumber, stringEmail, stringRestaurantURL, recyclerAdapter.databaseFormat(), stringCuisineType);
             } else {
-                crudBusiness.createBusiness(stringRestaurantName.trim(), stringAddress.trim(),
+                int busId = crudBusiness.createBusiness(stringRestaurantName.trim(), stringAddress.trim(),
                         stringPhoneNumber.trim(), stringEmail.trim(), stringRestaurantURL.trim(),
                         recyclerAdapter.databaseFormat().trim(), stringCuisineType.trim());
+                crudUser.createUserPosition(crudUser.getUserID(newOwner), busId, "Owner");
             }
             Toast.makeText(this, "Registration Successful!", Toast.LENGTH_LONG).show();
         }

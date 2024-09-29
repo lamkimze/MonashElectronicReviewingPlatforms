@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.graphics.Bitmap;
+
 import java.util.Comparator;
 import java.util.Date;
 
@@ -13,10 +15,11 @@ public class Restaurant extends RestaurantReviewCompetition {
     private String website;
     private String hours;
     private float stars;
-    private final Integer imageResource;
+    private final Integer imageResource; // default image
     private final String pictureUrl;
     private final String logoUrl;
     private String cuisine;
+    private Bitmap businessImage = null; // image of the business initially null
 
 
     public Restaurant(String name, String pictureUrl, String logoUrl){
@@ -29,8 +32,6 @@ public class Restaurant extends RestaurantReviewCompetition {
 
 
 //    getters and setters
-
-
     public int getId() {
         return id;
     }
@@ -124,6 +125,14 @@ public class Restaurant extends RestaurantReviewCompetition {
         return cuisine;
     }
 
+    public Bitmap getBusinessImage() {
+        return businessImage;
+    }
+
+    public void setBusinessImage(Bitmap businessImage) {
+        this.businessImage = businessImage;
+    }
+
     public static Comparator<Restaurant> medalAscending = new Comparator<Restaurant>() {
         @Override
         public int compare(Restaurant r1, Restaurant r2) {
@@ -150,4 +159,5 @@ public class Restaurant extends RestaurantReviewCompetition {
             return Double.compare(rating1, rating2);
         }
     };
+
 }

@@ -8,103 +8,127 @@
     tools:context=".userReviewCreationPage">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/lavender"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
 
         <TextView
             android:id="@+id/rcRestaurantName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:text="Restaurant Name"
+            android:textAlignment="center"
             android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/textView24"
-            android:layout_width="106dp"
+        <LinearLayout
+            android:paddingTop="20dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Date Visited"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rcRestaurantName"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/reviewTitleLayout"
-            android:layout_width="0dp"
-            android:layout_height="66dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9"
-            tools:ignore="MissingConstraints">
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center|center_vertical"
+                android:text="Rating :"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/reviewTitle"
-                android:layout_width="match_parent"
+            <RatingBar
+                android:id="@+id/reviewCreateRatingBar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="250dp"
-                android:inputType="text" />
+                android:numStars="5"
+                android:rating="0" />
 
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/textView26"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:text="Rating"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reviewTitleLayout" />
-
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:progressTint="@color/purple"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView26"
-            app:layout_constraintTop_toBottomOf="@+id/reviewTitleLayout" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:text="Review Title"
             android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rcRestaurantName" />
+            android:textStyle="bold"/>
+
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/reviewDetailLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            style="@style/Widget.Material3.TextInputLayout.FilledBox"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            app:boxStrokeWidthFocused="0sp"-->
+<!--            app:boxStrokeWidth="0sp"-->
+<!--            app:boxCornerRadiusTopStart="10sp"-->
+<!--            app:boxCornerRadiusTopEnd="10sp"-->
+<!--            app:boxCornerRadiusBottomStart="10sp"-->
+<!--            app:boxCornerRadiusBottomEnd="10sp"-->
+<!--            android:inputType="text">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/reviewDetail"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"-->
+<!--                android:hint="Add your comments ..."-->
+<!--                android:inputType="text|textLongMessage|textAutoComplete|textAutoCorrect|textMultiLine" />-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reviewTitleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            android:layout_marginTop="8dp"
+            app:boxStrokeWidthFocused="0sp"
+            app:boxStrokeWidth="0sp"
+            app:boxCornerRadiusTopStart="10sp"
+            app:boxCornerRadiusTopEnd="10sp"
+            app:boxCornerRadiusBottomStart="10sp"
+            app:boxCornerRadiusBottomEnd="10sp"
+            android:inputType="text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reviewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <TextView
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:text="Review Detail"
             android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+            android:textStyle="bold"/>
 
 
         <!--        <HorizontalScrollView-->
@@ -124,126 +148,122 @@
         <!--                android:orientation="vertical" />-->
         <!--        </HorizontalScrollView>-->
 
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/reviewDetailLayout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10"
-            tools:ignore="MissingConstraints">
-
-
+            app:boxStrokeWidthFocused="0sp"
+            app:boxStrokeWidth="0sp"
+            app:boxCornerRadiusTopStart="10sp"
+            app:boxCornerRadiusTopEnd="10sp"
+            app:boxCornerRadiusBottomStart="10sp"
+            app:boxCornerRadiusBottomEnd="10sp"
+            android:inputType="text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/reviewDetail"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
                 android:inputType="text|textLongMessage|textAutoComplete|textAutoCorrect|textMultiLine" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="90dp"
-            android:layout_height="87dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/round_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reviewDetailLayout"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
-
         <TextView
-            android:id="@+id/totalPhotos"
+            android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/recyclerView_Gallery_Images"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton"
-            tools:ignore="MissingConstraints" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="Add Tags"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_Gallery_Images"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_marginEnd="4dp"
-            android:scrollbarStyle="outsideInset"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/button3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toEndOf="@+id/imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/reviewDetailLayout" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/tagsLayout"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            app:helperText="Enter each tags space separated"
+            app:helperTextTextColor="@color/red"
+            app:boxStrokeWidthFocused="0sp"
+            app:boxStrokeWidth="0sp"
+            app:boxCornerRadiusTopStart="10sp"
+            app:boxCornerRadiusTopEnd="10sp"
+            app:boxCornerRadiusBottomStart="10sp"
+            app:boxCornerRadiusBottomEnd="10sp">
 
+            <com.example.myapplication.TagsInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
+                android:id="@+id/tagsET"/>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/selectCard"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="24dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp"
-            app:layout_constraintBottom_toTopOf="@id/button3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/totalPhotos">
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:paddingTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/round_button"
+                    android:foregroundGravity="center"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+                <TextView
+                    android:id="@+id/totalPhotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_Gallery_Images"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="vertical">
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+
+
 
         <Button
-            android:id="@+id/button3"
-            android:layout_width="375dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/purple"
-            android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.222"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
+            android:id="@+id/reviewSubmit"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView_Gallery_Images">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Submit"
+            android:backgroundTint="@color/purple"
+            android:layout_marginTop="20dp"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_arrow_down" />
-
-            <TextView
-                android:id="@+id/tvCuisineProd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Select Cuisine and Products" />
-
-        </RelativeLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

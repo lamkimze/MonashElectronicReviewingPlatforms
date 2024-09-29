@@ -52,10 +52,12 @@ public class loginPage extends AppCompatActivity {
                 }
                 else{
                     loginUser = new User(stringUserName);
-                    if(crudUser.verifyLogin(loginUser, stringPassword)){
+                    int userId = crudUser.loginUser(loginUser, stringPassword);
+                    if(userId != -1){
                         Toast.makeText(loginPage.this, "Login Successful !!", Toast.LENGTH_LONG).show();
                         Intent loginIntent = new Intent(getApplicationContext(), dashboardPage.class);
-                        loginIntent.putExtra("userId", loginUser.getId());
+                        loginIntent.putExtra("userId", userId);
+                        Log.e("User id", String.valueOf(userId) );
                         startActivity(loginIntent);
                     }
                     else{

@@ -16,7 +16,7 @@
       <SelectionState runConfigName="reviewCompetitionRecordPage">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="Restauraunt List Page">
+      <SelectionState runConfigName="loginPage (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

@@ -1,185 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".restaurantDetailPage">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Fixed detailed header at the top -->
+    <include
+        layout="@layout/detail_header"
+        android:id="@+id/detailed_header_bkg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="250dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <include layout="@layout/detail_header"
-            android:id="@+id/detailed_header_bkg"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+    <!-- Scrollable content -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/detailed_header_bkg"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <RatingBar
-            android:id="@+id/detailed_average_rating"
-            style="?android:ratingBarStyleIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:backgroundTint="#FFEB3B"
-            android:rating="4.5"
-            android:stepSize="1"
-            app:animation="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView20"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="270dp"
-            android:fontFamily="sans-serif-black"
-            android:text="Ratings &amp; Reviews"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="72dp"
-            android:text="4.6"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView21"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/total_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/detailed_average_rating"
-            android:layout_marginStart="64dp"
-            android:text="123, 400"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailed_average_rating">
-
-        </TextView>
-
-        <com.taufiqrahman.reviewratings.RatingReviews
-            android:id="@+id/rating_reviews"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="290dp"
-            app:animation="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView21"
-            app:layout_constraintTop_toTopOf="parent"
-            app:max_value="100"
-            app:rounded="true"
-            app:show_label="true"
-            app:show_raters="false"
-            app:spaces="7dp"
-            app:text_color="@color/black"
-            app:text_size="10sp"
-            app:width="12dp" />
-
-        <TextView
-            android:id="@+id/textView28"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:text="Reviews:"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/total_rating" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="41dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView28"
-            app:srcCompat="@drawable/filter" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:hint="Filter"
-            app:layout_constraintEnd_toStartOf="@+id/sortBtn"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView28"
-            tools:ignore="MissingConstraints">
-
-            <AutoCompleteTextView
-                android:id="@+id/filter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/commentRecyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <ImageButton
-            android:id="@+id/sortBtn"
-            android:layout_width="41dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/textInputLayout"
-            app:layout_constraintTop_toBottomOf="@+id/textView28"
-            app:srcCompat="@drawable/sort" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sortSelect"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="125dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:hint="Sort"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/sortBtn"
-            app:layout_constraintTop_toBottomOf="@+id/textView28"
-            tools:ignore="MissingConstraints">
+            android:orientation="vertical">
 
-            <AutoCompleteTextView
-                android:id="@+id/sort"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="Ratings &amp; Reviews"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-</ScrollView>
+                    <TextView
+                        android:id="@+id/averageRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="4.6"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <RatingBar
+                        android:id="@+id/averageRatingBar"
+                        style="?android:ratingBarStyleIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:rating="4.5"
+                        android:stepSize="0.5"
+                        android:numStars="5"
+                        android:isIndicator="true"
+                        android:backgroundTint="@color/purple" />
+
+                    <TextView
+                        android:id="@+id/total_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="123, 400"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <com.taufiqrahman.reviewratings.RatingReviews
+                    android:id="@+id/rating_reviews"
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    app:animation="true"
+                    app:max_value="100"
+                    app:rounded="true"
+                    app:show_label="true"
+                    app:show_raters="false"
+                    app:spaces="7dp"
+                    app:text_color="@color/black"
+                    app:text_size="10sp"
+                    app:width="12dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:text="Reviews:"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="8dp">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="41dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/filter" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Filter">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="8dp">
+
+                <ImageButton
+                    android:id="@+id/sortBtn"
+                    android:layout_width="41dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    app:srcCompat="@drawable/sort" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sortSelect"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Sort">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/sort"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

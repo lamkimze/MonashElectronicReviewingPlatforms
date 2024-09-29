@@ -58,6 +58,7 @@
             android:numStars="5"
             android:scaleX="0.7"
             android:scaleY="0.7"
+            android:progressTint="@color/purple"
             android:stepSize="0.5" />
 
 

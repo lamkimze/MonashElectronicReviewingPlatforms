@@ -19,6 +19,13 @@
     <string name="message_error_unknown_error">Something went wrong</string>
     <string name="message_error_internet_error">Internet connection lost</string>
     <string name="message_error_server_error">Server not found</string>
+    <string name="filter_by">Filter by</string>
+    <string name="search">Search</string>
+    <string-array name="filter_options">
+        <item>Top Rated</item>
+        <item>A-Z</item>
+        <item>Z-A</item>
+    </string-array>
 
 
 </resources>

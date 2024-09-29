@@ -54,7 +54,7 @@ public class userRegistrationPage extends AppCompatActivity {
     TextInputEditText etFirstName, etLastName, etUserName, etPassword, etConPassword, etEmail;
     TextInputEditText etBusId;
     String stringFirstName, stringLastName, stringUserName, stringPassword, stringConPassword, stringEmail;
-    String stringPosition;
+    String stringPosition, busId;
     String [] positions = {"Fast Food Attendant", "Busser", "Runner", "Cashier", "DishWasher", "Barista", "Prep Cook",
             "Expeditor", "Pastry Cook", "Server", "Bartender", "Line Cook", "Kitchen Manager", "Sous Chef", "Catering Manager",
     "General Manager", "Maintenance Person", "Executive Chef", "Main Chef"};
@@ -115,7 +115,7 @@ public class userRegistrationPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try{
-                    String busId = etBusId.getText().toString();
+                    busId = etBusId.getText().toString();
                     verifyRestaurant = crudBusiness.getRestaurant(Integer.parseInt(busId));
                     if(verifyRestaurant != null){
                         restaurantVerify.setVisibility(View.VISIBLE);
@@ -174,11 +174,16 @@ public class userRegistrationPage extends AppCompatActivity {
                                 user.setPosition(stringPosition);
                                 boolean isInserted =  crudUser.createUser(user, stringPassword);
                                 user.setId(crudUser.getUserID(user));
-                                if (selectedImageUri != null) {
-                                    Bitmap bitmap = getBitmapFromUri(selectedImageUri);
-                                    crudImage.setUserProfilePicture(user.getId(), bitmap);
-                                }
+                                Log.e("User id", String.valueOf(crudUser.getUserID(user)) );
                                 if (isInserted) {
+                                    crudUser.createUserPosition(crudUser.getUserID(user), Integer.parseInt(busId), stringPosition);
+                                    Bitmap profilePicture;
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                        profilePicture = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getApplicationContext().getContentResolver(), selectedImageUri));
+                                    }else {
+                                        profilePicture = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImageUri);
+                                    }
+                                    crudImage.setUserProfilePicture(crudUser.getUserID(user), profilePicture);
                                     Toast.makeText(this, "Registration Successful !!", Toast.LENGTH_LONG).show();
                                     switchLoginPage();
                                 } else {
@@ -231,20 +236,4 @@ public class userRegistrationPage extends AppCompatActivity {
 
     }
 
-    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            // For newer Android versions (API level 28 and above)
-            ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), uri);
-            return ImageDecoder.decodeBitmap(source);
-        } else {
-            // For older Android versions
-            return MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-        }
-    }
-
-//    public void onClickUploadPicture(View view){
-//        if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
-//        }
-//    }
 }
