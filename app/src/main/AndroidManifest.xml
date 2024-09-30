@@ -32,7 +32,7 @@
             android:name=".userReviewCreationPage"
             android:exported="false" />
         <activity
-            android:name=".dashboardPage"
+            android:name=".profilePage"
             android:exported="false" />
         <activity
             android:name=".ownerReviewRespondPage"
@@ -41,7 +41,7 @@
             android:name=".ownerRestaurantViewingPage"
             android:exported="false" />
         <activity
-            android:name=".profilePage"
+            android:name=".dashboardPage"
             android:exported="false" />
         <activity
             android:name=".restaurantListPage"

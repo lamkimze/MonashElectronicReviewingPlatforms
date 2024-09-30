@@ -44,7 +44,7 @@ public class R_RecyclerViewAdapter extends RecyclerView.Adapter<R_RecyclerViewAd
     public void onBindViewHolder(@NonNull R_RecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.reviewTitle.setText(reviewModels.get(position).getReviewTitle());
         holder.reviewRating.setRating(reviewModels.get(position).getReviewRating());
-        holder.imageView.setImageResource(reviewModels.get(position).getReviewImages().indexOf(1));
+        holder.imageView.setImageResource(reviewModels.get(position).getReviewImages().indexOf(0));
 
     }
 

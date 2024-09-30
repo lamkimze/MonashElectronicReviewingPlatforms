@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -13,6 +14,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.myapplication.Database.CRUD_User;
 import com.google.android.material.navigation.NavigationView;
 
 public class DrawerBaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -20,6 +22,8 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     DrawerLayout drawerLayout;
     boolean isBackDisabled = false;
     int userid;
+    Position userPosition;
+    CRUD_User crudUser;
 
 
     public void setContentView(View view){
@@ -28,7 +32,13 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         container.addView(view);
         super.setContentView(drawerLayout);
 
-//        userid = getIntent().getExtras().getInt("userId");
+        userid = getIntent().getExtras().getInt("userId");
+        //userPosition = crudUser.getUserPoistion(userid);
+
+
+
+
+        Log.d("TAG", "User ID: " + userid);
 
         Toolbar toolbar = drawerLayout.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -57,6 +67,23 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         startActivity(favIntent);
     }
 
+    private void goToProfile(){
+        userid = getIntent().getExtras().getInt("userId");
+        userPosition = null;
+        if (userPosition == null){
+            Intent favIntent = new Intent(this, profilePage.class);
+            startActivity(favIntent);
+        }
+
+        else if (userPosition.getPositionName() == "Owner"){
+            Intent favIntent = new Intent(this, restaurantOwnerProfilePage.class);
+            startActivity(favIntent);
+        }else{
+            Intent favIntent = new Intent(this, profilePage.class);
+            startActivity(favIntent);
+        }
+    }
+
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
@@ -66,6 +93,9 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         }else if(id == R.id.item_setting){
 
         } else if (id == R.id.item_share) {
+
+        } else if (id == R.id.item_profile) {
+            goToProfile();
 
         } else if(id == R.id.item_favouriteList){
             goToFavourite();

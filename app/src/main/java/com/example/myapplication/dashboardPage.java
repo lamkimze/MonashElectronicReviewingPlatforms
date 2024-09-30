@@ -10,6 +10,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.renderscript.ScriptGroup;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +55,7 @@ public class dashboardPage extends DrawerBaseActivity {
         setContentView(activityDashboardPageBinding.getRoot());
         allocateActivityTitle("Electronic Review Platform");
         userId = getIntent().getExtras().getInt("userId");
+        Log.e("User id", String.valueOf(userId) );
 
         onPostCreate(savedInstanceState);
         viewPager2 = findViewById(R.id.viewPager);
@@ -117,6 +119,7 @@ public class dashboardPage extends DrawerBaseActivity {
     public void onClickCompetitionReview(View view){
         Intent reviewCompetition = new Intent(this, reviewCompetitionRecordPage.class);
         reviewCompetition.putExtra("userId", userId);
+        Log.d("TAG", "User ID: " + userid);
         startActivity(reviewCompetition);
     }
 

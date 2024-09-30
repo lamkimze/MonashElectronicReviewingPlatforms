@@ -78,6 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/userRecyclerView"
         android:layout_width="406dp"
         android:layout_height="338dp"
         android:layout_marginStart="1dp"

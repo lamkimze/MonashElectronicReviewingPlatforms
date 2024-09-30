@@ -12,6 +12,10 @@
             android:icon="@drawable/nav_home"
             android:title="Home"/>
         <item
+            android:id="@+id/item_profile"
+            android:icon="@drawable/person_icon"
+            android:title="Profile"/>
+        <item
             android:id="@+id/item_setting"
             android:icon="@drawable/nav_settings"
             android:title="Setting"/>
