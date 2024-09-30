@@ -61,7 +61,8 @@ public class userReviewCreationPage extends AppCompatActivity {
     TextView reviewTitle;
     TextView reviewContent;
     ImageButton pick;
-    int busId, reviewerId;
+    int busId, reviewerId, reviewId;
+    String key;
     RatingBar ratingBar;
     TagsInputEditText tagsInputEditText;
     RecyclerAdapter adapter;
@@ -102,11 +103,11 @@ public class userReviewCreationPage extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Now, you can enable the Up button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
         busId = getIntent().getExtras().getInt("busId");
         reviewerId = getIntent().getExtras().getInt("userId");
+        reviewId = getIntent().getExtras().getInt("reviewId", 0);
+        key = getIntent().getExtras().getString("key", "createPost");
         Log.e("userId", String.valueOf(reviewerId));
         Log.e("businessId", String.valueOf(busId));
 
@@ -118,15 +119,21 @@ public class userReviewCreationPage extends AppCompatActivity {
         restaurantName.setText(reviewed_restaurant.getName());
 
         reviewTitle = findViewById(R.id.reviewTitle);
-        stringReviewTitle = reviewTitle.getText().toString();
-
         reviewContent = findViewById(R.id.reviewDetail);
-        stringReviewContent = reviewContent.getText().toString();
-
         ratingBar = findViewById(R.id.reviewCreateRatingBar);
-        rating = (int) ratingBar.getRating();
-
         tagsInputEditText = findViewById(R.id.tagsET);
+
+        if(key.equals("editPost")){
+            ReviewModel editReview = crudReview.getReview(reviewId);
+            ratingBar.setRating(editReview.getReviewRating());
+            reviewTitle.setText(editReview.getReviewTitle());
+            reviewContent.setText(editReview.getReviewText());
+            tagsInputEditText.setText(editReview.getTags().toString());
+        }
+
+        stringReviewTitle = reviewTitle.getText().toString();
+        stringReviewContent = reviewContent.getText().toString();
+        rating = (int) ratingBar.getRating();
         stringTags = tagsInputEditText.getText().toString();
 
         textView = findViewById(R.id.totalPhotos);
@@ -187,7 +194,11 @@ public class userReviewCreationPage extends AppCompatActivity {
                 // Save review to database
                 try {
                     reviewModel.setTags(stringTags.split(" "));
-                    crudReview.createReview(reviewModel);
+                    if(key.equals("editPost")){
+                        crudReview.replaceReview(reviewId, reviewModel);
+                    }else{
+                        crudReview.createReview(reviewModel);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("userReviewCreationPage", "Error creating review: " + e.getMessage());
