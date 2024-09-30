@@ -7,8 +7,7 @@ public class Response {
     private String responseText;
     private String responseDate;
 
-    public Response(int responseID, int reviewID, int userID, String responseText) {
-        this.responseID = responseID;
+    public Response(int reviewID, int userID, String responseText) {
         this.reviewID = reviewID;
         this.userID = userID;
         this.responseText = responseText;
