@@ -301,6 +301,8 @@ public class CRUD_Review {
                                 cursor.getInt(customerIndex),
                                 cursor.getInt(businessIndex)
                         );
+                        reviewModel.setReviewerId(cursor.getInt(customerIndex));
+                        reviewModel.setReviewId(cursor.getInt(reviewIdIndex));
 
                         // Add the review to the list
                         reviews.add(reviewModel);
