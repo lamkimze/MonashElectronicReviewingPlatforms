@@ -18,6 +18,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class CRUD_Review {
@@ -54,29 +55,13 @@ public class CRUD_Review {
         contentValues.put("review_tags", gsonTags);
         contentValues.put("likes_user", gsonLikes);
         contentValues.put("dislike_user", gsonDislikes);
-        db.insert("review", null, contentValues);
-
-        // Insert the images into the database
-
-        // Get the review ID
-        String selectReview = format(locale,
-                "SELECT review_id FROM review WHERE bus_id = %d AND user_id = %d;",
-                review.getBusinessId(), review.getReviewerId()
-        );
-        Cursor cursor = db.rawQuery(selectReview, null);
-        cursor.moveToFirst();
-        int reviewIndex = cursor.getColumnIndex("review_id");
-        if (reviewIndex != -1) {
-            int reviewId = cursor.getInt(reviewIndex);
-            cursor.close();
-            CRUD_Image crudImage = new CRUD_Image(dbHelper);
-            try {
-                crudImage.addImagesToReview(reviewId, review.getReviewImages());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        int reviewID = (int) db.insert("review", null, contentValues);
+        CRUD_Image crudImage = new CRUD_Image(dbHelper);
+        try {
+            crudImage.addImagesToReview(reviewID, review.getReviewImages());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
     /**
@@ -119,9 +104,13 @@ public class CRUD_Review {
         likesIndex = cursor.getColumnIndex("likes_user");
         disLikeIndex = cursor.getColumnIndex("dislike_user");
 
+        int[] indices = {likesIndex, disLikeIndex, tagsIndex, reviewIdIndex, timestampIndex,
+                         ratingIndex, titleIndex, textIndex, customerIndex, businessIndex};
 
-        // If the indexes are not found, return null
-        if (likesIndex == -1 || disLikeIndex == -1 || tagsIndex == -1 || reviewIdIndex == -1 || timestampIndex == -1 || ratingIndex == -1 || titleIndex == -1 || textIndex == -1 || customerIndex == -1 || businessIndex == -1) {
+
+
+        // check if any of the indices are -1
+        if (Arrays.stream(indices).anyMatch(i -> i == -1)) {
             cursor.close();
             return null;
         } else {
@@ -268,14 +257,12 @@ public class CRUD_Review {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String whereClause = format(locale, "response_id=%d", responseId);
         db.delete("response", whereClause, null);
-        db.close();
     }
 
     public void deleteAllResponse(int reviewId){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String whereClause = format(locale, "review_id=%d", reviewId);
         db.delete("response", whereClause, null);
-        db.close();
     }
 
     public void replaceReview(int reviewId, ReviewModel review) {
@@ -313,7 +300,6 @@ public class CRUD_Review {
                 db.close();
                 e.printStackTrace();
             }
-        db.close();
     }
 
     public boolean updateLikes(int reviewId, ArrayList<Integer> likeList) {
@@ -328,7 +314,6 @@ public class CRUD_Review {
         // Update the likes_user field in the database
         contentValues.put("likes_user", gsonLikes);
         db.update("review", contentValues, whereClause, null);
-        db.close();
         return true;
     }
 
@@ -345,7 +330,6 @@ public class CRUD_Review {
         // Update the dislikes_user field in the database
         contentValues.put("dislike_user", gsonDisLike);
         db.update("review", contentValues, whereClause, null);
-        db.close();
         return true;
     }
 
