@@ -76,6 +76,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "review_title TEXT, " +
                 "review_text TEXT, " +
                 "review_date DATE DEFAULT (datetime('now','localtime')), " +
+                "likes_user TEXT, " +
+                "dislike_user TEXT, " +
                 "review_tags TEXT, " +
                 "FOREIGN KEY (user_id) REFERENCES user(user_id), " +
                 "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
@@ -95,7 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "review_id INTEGER, " +
                 "user_id INTEGER, " +
                 "response_text TEXT, " +
-                "response_date DATE, " +
+                "response_date DATE DEFAULT (datetime('now','localtime')), " +
                 "FOREIGN KEY (review_id) REFERENCES review(review_id), " +
                 "FOREIGN KEY (user_id) REFERENCES user(user_id));";
         db.execSQL(createResponseTable);

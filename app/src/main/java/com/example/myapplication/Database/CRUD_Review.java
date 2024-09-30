@@ -41,11 +41,19 @@ public class CRUD_Review {
         contentValues.put("review_title", review.getReviewTitle());
         contentValues.put("review_text", review.getReviewText());
 
+
         Gson gson = new Gson();
         String[] allTags = review.getTags();
+        ArrayList<Integer> allLikes = review.getLikes();
+        ArrayList<Integer> allDisLikes = review.getDislike();
+
         String gsonTags = gson.toJson(allTags);
+        String gsonLikes = gson.toJson(allLikes);
+        String gsonDislikes = gson.toJson(allDisLikes);
 
         contentValues.put("review_tags", gsonTags);
+        contentValues.put("likes_user", gsonLikes);
+        contentValues.put("dislike_user", gsonDislikes);
         db.insert("review", null, contentValues);
 
         // Insert the images into the database
@@ -99,7 +107,7 @@ public class CRUD_Review {
         Cursor cursor = db.rawQuery(selectReview, null);
         cursor.moveToFirst();
 
-        int tagsIndex, reviewIdIndex, ratingIndex, titleIndex, textIndex, customerIndex, businessIndex, timestampIndex;
+        int likesIndex, disLikeIndex, tagsIndex, reviewIdIndex, ratingIndex, titleIndex, textIndex, customerIndex, businessIndex, timestampIndex;
         ratingIndex = cursor.getColumnIndex("star_rating");
         titleIndex = cursor.getColumnIndex("review_title");
         textIndex = cursor.getColumnIndex("review_text");
@@ -108,10 +116,12 @@ public class CRUD_Review {
         timestampIndex = cursor.getColumnIndex("review_date");
         reviewIdIndex = cursor.getColumnIndex("review_id");
         tagsIndex = cursor.getColumnIndex("review_tags");
+        likesIndex = cursor.getColumnIndex("likes_user");
+        disLikeIndex = cursor.getColumnIndex("dislike_user");
 
 
         // If the indexes are not found, return null
-        if (tagsIndex == -1 || reviewIdIndex == -1 || timestampIndex == -1 || ratingIndex == -1 || titleIndex == -1 || textIndex == -1 || customerIndex == -1 || businessIndex == -1) {
+        if (likesIndex == -1 || disLikeIndex == -1 || tagsIndex == -1 || reviewIdIndex == -1 || timestampIndex == -1 || ratingIndex == -1 || titleIndex == -1 || textIndex == -1 || customerIndex == -1 || businessIndex == -1) {
             cursor.close();
             return null;
         } else {
@@ -127,9 +137,14 @@ public class CRUD_Review {
             reviewModel.setTimestamp(cursor.getString(timestampIndex));
 
             Gson gson = new Gson();
-            Type type = new TypeToken<String[]>() {}.getType();
-            String[] tags = gson.fromJson(cursor.getString(tagsIndex), type);
+            Type stringType = new TypeToken<String[]>() {}.getType();
+            Type intType = new TypeToken<ArrayList<Integer>>() {}.getType();
+            String[] tags = gson.fromJson(cursor.getString(tagsIndex), stringType);
+            ArrayList<Integer> likes = gson.fromJson(cursor.getString(likesIndex), intType);
+            ArrayList<Integer> dislikes = gson.fromJson(cursor.getString(disLikeIndex), intType);
             reviewModel.setTags(tags);
+            reviewModel.setLikes(likes);
+            reviewModel.setDislike(dislikes);
 
             cursor.close();
             return reviewModel;
@@ -156,11 +171,10 @@ public class CRUD_Review {
         textIndex = cursor.getColumnIndex("response_text");
         dateIndex = cursor.getColumnIndex("response_date");
         Response response = new Response(
-                cursor.getInt(responseIndex),
                 cursor.getInt(reviewIndex),
                 cursor.getInt(userIndex),
                 cursor.getString(textIndex)
-        );
+        );response.setResponseID(cursor.getInt(responseIndex));
         response.setResponseDate(cursor.getString(dateIndex));
         cursor.close();
         return response;
@@ -242,6 +256,99 @@ public class CRUD_Review {
         }
         return responses;
     }
+
+    public void deleteReview(int reviewId){
+        deleteAllResponse(reviewId);
+        SQLiteDatabase db =dbHelper.getWritableDatabase();
+        String whereClause = format(locale, "review_id=%d", reviewId);
+        db.delete("review", whereClause, null);
+    }
+
+    public void deleteResponse(int responseId){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = format(locale, "response_id=%d", responseId);
+        db.delete("response", whereClause, null);
+        db.close();
+    }
+
+    public void deleteAllResponse(int reviewId){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = format(locale, "review_id=%d", reviewId);
+        db.delete("response", whereClause, null);
+        db.close();
+    }
+
+    public void replaceReview(int reviewId, ReviewModel review) {
+        // insert the review into the database
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("user_id", review.getReviewerId());
+        contentValues.put("bus_id", review.getBusinessId());
+        contentValues.put("star_rating", review.getReviewRating());
+        contentValues.put("review_title", review.getReviewTitle());
+        contentValues.put("review_text", review.getReviewText());
+
+        Gson gson = new Gson();
+        String[] allTags = review.getTags();
+        ArrayList<Integer> likes = review.getLikes();
+        ArrayList<Integer> dislike = review.getDislike();
+
+        String gsonLikes = gson.toJson(likes);
+        String gsonDislikes = gson.toJson(dislike);
+        String gsonTags = gson.toJson(allTags);
+
+        String whereClause = format(locale, "review_id=%d", reviewId);
+
+        contentValues.put("likes_user", gsonLikes);
+        contentValues.put("dislike_user", gsonDislikes);
+        contentValues.put("review_tags", gsonTags);
+        db.update("review", contentValues, whereClause, null);
+
+        // Insert the images into the database
+
+            CRUD_Image crudImage = new CRUD_Image(dbHelper);
+            try {
+                crudImage.addImagesToReview(reviewId, review.getReviewImages());
+            } catch (Exception e) {
+                db.close();
+                e.printStackTrace();
+            }
+        db.close();
+    }
+
+    public boolean updateLikes(int reviewId, ArrayList<Integer> likeList) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        // Serialize the updated list back to JSON
+        Gson gson = new Gson();
+        String gsonLikes = gson.toJson(likeList);
+        String whereClause = String.format(locale, "review_id=%d", reviewId);
+
+        // Update the likes_user field in the database
+        contentValues.put("likes_user", gsonLikes);
+        db.update("review", contentValues, whereClause, null);
+        db.close();
+        return true;
+    }
+
+
+    public boolean updateDisLikes(int reviewId, ArrayList<Integer> dislikeList) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        // Serialize the updated list back to JSON
+        Gson gson = new Gson();
+        String gsonDisLike = gson.toJson(dislikeList);
+        String whereClause = String.format(locale, "review_id=%d", reviewId);
+
+        // Update the dislikes_user field in the database
+        contentValues.put("dislike_user", gsonDisLike);
+        db.update("review", contentValues, whereClause, null);
+        db.close();
+        return true;
+    }
+
 
 //    /**
 //     * Method to get the reviewerId
