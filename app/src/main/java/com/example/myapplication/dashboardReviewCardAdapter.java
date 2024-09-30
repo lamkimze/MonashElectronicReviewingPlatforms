@@ -59,6 +59,8 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
         TextView usernameView;
         TextView commentReviewContentView;
         TextView dateView;
+        ImageView reviewImage;
+        TextView businessName;
 
 
 
@@ -72,17 +74,31 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             usernameView = itemView.findViewById(R.id.reviewUsername);
             commentReviewContentView = itemView.findViewById(R.id.commentReviewContent);
             dateView = itemView.findViewById(R.id.commentTimeStamp);
+            reviewImage = itemView.findViewById(R.id.commentImages);
+            businessName = itemView.findViewById(R.id.reviewTags);
 
         }
 
-        void setDetails(dashboardReviewCard review){
+        void setDetails(dashboardReviewCard review) {
             profilePicView.setImageBitmap(review.getProfilePic());
             titleView.setText(review.getReviewTitle());
             ratingBar.setRating(review.getReviewRating());
             usernameView.setText(review.getReviewUsername());
             commentReviewContentView.setText(review.getReviewText());
             dateView.setText(review.getReviewDate());
+            businessName.setText(review.getBusinessName());
 
+            // Handle review images
+            ArrayList<Bitmap> reviewImages = review.getReviewImages();
+            if (reviewImages != null && !reviewImages.isEmpty()) {
+                // If there are images, set the first image in the array
+                reviewImage.setImageBitmap(reviewImages.get(0));
+                reviewImage.setVisibility(View.VISIBLE); // Ensure the image view is visible
+
+            } else {
+                // If no images are found, make the ImageView invisible
+                reviewImage.setVisibility(View.GONE); // Or View.INVISIBLE based on your design preference
+            }
         }
     }
 

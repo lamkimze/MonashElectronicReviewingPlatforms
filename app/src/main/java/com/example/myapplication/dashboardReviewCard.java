@@ -11,10 +11,7 @@ import com.example.myapplication.Database.DatabaseHelper;
 import java.util.ArrayList;
 
 public class dashboardReviewCard {
-//    DatabaseHelper dbHelper;
-//    CRUD_Business crudBusiness;
-//    CRUD_User crudUser;
-//    CRUD_Image crudImage;
+
 
     private String reviewTitle;
     private float reviewRating;
@@ -26,8 +23,9 @@ public class dashboardReviewCard {
     private Bitmap profilePic;
     private String reviewDate;
     private String reviewUsername;
+    private String businessName;
 
-    public dashboardReviewCard(String reviewTitle, float reviewRating, ArrayList<Bitmap> reviewImages, String reviewText, int reviewerId, int businessId, int reviewId, Bitmap profilePic, String reviewDate, String reviewUsername) {
+    public dashboardReviewCard(String reviewTitle, float reviewRating, ArrayList<Bitmap> reviewImages, String reviewText, int reviewerId, int businessId, int reviewId, Bitmap profilePic, String reviewDate, String reviewUsername, String businessName) {
         this.reviewTitle = reviewTitle;
         this.reviewRating = reviewRating;
         this.reviewImages = reviewImages;
@@ -38,6 +36,7 @@ public class dashboardReviewCard {
         this.profilePic = profilePic;
         this.reviewDate = reviewDate;
         this.reviewUsername = reviewUsername;
+        this.businessName = businessName;
     }
 
     public String getReviewTitle() {
@@ -78,5 +77,9 @@ public class dashboardReviewCard {
 
     public String getReviewUsername() {
         return reviewUsername;
+    }
+
+    public String getBusinessName() {
+        return businessName;
     }
 }
