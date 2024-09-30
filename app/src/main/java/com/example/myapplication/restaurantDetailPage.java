@@ -1,44 +1,47 @@
 package com.example.myapplication;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.util.Pair;
-import android.util.Range;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_Review;
+import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
+import com.example.myapplication.Entities.User;
 import com.taufiqrahman.reviewratings.BarLabels;
 import com.taufiqrahman.reviewratings.RatingReviews;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.HashSet;
 
 public class restaurantDetailPage extends AppCompatActivity {
 
     int busId, userId;
+    TextView addressTv, phoneTv, OperatingHoursTv, websiteTv, emailTv;
     Restaurant selected_restaurant;
     TextView restaurantName;
     TextView tvCuisineType;
@@ -53,14 +56,16 @@ public class restaurantDetailPage extends AppCompatActivity {
     CRUD_Business crudBusiness;
     CRUD_Review crudReview;
     CRUD_Image crudImage;
-    String [] filters = {"5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star", "Staff Replied"};
+    CRUD_User crudUser;
+    String [] filters = {"5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star", "Staff Replied", "Owner Replied"};
+    boolean[] selectedFilters;
+    ArrayList<Integer> filterElements = new ArrayList<>();
     String [] sorts = {"Likes", "Reply", "Dislike", "Time: Recent-Old", "Time: Old-Recent", "Ratings: high-low", "Ratings: low-high"};
-    ArrayAdapter<String> filterAdapter;
     ArrayAdapter<String> sortAdapter;
     AutoCompleteTextView autoCompleteTextViewFilter, autoCompleteTextViewSort;
     String sortOn;
-    ArrayList listReview = new ArrayList();
-    ArrayList<String> filterOn = new ArrayList<>();
+    ArrayList<ReviewModel> fullListReview = new ArrayList<>();
+//    ArrayList<ReviewModel> sortedListReview = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +74,13 @@ public class restaurantDetailPage extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_detail_page);
 
         busId = getIntent().getExtras().getInt("busId");
-        userId = getIntent().getExtras().getInt("userID");
+        userId = getIntent().getExtras().getInt("userId");
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         loadData();
         selected_restaurant = crudBusiness.getRestaurant(busId);
@@ -81,8 +91,9 @@ public class restaurantDetailPage extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         commentAdapter = new commentAdapter();
         commentAdapter.context = getApplicationContext();
-        commentAdapter.setData(listReview);
+        commentAdapter.setData(fullListReview);
         commentAdapter.busId = busId;
+        commentAdapter.userId = userId;
         recyclerView.setAdapter(commentAdapter);
 
         restaurantName = findViewById(R.id.detailRestaurantName);
@@ -92,69 +103,168 @@ public class restaurantDetailPage extends AppCompatActivity {
         averageRatingBar = findViewById(R.id.averageRatingBar);
         ratingReviews = findViewById(R.id.rating_reviews);
         totalRatings = findViewById(R.id.total_rating);
+        addressTv = findViewById(R.id.addressTv);
+        phoneTv = findViewById(R.id.phoneTv);
+        OperatingHoursTv = findViewById(R.id.operatingHourTv);
+        websiteTv = findViewById(R.id.websiteTv);
+        emailTv = findViewById(R.id.emailTv);
 
-        totalRatings.setText(String.valueOf(crudReview.getReviews(busId).size()));
-        averageRatingTv.setText(String.valueOf(selected_restaurant.getStars()));
+        addressTv.setText(crudBusiness.getRestaurant(busId).getAddress());
+        phoneTv.setText(crudBusiness.getRestaurant(busId).getPhone());
+        websiteTv.setText(crudBusiness.getRestaurant(busId).getWebsite());
+        emailTv.setText(crudBusiness.getRestaurant(busId).getEmail());
+        OperatingHoursTv.setText(crudBusiness.getRestaurant(busId).getHours());
+
+        totalRatings.setText(String.valueOf(crudReview.getReviews(busId).size()) + " Reviews");
+        averageRatingTv.setText(String.valueOf(Math.round(selected_restaurant.getStars())));
         averageRatingBar.setRating(selected_restaurant.getStars());
         restaurantName.setText(selected_restaurant.getName());
         tvCuisineType.setText(selected_restaurant.getCuisine());
 
-        filterAdapter = new ArrayAdapter<>(this, R.layout.positions, filters);
+//        filterAdapter = new ArrayAdapter<>(this, R.layout.positions, filters);
         sortAdapter = new ArrayAdapter<>(this, R.layout.positions, sorts);
 
         autoCompleteTextViewFilter = findViewById(R.id.filter);
         autoCompleteTextViewSort = findViewById(R.id.sort);
 
-        autoCompleteTextViewFilter.setAdapter(filterAdapter);
+//        autoCompleteTextViewFilter.setAdapter(filterAdapter);
         autoCompleteTextViewSort.setAdapter(sortAdapter);
+
+        selectedFilters = new boolean[filters.length];
 
         autoCompleteTextViewSort.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // Get the selected item
                 sortOn = adapterView.getItemAtPosition(position).toString();
-                sortingSelected(sortOn);
-                Log.e("Sort On", sortOn);
+                filteringSelected(fullListReview);
+
             }
         });
 
-//        autoCompleteTextViewFilter.setOnClickListener(new AdapterView.OnItemClickListener(){
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                filterOn =
-//            }
-//        });
+        autoCompleteTextViewFilter.setOnClickListener(v ->{
+            showSortDialog();
+        });
 //
 //
 //        restaurantImage.setImageResource(crudImage.get);
-        if(sortOn != null){
-            sortingSelected(sortOn);
-        }
+//        if(sortOn != null){
+//            sortingSelected(sortOn);
+//        }
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         RatingReviews ratingReviews = findViewById(R.id.rating_reviews);
 
 //        create color pairs for rating reviews
-        Pair color[] = new Pair[]{
-                new Pair<>(Color.parseColor("#0e9d58"), Color.parseColor("#1e88e5")),
-                new Pair<>(Color.parseColor("#bfd047"), Color.parseColor("#5c6bc0")),
-                new Pair<>(Color.parseColor("#ffc105"), Color.parseColor("#d81b68")),
-                new Pair<>(Color.parseColor("#ef7e14"), Color.parseColor("#8bc34a")),
-                new Pair<>(Color.parseColor("#d36259"), Color.parseColor("#ea80fc")),
-        };
+        int color[] = new int[]{
+                Color.parseColor("#ff580f"),
+                Color.parseColor("#ff7e26"),
+                Color.parseColor("#ff9c59"),
+                Color.parseColor("#ffa472"),
+                Color.parseColor("#ffc99d")};
 
-        int minValue = 30;
+        int oneStar = 0;
+        int twoStar = 0;
+        int threeStar = 0;
+        int fourStar = 0;
+        int fiveStar = 0;
 
-//        create raters array
-        int raters[] = new int[]{
-                minValue + new Random().nextInt(100 - minValue + 1),
-                minValue + new Random().nextInt(100 - minValue + 1),
-                minValue + new Random().nextInt(100 - minValue + 1),
-                minValue + new Random().nextInt(100 - minValue + 1),
-                minValue + new Random().nextInt(100 - minValue + 1)
-        };
+        for (ReviewModel reviewModel: fullListReview) {
+            switch ((int) reviewModel.getReviewRating()){
+                case 1:
+                    oneStar += 1;
+                    break;
+                case 2:
+                    twoStar += 1;
+                    break;
+                case 3:
+                    threeStar += 1;
+                    break;
+                case 4:
+                    fourStar += 1;
+                    break;
+                case 5:
+                    fiveStar += 1;
+                    break;
+            }
+        }
 
+
+// Replace this code block in your onCreate method
+        int neWMax[] = new int[]{oneStar, twoStar, threeStar, fourStar, fiveStar};
+        int maxRating = Arrays.stream(neWMax).max().orElse(1); // Avoid division by zero
+        int raters[] = new int[5]; // Create array for 5 star ratings
+
+// Calculate percentages for each star rating
+        for (int i = 0; i < 5; i++) {
+            if (neWMax[i] > 0) {
+                raters[i] = (neWMax[i] * 100) / maxRating; // Calculate the percentage for each star
+            } else {
+                raters[i] = 0; // No reviews for this star rating
+            }
+        }
+
+// Ensure the ratingReviews is correctly set up to only show 5 bars
         ratingReviews.createRatingBars(100, BarLabels.STYPE1, color, raters);
+
+
+    }
+
+    private void showSortDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(restaurantDetailPage.this);
+        builder.setTitle("Select Filter");
+        builder.setCancelable(false);
+
+        builder.setMultiChoiceItems(filters, selectedFilters, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                if (b) {
+                    // If the item is selected, add the index of the filter
+                    filterElements.add(i);
+                } else {
+                    // If the item is deselected, remove the corresponding index from filterList
+                    // Check for the index that matches the selected filter's index
+                    Integer filterIndex = Integer.valueOf(i); // convert the index to Integer for comparison
+                    if (filterElements.contains(filterIndex)) {
+                        filterElements.remove(filterIndex); // remove by object, not by index
+                    }
+                }
+            }
+        }).setPositiveButton(Html.fromHtml("<font color='#FF7F27'>Apply</font>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int j = 0; j < filterElements.size(); j++) {
+                    stringBuilder.append(filters[filterElements.get(j)]);
+
+                    if(j != filterElements.size()-1){
+                        stringBuilder.append(", ");
+                    }
+
+                    filteringSelected(fullListReview);
+                    autoCompleteTextViewFilter.setText(stringBuilder.toString());
+                }
+            }
+        }).setNegativeButton(Html.fromHtml("<font color='#FF7F27'>Cancel</font>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        }).setNeutralButton(Html.fromHtml("<font color='#FF7F27'>Clear All</font>") , new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                for (int j = 0; j < selectedFilters.length; j++) {
+                    selectedFilters[j] = false;
+
+                    filterElements.clear();
+                    autoCompleteTextViewFilter.setText("Filter");
+                }
+                filteringSelected(fullListReview);
+            }
+
+        });
+        builder.show();
     }
 
     private void loadData() {
@@ -163,7 +273,8 @@ public class restaurantDetailPage extends AppCompatActivity {
             crudReview = new CRUD_Review(dbHelper);
             crudBusiness = new CRUD_Business(dbHelper);
             crudImage = new CRUD_Image(dbHelper);
-            listReview.addAll(crudReview.getReviews(busId));
+            crudUser = new CRUD_User(dbHelper);
+            fullListReview.addAll(crudReview.getReviews(busId));
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -182,46 +293,242 @@ public class restaurantDetailPage extends AppCompatActivity {
     public void onClickBookmark(View view){
     }
 
-    private void sortingSelected(String selectedSort){
-        switch(selectedSort){
-            case "Likes":
-                Collections.sort(listReview, ReviewModel.likesAscending);
-                commentAdapter.notifyDataSetChanged();
-                break;
 
-            case "Reply":
-                Collections.sort(listReview, ReviewModel.replyAscending);
-                commentAdapter.notifyDataSetChanged();
-                break;
+    public void onResume() {
 
-            case "Dislike":
-                Collections.sort(listReview, ReviewModel.dislikesAscending);
-                commentAdapter.notifyDataSetChanged();
-                break;
+        super.onResume();
+        reloadRestaurantDetails();
+    }
 
-            case "Time: Recent-Old":
-                Collections.sort(listReview, ReviewModel.timeAscending);
-                commentAdapter.notifyDataSetChanged();
-                break;
+    private void reloadRestaurantDetails() {
+        try {
+            fullListReview.clear();  // Clear the current list to avoid duplication
+            fullListReview.addAll(crudReview.getReviews(busId));  // Reload the reviews
 
-            case "Time: Old-Recent":
-                Collections.sort(listReview, ReviewModel.timeAscending);
-                Collections.reverse(listReview);
-                commentAdapter.notifyDataSetChanged();
-                break;
+            // Re-fetch other data related to the restaurant if necessary
+            selected_restaurant = crudBusiness.getRestaurant(busId);
 
-            case "Ratings: high-low":
-                Collections.sort(listReview, ReviewModel.ratingAscending);
-                commentAdapter.notifyDataSetChanged();
-                break;
+            // Update the adapter with new data
+            commentAdapter.setData(fullListReview);
+            commentAdapter.notifyDataSetChanged();  // Notify adapter that the data has changed
 
-            case "Ratings: low-high":
-                Collections.sort(listReview, ReviewModel.ratingAscending);
-                Collections.reverse(listReview);
-                commentAdapter.notifyDataSetChanged();
-                break;
+            // Update other UI elements like rating bars, total ratings, etc.
+            updateRatingDetails();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
+    private void updateRatingDetails() {
+        // Update the rating and review information on the page
+        totalRatings.setText(String.valueOf(crudReview.getReviews(busId).size()) + " Reviews");
+        averageRatingTv.setText(String.valueOf(Math.round(selected_restaurant.getStars())));
+        averageRatingBar.setRating(selected_restaurant.getStars());
+
+        // Update the rating bars with the new data
+        averageRatingBar.setRating(crudBusiness.getRestaurant(busId).getStars());
+        averageRatingTv.setText(String.valueOf(Math.round(crudBusiness.getRestaurant(busId).getStars())));
+
+        RatingReviews ratingReviews = findViewById(R.id.rating_reviews);
+
+//        create color pairs for rating reviews
+        int color[] = new int[]{
+                Color.parseColor("#ff580f"),
+                Color.parseColor("#ff7e26"),
+                Color.parseColor("#ff9c59"),
+                Color.parseColor("#ffa472"),
+                Color.parseColor("#ffc99d")};
+
+        int oneStar = 0;
+        int twoStar = 0;
+        int threeStar = 0;
+        int fourStar = 0;
+        int fiveStar = 0;
+
+        for (ReviewModel reviewModel: fullListReview) {
+            switch ((int) reviewModel.getReviewRating()){
+                case 1:
+                    oneStar += 1;
+                    break;
+                case 2:
+                    twoStar += 1;
+                    break;
+                case 3:
+                    threeStar += 1;
+                    break;
+                case 4:
+                    fourStar += 1;
+                    break;
+                case 5:
+                    fiveStar += 1;
+                    break;
+            }
+        }
+
+        Log.e("1 star", String.valueOf(oneStar));
+        Log.e("2 star", String.valueOf(twoStar));
+        Log.e("3 star", String.valueOf(threeStar));
+        Log.e("4 star", String.valueOf(fourStar));
+        Log.e("5 star", String.valueOf(fiveStar));
+
+
+//        create raters array
+        int neWMax[] = new int[]{oneStar, twoStar, threeStar, fourStar, fiveStar};
+        int raters[] = new int[]{
+                (fiveStar / Arrays.stream(neWMax).max().getAsInt() * 100),
+                (fourStar / Arrays.stream(neWMax).max().getAsInt() * 100),
+                (threeStar / Arrays.stream(neWMax).max().getAsInt() * 100),
+                (twoStar / Arrays.stream(neWMax).max().getAsInt() * 100),
+                (oneStar / Arrays.stream(neWMax).max().getAsInt() * 100),
+        };
+
+        ratingReviews.createRatingBars(100, BarLabels.STYPE1, color, raters);
+    }
+
+    private void filteringSelected(ArrayList<ReviewModel> myList) {
+        // Use a HashSet to avoid duplicate reviews
+        HashSet<ReviewModel> filteredSet = new HashSet<>();
+
+        if (!filterElements.isEmpty()) {
+            for (int i = 0; i < selectedFilters.length; i++) {
+                if (selectedFilters[i]) {
+                    switch (filters[i]) {
+                        case ("5 Stars"):
+                            for (ReviewModel review : myList) {
+                                if (review.getReviewRating() == 5) {
+                                    filteredSet.add(review); // HashSet will automatically handle duplicates
+                                }
+                            }
+                            break;
+
+                        case ("4 Stars"):
+                            for (ReviewModel review : myList) {
+                                if (review.getReviewRating() == 4) {
+                                    filteredSet.add(review);
+                                }
+                            }
+                            break;
+
+                        case ("3 Stars"):
+                            for (ReviewModel review : myList) {
+                                if (review.getReviewRating() == 3) {
+                                    filteredSet.add(review);
+                                }
+                            }
+                            break;
+
+                        case ("2 Stars"):
+                            for (ReviewModel review : myList) {
+                                if (review.getReviewRating() == 2) {
+                                    filteredSet.add(review);
+                                }
+                            }
+                            break;
+
+                        case ("1 Star"):
+                            for (ReviewModel review : myList) {
+                                if (review.getReviewRating() == 1) {
+                                    filteredSet.add(review);
+                                }
+                            }
+                            break;
+
+                        case ("Staff Replied"):
+                            for (ReviewModel review : myList) {
+                                ArrayList<Response> responses = crudReview.getResponses(review.getReviewId());
+                                for (Response response : responses) {
+                                    Position userPosition = crudUser.getUserPoistion(response.getUserID());
+                                    if (userPosition != null) {
+                                        filteredSet.add(review);
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
+
+                        case ("Owner Replied"):
+                            for (ReviewModel review : myList) {
+                                ArrayList<Response> responses = crudReview.getResponses(review.getReviewId());
+                                for (Response response : responses) {
+                                    Position userPosition = crudUser.getUserPoistion(response.getUserID());
+                                    if (userPosition != null && userPosition.getBusinessID() == busId && userPosition.getPositionName().equalsIgnoreCase("Owner")) {
+                                        filteredSet.add(review);
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+        } else {
+            filteredSet.addAll(fullListReview); // If no filters are selected, show the full list
+        }
+
+        ArrayList<ReviewModel> filteredList = new ArrayList<>(filteredSet); // Convert HashSet to ArrayList
+
+        if (sortOn != null) {
+            sortingSelected(sortOn, filteredList);
+        } else {
+            commentAdapter.setFilteredList(filteredList); // Update adapter with the filtered list
+        }
+    }
+
+
+    private void sortingSelected(String selectedSort, ArrayList<ReviewModel> myList){
+        switch(selectedSort){
+            case "Likes":
+                Collections.sort(myList, ReviewModel.likesAscending);
+                commentAdapter.setFilteredList(myList);
+                break;
+
+            case "Reply":
+                Collections.sort(myList, ReviewModel.replyAscending);
+                commentAdapter.setFilteredList(myList);
+                break;
+
+            case "Dislike":
+                Collections.sort(myList, ReviewModel.dislikesAscending);
+                commentAdapter.setFilteredList(myList);
+                break;
+
+            case "Time: Recent-Old":
+                Collections.sort(myList, ReviewModel.timeAscending);
+                commentAdapter.setFilteredList(myList);
+                break;
+
+            case "Time: Old-Recent":
+                Collections.sort(myList, ReviewModel.timeAscending);
+                Collections.reverse(myList);
+                commentAdapter.setFilteredList(myList);
+                break;
+
+            case "Ratings: high-low":
+                Collections.sort(myList, ReviewModel.ratingAscending);
+                commentAdapter.setFilteredList(myList);
+                break;
+
+            case "Ratings: low-high":
+                Collections.sort(myList, ReviewModel.ratingAscending);
+                Collections.reverse(myList);
+                commentAdapter.setFilteredList(myList);
+                break;
+        }
+
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

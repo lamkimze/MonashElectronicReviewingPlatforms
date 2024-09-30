@@ -24,13 +24,150 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/detailed_header_bkg"
         app:layout_constraintBottom_toBottomOf="parent">
-
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Restaurant Details: "
+                android:fontFamily="sans-serif-black"
+                android:paddingTop="16dp"
+                android:textSize="20dp"/>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="Address:"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/addressTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Campus Centre, 21 Chancellors Walk, Clayton VIC 3168"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="Phone:"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/phoneTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="02 9544 6611"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="Operating Hours:"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/operatingHourTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Sun 08:00 - 20:00 \nMon 08:00 - 20:00 \nTue 08:00 - 20:00 \nWed 08:00 - 20:00\nThu 08:00 - 20:00\nFri 08:00 - 20:00\nSat 08:00 - 20:00"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Website Link:"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/websiteTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="www.theden.com.au"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Official Email:"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/emailTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="theden@gmail.com"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -67,11 +204,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:rating="4.5"
-                        android:stepSize="0.5"
-                        android:numStars="5"
+                        android:backgroundTint="@color/purple"
                         android:isIndicator="true"
-                        android:backgroundTint="@color/purple" />
+                        android:numStars="5"
+                        android:progressTint="#FF5722"
+                        android:rating="4.5"
+                        android:stepSize="0.5" />
 
                     <TextView
                         android:id="@+id/total_rating"
@@ -87,13 +225,13 @@
                     android:id="@+id/rating_reviews"
                     android:layout_width="200dp"
                     android:layout_height="100dp"
-                    android:layout_margin="10dp"
+                    android:layout_marginTop="10dp"
                     app:animation="true"
                     app:max_value="100"
                     app:rounded="true"
                     app:show_label="true"
                     app:show_raters="false"
-                    app:spaces="7dp"
+                    app:spaces="8dp"
                     app:text_color="@color/black"
                     app:text_size="10sp"
                     app:width="12dp" />

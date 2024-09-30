@@ -14,11 +14,12 @@ public class ReviewModel {
 
 //    Kim
     String uDp;
-    int likes, dislike;
+    ArrayList<Integer> likes;
+    ArrayList<Integer> dislike;
     int reviewId;
     String position;
     String timestamp;
-    ArrayList<ReviewModel> reply;
+    ArrayList<Response> reply;
     String[] tags;
     String pImage;
 
@@ -36,6 +37,9 @@ public class ReviewModel {
         this.reviewText = reviewText;
         this.reviewerId = reviewerId;
         this.businessId = businessId;
+        this.likes = new ArrayList<>();
+        this.dislike = new ArrayList<>();
+        this.tags = new String[]{};
     }
 
     public String getReviewTitle() {
@@ -66,20 +70,20 @@ public class ReviewModel {
         return businessId;
     }
 
-    public int getLikes() {
+    public ArrayList<Integer> getLikes() {
         return likes;
     }
 
-    public void setLikes(int likes) {
-        this.likes += likes;
+    public void setLikes(ArrayList<Integer> likes) {
+        this.likes = likes;
     }
 
-    public int getDislike() {
+    public ArrayList<Integer> getDislike() {
         return dislike;
     }
 
-    public void setDislike(int dislike) {
-        this.dislike += dislike;
+    public void setDislike(ArrayList<Integer> dislike) {
+        this.dislike = dislike;
     }
 
     public void setPosition(String position){
@@ -99,11 +103,11 @@ public class ReviewModel {
         return timestamp;
     }
 
-    public ArrayList<ReviewModel> getReply() {
+    public ArrayList<Response> getReply() {
         return reply;
     }
 
-    public void setReply(ArrayList<ReviewModel> reply) {
+    public void setReply(ArrayList<Response> reply) {
         this.reply = reply;
     }
 
@@ -150,8 +154,8 @@ public class ReviewModel {
     public static Comparator<ReviewModel> likesAscending = new Comparator<ReviewModel>() {
         @Override
         public int compare(ReviewModel r1, ReviewModel r2) {
-            int likes1 = r1.getLikes();
-            int likes2 = r2.getLikes();
+            int likes1 = r1.getLikes().size();
+            int likes2 = r2.getLikes().size();
             return Integer.compare(likes1, likes2);
         }
     };
@@ -168,8 +172,8 @@ public class ReviewModel {
     public static Comparator<ReviewModel> dislikesAscending = new Comparator<ReviewModel>() {
         @Override
         public int compare(ReviewModel r1, ReviewModel r2) {
-            int dislikes1 = r1.getDislike();
-            int dislikes2 = r2.getDislike();
+            int dislikes1 = r1.getDislike().size();
+            int dislikes2 = r2.getDislike().size();
             return Integer.compare(dislikes1, dislikes2);
         }
     };
