@@ -27,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 51;
+    private static final int DATABASE_VERSION = 64;
 
     private final Context context;
 
@@ -117,6 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insertUserData(db);
 
 
+
 //        String hashedPassword = Password.hash("password123").withScrypt().getResult();
 //        String insertCustomerData = format("INSERT INTO user (username, password, email, first_name, last_name) VALUES\n" +
 //                "('jdoe001', '%s', 'jdoe001@student.monash.edu', 'John', 'Doe'),\n" +
@@ -186,9 +187,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "(9, 2, 2.6, 'Could be better', 'Not the best experience, food was cold.', datetime('now','localtime')),\n" +
                 "(10, 1, 5.0, 'Amazing!', 'Best food I have ever had!', datetime('now','localtime'));\n";
         db.execSQL(insertReview);
+        insertReviewImage(1, R.drawable.artichokereview, db);
+        insertReviewImage(2, R.drawable.boostjuicereview, db);
+        insertReviewImage(3, R.drawable.cafecinquelirereview, db);
+        insertReviewImage(4, R.drawable.churchofsecularreview, db);
     }
 
+    /**
+     * Inserts an image from the drawable resources into the review_image table.
+     *
+     * @param reviewId   The ID of the review to associate the image with.
+     * @param drawableId The drawable resource ID of the image.
+     * @return true if the image was successfully inserted, false otherwise.
+     */
+    public boolean insertReviewImage(int reviewId, int drawableId, SQLiteDatabase db) {
 
+        // Retrieve the drawable as a Bitmap
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawableId);
+        if (bitmap == null) {
+            return false;  // Return false if the bitmap is null (image not found)
+        }
+
+        // Resize the bitmap to avoid large image sizes
+        Bitmap resizedBitmap = resizeBitmap(bitmap, 300, 300);  // Resize to 800x800 or any appropriate size
+
+        // Convert the resized Bitmap to byte array
+        byte[] imageData = getBitmapAsByteArray(resizedBitmap);
+
+        // Insert the image data into the review_image table
+        ContentValues values = new ContentValues();
+        values.put("review_id", reviewId);
+        values.put("image_data", imageData);
+
+        long result = db.insert("review_image", null, values);
+        return result != -1;  // Return true if the insert was successful, otherwise false
+    }
+
+    /**
+     * Resizes a bitmap to the specified width and height.
+     *
+     * @param bitmap The original bitmap.
+     * @param width  The desired width.
+     * @param height The desired height.
+     * @return The resized bitmap.
+     */
+    private Bitmap resizeBitmap(Bitmap bitmap, int width, int height) {
+        return Bitmap.createScaledBitmap(bitmap, width, height, true);
+    }
 
     /**
      * This method is called when the database needs to be upgraded.
