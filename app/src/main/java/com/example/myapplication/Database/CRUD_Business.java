@@ -46,21 +46,22 @@ public class CRUD_Business {
         values.put("website_url", website_url);
         values.put("bus_hours", bus_hours);
         values.put("bus_cuisine_type", bus_cuisine_type);
+
         db.insert("business", null, values);
-        // return the id of the business as it is auto incremented so take the largest id in the table
+
+        // Select the largest bus_id
         String idSelectQuery = "SELECT MAX(bus_id) FROM business;";
         Cursor cursor = db.rawQuery(idSelectQuery, null);
-        cursor.moveToFirst();
-        int index = cursor.getColumnIndex("MAX(bus_id)");
-        if (index != -1) {
-            int bus_id = cursor.getInt(index);
-            cursor.close();
-            return bus_id;
-        } else {
-            cursor.close();
-            return -1;
+
+        int bus_id = -1; // default value
+        if (cursor.moveToFirst()) {
+            bus_id = cursor.getInt(0); // get the first column (MAX(bus_id))
         }
+
+        cursor.close(); // Close the cursor
+        return bus_id;
     }
+
 
     // Read operations
     /**
@@ -323,21 +324,26 @@ public class CRUD_Business {
         values.put("bus_hours", bus_hours);
         values.put("bus_cuisine_type", bus_cuisine_type);
 
+        // Fix the whereClause (if bus_name is not unique, use a unique identifier like bus_id)
         String whereClause = "bus_name = ?";
         String[] whereArgs = {bus_name};
 
+        // Update the business details
         db.update("business", values, whereClause, whereArgs);
 
-        // get the id of the business
-        String selectBusinessId = format(locale,
-                "SELECT bus_id FROM business WHERE bus_name = %s;",
-                bus_name
-        );
-        Cursor cursor = db.rawQuery(selectBusinessId, null);
-        cursor.moveToFirst();
-        @SuppressLint("Range") int bus_id = cursor.getInt(cursor.getColumnIndex("bus_id"));
+        // Fetch the bus_id for the updated record
+        String idSelectQuery = "SELECT bus_id FROM business WHERE bus_name = ? LIMIT 1;";
+        Cursor cursor = db.rawQuery(idSelectQuery, new String[]{bus_name});
+
+        int bus_id = -1; // default value
+        if (cursor.moveToFirst()) {
+            bus_id = cursor.getInt(0); // get the bus_id of the updated record
+        }
+
         cursor.close();
         return bus_id;
     }
+
+
 
 }

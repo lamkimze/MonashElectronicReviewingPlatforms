@@ -168,16 +168,20 @@ public class userRegistrationPage extends AppCompatActivity {
                                 user.setPosition(stringPosition);
                                 boolean isInserted =  crudUser.createUser(user, stringPassword);
                                 user.setId(crudUser.getUserID(user));
+                                Log.e("insert", String.valueOf(isInserted));
                                 Log.e("User id", String.valueOf(crudUser.getUserID(user)) );
                                 if (isInserted) {
                                     crudUser.createUserPosition(crudUser.getUserID(user), Integer.parseInt(busId), stringPosition);
                                     Bitmap profilePicture;
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                        profilePicture = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getApplicationContext().getContentResolver(), selectedImageUri));
-                                    }else {
-                                        profilePicture = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImageUri);
+                                    if(selectedImageUri != null){
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                            profilePicture = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getApplicationContext().getContentResolver(), selectedImageUri));
+                                        }else {
+                                            profilePicture = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImageUri);
+                                        }
+                                        crudImage.setUserProfilePicture(crudUser.getUserID(user), profilePicture);
                                     }
-                                    crudImage.setUserProfilePicture(crudUser.getUserID(user), profilePicture);
+
                                     Toast.makeText(this, "Registration Successful !!", Toast.LENGTH_LONG).show();
                                     switchLoginPage();
                                 } else {

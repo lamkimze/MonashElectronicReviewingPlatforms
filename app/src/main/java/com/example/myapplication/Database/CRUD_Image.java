@@ -135,6 +135,12 @@ public class CRUD_Image {
         return images;
     }
 
+    public void deleteReviewImages(int reviewId){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereClause = format(locale, "review_id=%d", reviewId);
+        db.delete("review_image", whereClause, null);
+    }
+
 
     // Update methods
 

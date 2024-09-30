@@ -283,7 +283,8 @@ public class businessRegistrationPage extends AppCompatActivity {
         newOwner.setId(crudUser.getUserID(newOwner));
         if(isInserted){
             if (exist) {
-                crudBusiness.updateRestaurantDetail(stringRestaurantName, stringAddress, stringPhoneNumber, stringEmail, stringRestaurantURL, recyclerAdapter.databaseFormat(), stringCuisineType);
+                int bus_id = crudBusiness.updateRestaurantDetail(stringRestaurantName, stringAddress, stringPhoneNumber, stringEmail, stringRestaurantURL, recyclerAdapter.databaseFormat(), stringCuisineType);
+                crudUser.createUserPosition(crudUser.getUserID(newOwner), bus_id, "Owner");
             } else {
                 int busId = crudBusiness.createBusiness(stringRestaurantName.trim(), stringAddress.trim(),
                         stringPhoneNumber.trim(), stringEmail.trim(), stringRestaurantURL.trim(),

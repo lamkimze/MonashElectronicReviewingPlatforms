@@ -48,9 +48,9 @@ public class OperatingTimeRecyclerAdapter extends RecyclerView.Adapter<Operating
     public String databaseFormat(){
         String stringOperatingTime = "";
         for (operatingTime operatingTime: data) {
-            stringOperatingTime += operatingTime.getDay() + ":";
+            stringOperatingTime += operatingTime.getDay() + ": ";
             stringOperatingTime += operatingTime.getStartTime() + "-";
-            stringOperatingTime += operatingTime.getEndTime() + ";";
+            stringOperatingTime += operatingTime.getEndTime() + ",";
         }
         return stringOperatingTime;
     }
