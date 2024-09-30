@@ -27,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 64;
+    private static final int DATABASE_VERSION = 71;
 
     private final Context context;
 
@@ -79,6 +79,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "bus_cuisine_type TEXT, " +
                 "bus_image BLOB);";
         db.execSQL(createBusinessTable);
+
+        // Create new business_image table to store images separately
+        String createBusinessImageTable = "CREATE TABLE business_image (" +
+                "image_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "bus_id INTEGER NOT NULL, " +
+                "bus_image BLOB NOT NULL, " +  // Store the image as BLOB
+                "FOREIGN KEY (bus_id) REFERENCES business(bus_id));";
+        db.execSQL(createBusinessImageTable);
+
         // Create review table
         String createReviewTable = "CREATE TABLE review (" +
                 "review_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -191,6 +200,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insertReviewImage(2, R.drawable.boostjuicereview, db);
         insertReviewImage(3, R.drawable.cafecinquelirereview, db);
         insertReviewImage(4, R.drawable.churchofsecularreview, db);
+
+        insertBusinessImage(1,R.drawable.artichokebus1,db);
+        insertBusinessImage(1,R.drawable.artichokebus2,db);
+        insertBusinessImage(1,R.drawable.artichokebus3,db);
+        insertBusinessImage(1,R.drawable.artichokebus4,db);
     }
 
     /**
@@ -224,6 +238,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Inserts an image for a business into the business_image table.
+     *
+     * @param busId      The ID of the business to associate the image with.
+     * @param drawableId The drawable resource ID of the image.
+     * @return true if the image was successfully inserted, false otherwise.
+     */
+    public boolean insertBusinessImage(int busId, int drawableId, SQLiteDatabase db) {
+        // Retrieve the drawable as a Bitmap
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawableId);
+        if (bitmap == null) {
+            return false;  // Return false if the bitmap is null (image not found)
+        }
+
+        // Resize the bitmap to avoid large image sizes
+        Bitmap resizedBitmap = resizeBitmap(bitmap, 600, 400);  // Resize to appropriate size
+
+        // Convert the resized Bitmap to byte array
+        byte[] imageData = getBitmapAsByteArray(resizedBitmap);
+
+        // Insert the image data into the business_image table
+        ContentValues values = new ContentValues();
+        values.put("bus_id", busId);
+        values.put("bus_image", imageData);
+
+        long result = db.insert("business_image", null, values);
+        return result != -1;  // Return true if the insert was successful, otherwise false
+    }
+
+    /**
      * Resizes a bitmap to the specified width and height.
      *
      * @param bitmap The original bitmap.
@@ -250,6 +293,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS review;");
         db.execSQL("DROP TABLE IF EXISTS review_image;");
         db.execSQL("DROP TABLE IF EXISTS response;");
+        db.execSQL("DROP TABLE IF EXISTS business_image;");
         onCreate(db);
     }
     public static byte[] getBitmapAsByteArray(Bitmap bitmap) {

@@ -135,6 +135,40 @@ public class CRUD_Image {
         return images;
     }
 
+    /**
+     * Method to get all images of a business
+     * @param businessID the ID of the business
+     * @return a list of images of the business
+     */
+    public ArrayList<Bitmap> getAllBusinessImages(int businessID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        ArrayList<Bitmap> businessImages = new ArrayList<>();
+
+        // Query to select all images for the business with the given ID
+        String selectBusinessImages = format(locale, "SELECT bus_image FROM business_image WHERE bus_id = %d;", businessID);
+        Cursor cursor = db.rawQuery(selectBusinessImages, null);
+
+        // Loop through all the results
+        if (cursor.moveToFirst()) {
+            int index = cursor.getColumnIndex("bus_image");
+
+            // If the bus_image column exists, process each image
+            while (!cursor.isAfterLast()) {
+                if (index != -1) {
+                    byte[] imageBlob = cursor.getBlob(index);
+                    if (imageBlob != null) {
+                        Bitmap image = DbBitmapUtility.getBitmap(imageBlob);
+                        businessImages.add(image);
+                    }
+                }
+                cursor.moveToNext();
+            }
+        }
+
+        cursor.close();
+        return businessImages;
+    }
+
 
     // Update methods
 
