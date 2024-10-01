@@ -21,6 +21,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,14 +52,16 @@ public class samplePostDetailActivity extends AppCompatActivity {
     ReviewModel currentReview;
     User currentUser, postUser;
     RatingBar ratingReview;
+    RecyclerView imageView;
 
     List<Response> responseList;
     responseAdapter responseAdapter;
+    showImages recyclerAdapter;
 
     int postId, myId, busId;
 
-    ImageView uPictureIv, pImageIv;
-    TextView uNameTv, pTimeTv, pTitleTv, pDescriptionTv, pComment, pTags, pPosition, pCommentTv;
+    ImageView uPictureIv;
+    TextView uNameTv, pTimeTv, pTitleTv, pDescriptionTv, pTags, pPosition, pCommentTv;
     ImageButton moreBtn;
     Button likeBtn, disLikeBtn;
     LinearLayout profileLayout;
@@ -68,8 +71,6 @@ public class samplePostDetailActivity extends AppCompatActivity {
     ImageButton sendBtn;
     ImageView cAvatarTv;
 
-    boolean mProcessComment = false;
-    boolean mProcessLike = false;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -95,7 +96,6 @@ public class samplePostDetailActivity extends AppCompatActivity {
         busId = getIntent().getExtras().getInt("busId");
 
         uPictureIv = findViewById(R.id.uPictureIv);
-        pImageIv = findViewById(R.id.pImageTv);
         uNameTv = findViewById(R.id.uNameTv);
         pTimeTv = findViewById(R.id.pTimeTv);
         pTitleTv = findViewById(R.id.pTitleTv);
@@ -109,6 +109,7 @@ public class samplePostDetailActivity extends AppCompatActivity {
         profileLayout = findViewById(R.id.detailedProfileLayout);
         pCommentTv = findViewById(R.id.commentNo);
         recyclerView = findViewById(R.id.recyclerView);
+        imageView = findViewById(R.id.pImageTv);
 
         commentEt = findViewById(R.id.commentEt);
         sendBtn = findViewById(R.id.sendBtn);
@@ -124,7 +125,7 @@ public class samplePostDetailActivity extends AppCompatActivity {
                 postComment();
             }
         });
-        
+
         likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -291,6 +292,18 @@ public class samplePostDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        // Load Images for the review
+        ArrayList<Bitmap> reviewImages = crudImage.getReviewImages(currentReview.getReviewId());
+        if (!reviewImages.isEmpty()) {
+            recyclerAdapter = new showImages(this, reviewImages);
+            imageView.setLayoutManager(new GridLayoutManager(this, 4));  // Ensure correct view
+            imageView.setAdapter(recyclerAdapter);  // Set the adapter for the imageView RecyclerView
+        } else {
+            imageView.setVisibility(View.GONE);  // Hide if no images
+        }
+
+
+
 //        setting profile picture
         if(postUser.getProfilePicture()  != null){
             uPictureIv.setImageBitmap(Bitmap.createScaledBitmap(postUser.getProfilePicture(), 50, 50, false));
@@ -368,15 +381,6 @@ public class samplePostDetailActivity extends AppCompatActivity {
             pTimeTv.setText(timeAgo);
         } catch (ParseException e) {
             throw new RuntimeException(e);
-        }
-
-        if(currentReview.getpImage()==null){
-            pImageIv.setVisibility(View.GONE);
-        }else{
-            try{
-                Picasso.get().load(currentReview.getpImage()).into(pImageIv);
-            }catch (Exception e){
-            }
         }
 
 
