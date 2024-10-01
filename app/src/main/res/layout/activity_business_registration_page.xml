@@ -112,6 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="250dp"
             android:background="#D9EBFA"
+            android:inputType="text|textPersonName"
             android:outlineProvider="bounds"
             android:shadowColor="#D6D7D7"
             android:textColorHint="#673AB7" />
@@ -142,6 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="250dp"
             android:background="#D9EBFA"
+            android:inputType="text|textPersonName"
             android:shadowColor="#D6D7D7" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -168,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="250dp"
             android:background="#D9EBFA"
-            android:inputType="text"
+            android:inputType="text|textPersonName"
             android:shadowColor="#D6D7D7" />
 
     </com.google.android.material.textfield.TextInputLayout>

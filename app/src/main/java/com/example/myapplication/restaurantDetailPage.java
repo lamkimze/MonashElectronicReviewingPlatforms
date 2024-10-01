@@ -109,11 +109,35 @@ public class restaurantDetailPage extends AppCompatActivity {
         websiteTv = findViewById(R.id.websiteTv);
         emailTv = findViewById(R.id.emailTv);
 
-        addressTv.setText(crudBusiness.getRestaurant(busId).getAddress());
-        phoneTv.setText(crudBusiness.getRestaurant(busId).getPhone());
-        websiteTv.setText(crudBusiness.getRestaurant(busId).getWebsite());
-        emailTv.setText(crudBusiness.getRestaurant(busId).getEmail());
-        OperatingHoursTv.setText(crudBusiness.getRestaurant(busId).getHours());
+        if(crudBusiness.getRestaurant(busId).getAddress() != null){
+            addressTv.setText(crudBusiness.getRestaurant(busId).getAddress());
+        }else{
+            addressTv.setText(" - ");
+        }
+
+        if(crudBusiness.getRestaurant(busId).getPhone() != null){
+            phoneTv.setText(crudBusiness.getRestaurant(busId).getPhone());
+        }else{
+            phoneTv.setText(" - ");
+        }
+
+        if(crudBusiness.getRestaurant(busId).getWebsite() != null){
+            websiteTv.setText(crudBusiness.getRestaurant(busId).getWebsite());
+        }else{
+            websiteTv.setText(" - ");
+        }
+
+        if(crudBusiness.getRestaurant(busId).getEmail() != null){
+            emailTv.setText(crudBusiness.getRestaurant(busId).getEmail());
+        }else{
+            emailTv.setText(" - ");
+        }
+
+        if(crudBusiness.getRestaurant(busId).getHours() != null){
+            OperatingHoursTv.setText(crudBusiness.getRestaurant(busId).getHours());
+        }else {
+            OperatingHoursTv.setText(" - ");
+        }
 
         totalRatings.setText(String.valueOf(crudReview.getReviews(busId).size()) + " Reviews");
         averageRatingTv.setText(String.valueOf(Math.round(selected_restaurant.getStars())));
@@ -326,28 +350,15 @@ public class restaurantDetailPage extends AppCompatActivity {
         averageRatingTv.setText(String.valueOf(Math.round(selected_restaurant.getStars())));
         averageRatingBar.setRating(selected_restaurant.getStars());
 
-        // Update the rating bars with the new data
-        averageRatingBar.setRating(crudBusiness.getRestaurant(busId).getStars());
-        averageRatingTv.setText(String.valueOf(Math.round(crudBusiness.getRestaurant(busId).getStars())));
-
-        RatingReviews ratingReviews = findViewById(R.id.rating_reviews);
-
-//        create color pairs for rating reviews
-        int color[] = new int[]{
-                Color.parseColor("#ff580f"),
-                Color.parseColor("#ff7e26"),
-                Color.parseColor("#ff9c59"),
-                Color.parseColor("#ffa472"),
-                Color.parseColor("#ffc99d")};
-
+        // Calculate rating distribution again
         int oneStar = 0;
         int twoStar = 0;
         int threeStar = 0;
         int fourStar = 0;
         int fiveStar = 0;
 
-        for (ReviewModel reviewModel: fullListReview) {
-            switch ((int) reviewModel.getReviewRating()){
+        for (ReviewModel reviewModel : fullListReview) {
+            switch ((int) reviewModel.getReviewRating()) {
                 case 1:
                     oneStar += 1;
                     break;
@@ -366,25 +377,27 @@ public class restaurantDetailPage extends AppCompatActivity {
             }
         }
 
-        Log.e("1 star", String.valueOf(oneStar));
-        Log.e("2 star", String.valueOf(twoStar));
-        Log.e("3 star", String.valueOf(threeStar));
-        Log.e("4 star", String.valueOf(fourStar));
-        Log.e("5 star", String.valueOf(fiveStar));
-
-
-//        create raters array
-        int neWMax[] = new int[]{oneStar, twoStar, threeStar, fourStar, fiveStar};
-        int raters[] = new int[]{
-                (fiveStar / Arrays.stream(neWMax).max().getAsInt() * 100),
-                (fourStar / Arrays.stream(neWMax).max().getAsInt() * 100),
-                (threeStar / Arrays.stream(neWMax).max().getAsInt() * 100),
-                (twoStar / Arrays.stream(neWMax).max().getAsInt() * 100),
-                (oneStar / Arrays.stream(neWMax).max().getAsInt() * 100),
+        // Update the rating bars with the new data
+        int color[] = new int[]{
+                Color.parseColor("#ff580f"),
+                Color.parseColor("#ff7e26"),
+                Color.parseColor("#ff9c59"),
+                Color.parseColor("#ffa472"),
+                Color.parseColor("#ffc99d")
         };
 
+        int neWMax[] = new int[]{oneStar, twoStar, threeStar, fourStar, fiveStar};
+        int maxRating = Arrays.stream(neWMax).max().orElse(1); // Avoid division by zero
+        int raters[] = new int[5];
+
+        for (int i = 0; i < 5; i++) {
+            raters[i] = (neWMax[i] * 100) / maxRating;
+        }
+
+        // Update the rating bars in the UI
         ratingReviews.createRatingBars(100, BarLabels.STYPE1, color, raters);
     }
+
 
     private void filteringSelected(ArrayList<ReviewModel> myList) {
         // Use a HashSet to avoid duplicate reviews

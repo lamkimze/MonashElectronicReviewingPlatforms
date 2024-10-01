@@ -129,11 +129,12 @@
                         android:textColor="#504F4F"
                         android:textSize="16dp" />
 
-                    <ImageView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/pImageTv"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="@color/white"/>
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:layout_marginTop="5dp"/>
                     <TextView
                         android:id="@+id/itemTag"
                         android:layout_marginTop="16dp"

@@ -75,7 +75,6 @@ public class userReviewCreationPage extends AppCompatActivity {
     String stringReviewContent;
     ArrayList<Uri> uri = new ArrayList<>();
 
-
     //    Database initialization
     DatabaseHelper dbHelper;
     CRUD_Review crudReview;
@@ -137,7 +136,7 @@ public class userReviewCreationPage extends AppCompatActivity {
         stringTags = tagsInputEditText.getText().toString();
 
         textView = findViewById(R.id.totalPhotos);
-        recyclerView =findViewById(R.id.recyclerView_Gallery_Images);
+        recyclerView = findViewById(R.id.recyclerView_Gallery_Images);
         pick = findViewById(R.id.imageButton);
 
 
@@ -174,7 +173,7 @@ public class userReviewCreationPage extends AppCompatActivity {
                 rating = ratingBar.getRating();
                 stringTags = tagsInputEditText.getText().toString();
 
-                ReviewModel reviewModel = new ReviewModel(rating, stringReviewTitle, new ArrayList<Bitmap>(), stringReviewContent, reviewerId, busId);
+                ReviewModel reviewModel = new ReviewModel(rating, stringReviewTitle, stringReviewContent, reviewerId, busId);
 
                 // Add images to review
                 for (Uri imageUri : uri) {
@@ -186,6 +185,8 @@ public class userReviewCreationPage extends AppCompatActivity {
                             image = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                         }
                         reviewModel.addReviewImage(image);
+                        reviewed_restaurant.setDaily_review(reviewed_restaurant.getDaily_review() + 1);
+                        crudBusiness.updateCompetitionDetail(busId, reviewed_restaurant);
                     } catch (Exception e) {
                         Toast.makeText(userReviewCreationPage.this, "Error adding image to review: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e("userReviewCreationPage", "Error adding image to review: " + e.getMessage());
@@ -282,19 +283,21 @@ public class userReviewCreationPage extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             if (data.getClipData() != null) {
                 int count = data.getClipData().getItemCount();
-
                 for (int i = 0; i < count; i++) {
                     Uri imageUri = data.getClipData().getItemAt(i).getUri();
-                    uri.add(imageUri);
+                    uri.add(imageUri);  // Add each Uri to the list
                 }
                 adapter.notifyDataSetChanged();
                 textView.setText(String.format(Locale.ENGLISH,"Photos (%d)", uri.size()));
             } else if (data.getData() != null) {
-                Uri imageUri = data.getData();
-                uri.add(imageUri);
+                Uri imageUri = data.getData();  // Properly handle a single image Uri
+                uri.add(imageUri);  // Add the Uri to the list
+                adapter.notifyDataSetChanged();
+                textView.setText(String.format(Locale.ENGLISH,"Photos (%d)", uri.size()));
             }
         }
     }
+
 
     private void loadData() {
         try {
