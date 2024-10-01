@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
@@ -26,12 +28,18 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Image;
+import com.example.myapplication.Database.CRUD_Review;
+import com.example.myapplication.Database.CRUD_User;
+import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.databinding.ActivityDashboardPageBinding;
 import com.google.android.material.navigation.NavigationView;
 
@@ -46,6 +54,19 @@ public class dashboardPage extends DrawerBaseActivity {
     ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
     int userId;
+    private RecyclerView recyclerView;
+    private dashboardReviewCardAdapter adapter;
+    private ArrayList<dashboardReviewCard> reviewArrayList;
+    private ArrayList<ReviewModel> reviewLatestFiveList;
+
+
+    DatabaseHelper dbHelper;
+    CRUD_Business crudBusiness;
+    CRUD_User crudUser;
+    CRUD_Image crudImage;
+    CRUD_Review crudReview;
+
+    ArrayList<Restaurant> top5 = new ArrayList<>();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -56,14 +77,28 @@ public class dashboardPage extends DrawerBaseActivity {
         allocateActivityTitle("Electronic Review Platform");
         userId = getIntent().getExtras().getInt("userId");
         Log.e("User id", String.valueOf(userId) );
+        initializeDatabase();
+
+        initializeCardView();
 
         onPostCreate(savedInstanceState);
         viewPager2 = findViewById(R.id.viewPager);
+        ArrayList<Bitmap> topBusBanner = crudImage.getAllBusinessImages(1);
+
+        if (topBusBanner == null || topBusBanner.isEmpty()) {
+            Log.e("dashboardPage", "No business images found");
+            // Return early or handle this scenario
+            return;
+        }
+
         List<SlideItem> slideItems = new ArrayList<>();
-        slideItems.add(new SlideItem(R.drawable.gyg_banner1));
-        slideItems.add(new SlideItem(R.drawable.gyg_banner3));
-        slideItems.add(new SlideItem(R.drawable.gyg_banner4));
-        slideItems.add(new SlideItem(R.drawable.gyg_banner5));
+        for (Bitmap bitmap : topBusBanner) {
+            slideItems.add(new SlideItem(bitmap));
+        }
+//        slideItems.add(new SlideItem(R.drawable.gyg_banner1));
+//        slideItems.add(new SlideItem(R.drawable.gyg_banner3));
+//        slideItems.add(new SlideItem(R.drawable.gyg_banner4));
+//        slideItems.add(new SlideItem(R.drawable.gyg_banner5));
 
         viewPager2.setAdapter(new SlideAdapter(slideItems, viewPager2));
 
@@ -94,6 +129,35 @@ public class dashboardPage extends DrawerBaseActivity {
             }
         });
 
+
+
+    }
+
+    private void initializeCardView() {
+        recyclerView = findViewById(R.id.reviewList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        reviewArrayList = new ArrayList<>();
+
+        adapter = new dashboardReviewCardAdapter(this, reviewArrayList);
+        recyclerView.setAdapter(adapter);
+
+        CreateDataForCards();
+
+    }
+
+
+    private void CreateDataForCards() {
+        reviewLatestFiveList = crudReview.getLatestReviews();
+        for (ReviewModel review : reviewLatestFiveList) {
+            Bitmap profilePic = crudImage.getProfilePictureByUserId(review.getReviewerId());
+            ArrayList<Bitmap> reviewImages = crudImage.getReviewImages(review.getReviewId());
+            dashboardReviewCard reviewCard = new dashboardReviewCard(review.getReviewTitle(), review.getReviewRating(), reviewImages, review.getReviewText(), review.getReviewerId(), review.getBusinessId(), review.getReviewId(), profilePic, crudReview.getReviewDate(review.getReviewId()), crudUser.getFullName(review.getReviewerId()), crudBusiness.getBusinessNameById(review.getBusinessId()));
+//            dashboardReviewCard reviewCard = new dashboardReviewCard("review.getReviewTitle()", 3f, new ArrayList<Bitmap>(), "review.getReviewText()", 1, 2, 3, BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez), "2020-10-2", "Jamie");
+            reviewArrayList.add(reviewCard);
+        }
+        dashboardReviewCard review = new dashboardReviewCard("Great food", 4.5f, new ArrayList<Bitmap>(), "The food was amazing, I would definitely recommend this place to anyone who loves good food", 1, 1, 1, BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez), "2021-10-10", "John Doe", "Guzman y Gomez");
+        reviewArrayList.add(review);
+        reviewArrayList.add(review);
     }
 
 
@@ -126,6 +190,37 @@ public class dashboardPage extends DrawerBaseActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.option_menu, menu);
         return true;
+    }
+
+    private void initializeDatabase() {
+
+        try {
+            dbHelper = new DatabaseHelper(this);
+            crudBusiness = new CRUD_Business(dbHelper);
+            crudUser = new CRUD_User(dbHelper);
+            crudImage = new CRUD_Image(dbHelper);
+            crudReview = new CRUD_Review(dbHelper);
+            ArrayList<Restaurant> dashboardRestaurantsTop5 = crudBusiness.getTop5RatedBusinesses();
+            top5.addAll(dashboardRestaurantsTop5);
+//            if (crudReview != null) {
+//                ArrayList<ReviewModel> crudReviewLatestReviews = crudReview.getLatestReviews();
+//            } else {
+//                // Log an error or handle the null case
+//                Log.e("dashboardPage", "CRUD_Review is null");
+//            }
+
+            // Notify success on the main thread
+            new Handler(Looper.getMainLooper()).post(() ->
+                    Toast.makeText(this, "Database initialized successfully!", Toast.LENGTH_LONG).show()
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            // Notify failure on the main thread
+            new Handler(Looper.getMainLooper()).post(() ->
+                    Toast.makeText(this, "Database initialization failed!", Toast.LENGTH_LONG).show()
+            );
+        }
     }
 
 
