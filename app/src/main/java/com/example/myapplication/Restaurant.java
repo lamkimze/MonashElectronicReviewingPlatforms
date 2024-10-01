@@ -160,4 +160,13 @@ public class Restaurant extends RestaurantReviewCompetition {
         }
     };
 
+    public static Comparator<Restaurant> dailyReview = new Comparator<Restaurant>() {
+        @Override
+        public int compare(Restaurant r1, Restaurant r2) {
+            double dailyReview1 = r1.getDaily_review();
+            double dailyReview2 = r2.getDaily_review();
+            return Double.compare(dailyReview1, dailyReview2);
+        }
+    };
+
 }
