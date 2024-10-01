@@ -70,5 +70,8 @@ dependencies {
         exclude(group = "org.jetbrains", module = "annotations")
         exclude(group = "org.jetbrains", module = "annotations-java5")
     }
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+
 }
 

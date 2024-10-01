@@ -141,6 +141,40 @@ public class CRUD_Image {
         db.delete("review_image", whereClause, null);
     }
 
+    /**
+     * Method to get all images of a business
+     * @param businessID the ID of the business
+     * @return a list of images of the business
+     */
+    public ArrayList<Bitmap> getAllBusinessImages(int businessID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        ArrayList<Bitmap> businessImages = new ArrayList<>();
+
+        // Query to select all images for the business with the given ID
+        String selectBusinessImages = format(locale, "SELECT bus_image FROM business_image WHERE bus_id = %d;", businessID);
+        Cursor cursor = db.rawQuery(selectBusinessImages, null);
+
+        // Loop through all the results
+        if (cursor.moveToFirst()) {
+            int index = cursor.getColumnIndex("bus_image");
+
+            // If the bus_image column exists, process each image
+            while (!cursor.isAfterLast()) {
+                if (index != -1) {
+                    byte[] imageBlob = cursor.getBlob(index);
+                    if (imageBlob != null) {
+                        Bitmap image = DbBitmapUtility.getBitmap(imageBlob);
+                        businessImages.add(image);
+                    }
+                }
+                cursor.moveToNext();
+            }
+        }
+
+        cursor.close();
+        return businessImages;
+    }
+
 
     // Update methods
 
@@ -211,5 +245,39 @@ public class CRUD_Image {
         for (Bitmap image : images) {
             addImageToReview(reviewID, image);
         }
+    }
+
+    /**
+     * Method to get the profile picture of a user by user_id
+     * @param userId the ID of the user
+     * @return the profile picture of the user as a Bitmap
+     */
+    public Bitmap getProfilePictureByUserId(int userId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Query the database to get the profile_image for the user with the given user_id
+        String selectUser = format(locale, "SELECT profile_image FROM user WHERE user_id = %d;", userId);
+        Cursor cursor = db.rawQuery(selectUser, null);
+
+        // Check if a result was found
+        if (cursor.moveToFirst()) {
+            // Get the index of the profile_image column
+            int index = cursor.getColumnIndex("profile_image");
+
+            // If profile_image exists, retrieve it
+            if (index != -1) {
+                byte[] profileImageBLOB = cursor.getBlob(index);
+
+                // If the profile image exists and is not null, return it as a Bitmap
+                if (profileImageBLOB != null) {
+                    cursor.close();
+                    return DbBitmapUtility.getBitmap(profileImageBLOB);
+                }
+            }
+        }
+
+        // Close the cursor if no result is found
+        cursor.close();
+        return null;
     }
 }

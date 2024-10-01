@@ -27,13 +27,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.Entities.User;
+import com.example.myapplication.Enumerables.ImageType;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.io.IOException;
 
 public class userRegistrationPage extends AppCompatActivity {
     ImageView picButton;
@@ -69,7 +73,9 @@ public class userRegistrationPage extends AppCompatActivity {
         try {
             dbHelper = new DatabaseHelper(this);
             crudUser = new CRUD_User(dbHelper);
+            crudImage = new CRUD_Image(dbHelper);
             Toast.makeText(this, "Database initialized successfully!", Toast.LENGTH_LONG).show();
+
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Database initialization failed!", Toast.LENGTH_LONG).show();
@@ -212,6 +218,8 @@ public class userRegistrationPage extends AppCompatActivity {
         else{
             Toast.makeText(this, "Please insert your first name and last name!!", Toast.LENGTH_LONG).show();
         }
+
+
     }
 
 
