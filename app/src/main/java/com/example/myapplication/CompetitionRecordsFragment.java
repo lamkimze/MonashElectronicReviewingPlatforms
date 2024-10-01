@@ -182,7 +182,7 @@ public class CompetitionRecordsFragment extends Fragment {
                     }
                 });
 
-                if(counter1 > (businessNo1Rating/5)*100){
+                if(counter1 >= (businessNo1Rating/5)*100){
                     t.cancel();
                 }
             }
@@ -202,7 +202,7 @@ public class CompetitionRecordsFragment extends Fragment {
                     }
                 });
 
-                if(counter2 > (businessNo2Rating/5)*100){
+                if(counter2 >= (businessNo2Rating/5)*100){
                     s.cancel();
                 }
             }
@@ -222,7 +222,7 @@ public class CompetitionRecordsFragment extends Fragment {
                     }
                 });
 
-                if(counter3 > (businessNo3Rating/5)*100){
+                if(counter3 >= (businessNo3Rating/5)*100){
                     no3t.cancel();
                 }
             }
@@ -242,7 +242,7 @@ public class CompetitionRecordsFragment extends Fragment {
                     }
                 });
 
-                if(counter4 > (businessNo4Rating/5)*100){
+                if(counter4 >= (businessNo4Rating/5)*100){
                     no4t.cancel();
                 }
             }
@@ -262,7 +262,7 @@ public class CompetitionRecordsFragment extends Fragment {
                     }
                 });
 
-                if(counter5 > (businessNo5Rating/5)*100){
+                if(counter5 >= (businessNo5Rating/5)*100){
                     no5t.cancel();
                 }
             }

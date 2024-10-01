@@ -347,69 +347,79 @@ public class CRUD_Review {
 //
 //        return userId;
 //    }
-    /**
-     * Method to get the 5 latest reviews from the database
-     * @return an ArrayList of the 5 latest reviews
-     */
-    public ArrayList<ReviewModel> getLatestReviews() {
-        ArrayList<ReviewModel> reviews = new ArrayList<>();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        CRUD_Image crudImage = new CRUD_Image(dbHelper);
+public ArrayList<ReviewModel> getLatestReviews() {
+    ArrayList<ReviewModel> reviews = new ArrayList<>();
+    SQLiteDatabase db = dbHelper.getReadableDatabase();
+    CRUD_Image crudImage = new CRUD_Image(dbHelper);
 
-        // SQL query to select the 5 latest reviews ordered by review_date in descending order
-        String selectLatestReviews = "SELECT * FROM review ORDER BY review_date DESC LIMIT 5;";
-        Cursor cursor = null;
+    // SQL query to select the 5 latest reviews ordered by review_date in descending order
+    String selectLatestReviews = "SELECT * FROM review ORDER BY review_date DESC LIMIT 5;";
+    Cursor cursor = null;
 
-        try {
-            // Execute query
-            cursor = db.rawQuery(selectLatestReviews, null);
+    try {
+        // Execute query
+        cursor = db.rawQuery(selectLatestReviews, null);
 
-            // Check if cursor is not null and contains data
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    // Check and get the index of each column
-                    int reviewIdIndex = cursor.getColumnIndex("review_id");
-                    int ratingIndex = cursor.getColumnIndex("star_rating");
-                    int titleIndex = cursor.getColumnIndex("review_title");
-                    int textIndex = cursor.getColumnIndex("review_text");
-                    int customerIndex = cursor.getColumnIndex("user_id");
-                    int businessIndex = cursor.getColumnIndex("bus_id");
+        // Check if cursor is not null and contains data
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // Check and get the index of each column
+                int reviewIdIndex = cursor.getColumnIndex("review_id");
+                int ratingIndex = cursor.getColumnIndex("star_rating");
+                int titleIndex = cursor.getColumnIndex("review_title");
+                int textIndex = cursor.getColumnIndex("review_text");
+                int customerIndex = cursor.getColumnIndex("user_id");
+                int businessIndex = cursor.getColumnIndex("bus_id");
+                int likesIndex = cursor.getColumnIndex("likes_user"); // New: Likes column
+                int dislikesIndex = cursor.getColumnIndex("dislike_user"); // New: Dislikes column
 
-                    // Verify that the necessary columns are available
-                    if (reviewIdIndex != -1 && ratingIndex != -1 && titleIndex != -1 &&
-                            textIndex != -1 && customerIndex != -1 && businessIndex != -1) {
+                // Verify that the necessary columns are available
+                if (reviewIdIndex != -1 && ratingIndex != -1 && titleIndex != -1 &&
+                        textIndex != -1 && customerIndex != -1 && businessIndex != -1 &&
+                        likesIndex != -1 && dislikesIndex != -1) {
 
-                        // Get review ID to fetch associated images
-                        int reviewId = cursor.getInt(reviewIdIndex);
-                        ArrayList<Bitmap> reviewImages = crudImage.getReviewImages(reviewId);
+                    // Get review ID to fetch associated images
+                    int reviewId = cursor.getInt(reviewIdIndex);
+                    ArrayList<Bitmap> reviewImages = crudImage.getReviewImages(reviewId);
 
-                        // Create a ReviewModel object
-                        ReviewModel reviewModel = new ReviewModel(
-                                cursor.getFloat(ratingIndex),
-                                cursor.getString(titleIndex),
-                                reviewImages,
-                                cursor.getString(textIndex),
-                                cursor.getInt(customerIndex),
-                                cursor.getInt(businessIndex)
-                        );
-                        reviewModel.setReviewerId(cursor.getInt(customerIndex));
-                        reviewModel.setReviewId(cursor.getInt(reviewIdIndex));
+                    // Deserialize likes and dislikes JSON strings into ArrayList<Integer>
+                    Gson gson = new Gson();
+                    Type intType = new TypeToken<ArrayList<Integer>>() {}.getType();
 
-                        // Add the review to the list
-                        reviews.add(reviewModel);
-                    }
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();  // Log the exception for debugging
-        } finally {
-            if (cursor != null) {
-                cursor.close();  // Always close the cursor to avoid memory leaks
-            }
+                    ArrayList<Integer> likes = gson.fromJson(cursor.getString(likesIndex), intType);
+                    ArrayList<Integer> dislikes = gson.fromJson(cursor.getString(dislikesIndex), intType);
+
+                    // Create a ReviewModel object
+                    ReviewModel reviewModel = new ReviewModel(
+                            cursor.getFloat(ratingIndex),
+                            cursor.getString(titleIndex),
+                            reviewImages,
+                            cursor.getString(textIndex),
+                            cursor.getInt(customerIndex),
+                            cursor.getInt(businessIndex)
+                    );
+
+                    // Set review metadata
+                    reviewModel.setReviewerId(cursor.getInt(customerIndex));
+                    reviewModel.setReviewId(cursor.getInt(reviewIdIndex));
+                    reviewModel.setLikes(likes);  // Set likes
+                    reviewModel.setDislike(dislikes);  // Set dislikes
+
+                    // Add the review to the list
+                    reviews.add(reviewModel);
+                }
+            } while (cursor.moveToNext());
         }
-
-        return reviews;
+    } catch (Exception e) {
+        e.printStackTrace();  // Log the exception for debugging
+    } finally {
+        if (cursor != null) {
+            cursor.close();  // Always close the cursor to avoid memory leaks
+        }
     }
+
+    return reviews;
+}
 
     /**
      * Method to get the review date from the database
