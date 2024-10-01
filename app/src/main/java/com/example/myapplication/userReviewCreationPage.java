@@ -53,8 +53,6 @@ import java.util.Objects;
 public class userReviewCreationPage extends AppCompatActivity {
 
 //    read all the inputs
-
-
     RecyclerView recyclerView;
     TextView textView;
     TextView restaurantName;
@@ -81,15 +79,7 @@ public class userReviewCreationPage extends AppCompatActivity {
     CRUD_Business crudBusiness;
     Restaurant reviewed_restaurant;
 
-
-
     public static final int Read_Permission = 101;
-//
-//    MaterialCardView selectCard;
-//    TextView tvCuisineProd;
-//    boolean [] selectedCuisineProd;
-//    ArrayList<Integer> cuisineProdList = new ArrayList<>();
-//    String [] cuisineArray = {"American","Chinese","Indian","Italian","Japanese","Korean","Mexican","Thai","Vietnamese"};
 
     @SuppressLint("MissingInflatedId")
     @Override

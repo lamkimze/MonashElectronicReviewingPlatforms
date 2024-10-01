@@ -2,12 +2,15 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +22,7 @@ import com.example.myapplication.databinding.ActivityReviewCompetitionRecordPage
 
 import java.util.ArrayList;
 
-public class reviewCompetitionRecordPage extends DrawerBaseActivity {
+public class reviewCompetitionRecordPage extends AppCompatActivity {
 
     ActivityReviewCompetitionRecordPageBinding activityReviewCompetitionRecordPageBinding;
 
@@ -47,11 +50,15 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        WindowCompat.setDecorFitsSystemWindows(this.getWindow(), false);
         super.onCreate(savedInstanceState);
-        activityReviewCompetitionRecordPageBinding = ActivityReviewCompetitionRecordPageBinding.inflate(this.getLayoutInflater());
-        allocateActivityTitle("Review Competition Records");
-        setContentView(activityReviewCompetitionRecordPageBinding.getRoot());
+        setContentView(R.layout.activity_review_competition_record_page);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Review Competition Records");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         userId = getIntent().getExtras().getInt("userId");
 
         try {
@@ -433,5 +440,16 @@ public class reviewCompetitionRecordPage extends DrawerBaseActivity {
             lookSelected(all);
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

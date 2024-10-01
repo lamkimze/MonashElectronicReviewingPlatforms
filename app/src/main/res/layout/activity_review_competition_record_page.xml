@@ -10,18 +10,12 @@
 
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@color/lavender"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:text="Sales Review Records"
+        android:textAlignment="center"
+        app:title="Sales Review Records"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

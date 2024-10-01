@@ -155,9 +155,6 @@ public class dashboardPage extends DrawerBaseActivity {
 //            dashboardReviewCard reviewCard = new dashboardReviewCard("review.getReviewTitle()", 3f, new ArrayList<Bitmap>(), "review.getReviewText()", 1, 2, 3, BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez), "2020-10-2", "Jamie");
             reviewArrayList.add(reviewCard);
         }
-        dashboardReviewCard review = new dashboardReviewCard("Great food", 4.5f, new ArrayList<Bitmap>(), "The food was amazing, I would definitely recommend this place to anyone who loves good food", 1, 1, 1, BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez), "2021-10-10 00:00:00", "John Doe", "Guzman y Gomez", new ArrayList<Integer>(), new ArrayList<Integer>());
-        reviewArrayList.add(review);
-        reviewArrayList.add(review);
     }
 
 

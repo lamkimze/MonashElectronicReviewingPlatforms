@@ -533,8 +533,6 @@ public class restaurantDetailPage extends AppCompatActivity {
                 break;
         }
 
-
-
     }
 
     @Override
