@@ -24,8 +24,10 @@ public class dashboardReviewCard {
     private String reviewDate;
     private String reviewUsername;
     private String businessName;
+    private ArrayList<Integer> likes;
+    private ArrayList<Integer> dislikes;
 
-    public dashboardReviewCard(String reviewTitle, float reviewRating, ArrayList<Bitmap> reviewImages, String reviewText, int reviewerId, int businessId, int reviewId, Bitmap profilePic, String reviewDate, String reviewUsername, String businessName) {
+    public dashboardReviewCard(String reviewTitle, float reviewRating, ArrayList<Bitmap> reviewImages, String reviewText, int reviewerId, int businessId, int reviewId, Bitmap profilePic, String reviewDate, String reviewUsername, String businessName, ArrayList<Integer> likes, ArrayList<Integer> dislikes) {
         this.reviewTitle = reviewTitle;
         this.reviewRating = reviewRating;
         this.reviewImages = reviewImages;
@@ -37,6 +39,8 @@ public class dashboardReviewCard {
         this.reviewDate = reviewDate;
         this.reviewUsername = reviewUsername;
         this.businessName = businessName;
+        this.likes = likes;
+        this.dislikes = dislikes;
     }
 
     public String getReviewTitle() {
@@ -81,5 +85,13 @@ public class dashboardReviewCard {
 
     public String getBusinessName() {
         return businessName;
+    }
+
+    public ArrayList<Integer> getLikes() {
+        return likes;
+    }
+
+    public ArrayList<Integer> getDislikes() {
+        return dislikes;
     }
 }

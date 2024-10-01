@@ -138,7 +138,7 @@ public class dashboardPage extends DrawerBaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         reviewArrayList = new ArrayList<>();
 
-        adapter = new dashboardReviewCardAdapter(this, reviewArrayList);
+        adapter = new dashboardReviewCardAdapter(this, reviewArrayList, userId);
         recyclerView.setAdapter(adapter);
 
         CreateDataForCards();
@@ -151,11 +151,11 @@ public class dashboardPage extends DrawerBaseActivity {
         for (ReviewModel review : reviewLatestFiveList) {
             Bitmap profilePic = crudImage.getProfilePictureByUserId(review.getReviewerId());
             ArrayList<Bitmap> reviewImages = crudImage.getReviewImages(review.getReviewId());
-            dashboardReviewCard reviewCard = new dashboardReviewCard(review.getReviewTitle(), review.getReviewRating(), reviewImages, review.getReviewText(), review.getReviewerId(), review.getBusinessId(), review.getReviewId(), profilePic, crudReview.getReviewDate(review.getReviewId()), crudUser.getFullName(review.getReviewerId()), crudBusiness.getBusinessNameById(review.getBusinessId()));
+            dashboardReviewCard reviewCard = new dashboardReviewCard(review.getReviewTitle(), review.getReviewRating(), reviewImages, review.getReviewText(), review.getReviewerId(), review.getBusinessId(), review.getReviewId(), profilePic, crudReview.getReviewDate(review.getReviewId()), crudUser.getFullName(review.getReviewerId()), crudBusiness.getBusinessNameById(review.getBusinessId()), review.getLikes(), review.getDislike());
 //            dashboardReviewCard reviewCard = new dashboardReviewCard("review.getReviewTitle()", 3f, new ArrayList<Bitmap>(), "review.getReviewText()", 1, 2, 3, BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez), "2020-10-2", "Jamie");
             reviewArrayList.add(reviewCard);
         }
-        dashboardReviewCard review = new dashboardReviewCard("Great food", 4.5f, new ArrayList<Bitmap>(), "The food was amazing, I would definitely recommend this place to anyone who loves good food", 1, 1, 1, BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez), "2021-10-10", "John Doe", "Guzman y Gomez");
+        dashboardReviewCard review = new dashboardReviewCard("Great food", 4.5f, new ArrayList<Bitmap>(), "The food was amazing, I would definitely recommend this place to anyone who loves good food", 1, 1, 1, BitmapFactory.decodeResource(getResources(), R.drawable.guzmanygomez), "2021-10-10 00:00:00", "John Doe", "Guzman y Gomez", new ArrayList<Integer>(), new ArrayList<Integer>());
         reviewArrayList.add(review);
         reviewArrayList.add(review);
     }

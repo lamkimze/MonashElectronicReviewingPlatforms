@@ -12,22 +12,28 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
 import com.example.myapplication.Restaurant;
+import com.google.gson.Gson;
 import com.password4j.Password;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
 //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 71;
+    private static final int DATABASE_VERSION = 84;
 
     private final Context context;
 
@@ -197,7 +203,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "(8, 3, 4.7, 'Great!', 'Loved the meal, will come back.', datetime('now','localtime')),\n" +
                 "(9, 2, 2.6, 'Could be better', 'Not the best experience, food was cold.', datetime('now','localtime')),\n" +
                 "(10, 1, 5.0, 'Amazing!', 'Best food I have ever had!', datetime('now','localtime'));\n";
-        db.execSQL(insertReview);
+
+//        ArrayList<Integer> likes = new ArrayList<>(Arrays.asList(1, 2, 3)); // Example likes
+//        ArrayList<Integer> dislikes = new ArrayList<>(Arrays.asList(4, 5)); // Example dislikes
+//        String[] tags = {"Food", "Service"}; // Example tags
+//
+//// Insert the review using the modified insertReview method
+//        insertReview(1, 1, 4.5f, "Great experience!", "The food was amazing", likes, dislikes, tags, db);
+        // Sample reviews with likes, dislikes, and tags
+        ArrayList<Integer> likes1 = new ArrayList<>(Arrays.asList(1, 2, 3)); // Example likes for review 1
+        ArrayList<Integer> dislikes1 = new ArrayList<>(Arrays.asList(4, 5)); // Example dislikes for review 1
+        String[] tags1 = {"Food", "Service"}; // Example tags for review 1
+
+        ArrayList<Integer> likes2 = new ArrayList<>(Arrays.asList(2, 3)); // Example likes for review 2
+        ArrayList<Integer> dislikes2 = new ArrayList<>(Arrays.asList(1, 5)); // Example dislikes for review 2
+        String[] tags2 = {"Ambiance", "Quality"}; // Example tags for review 2
+
+// Insert reviews using the modified method
+        insertReview(1, 1, 4.5f, "Great experience!", "The food was amazing.", likes1, dislikes1, tags1, db);
+        insertReview(2, 2, 3.0f, "Good but slow", "Service was a bit slow.", likes2, dislikes2, tags2, db);
+        // Additional review 3
+        ArrayList<Integer> likes3 = new ArrayList<>(Arrays.asList(3, 4));
+        ArrayList<Integer> dislikes3 = new ArrayList<>(Arrays.asList(1));
+        String[] tags3 = {"Service", "Speed"};
+        insertReview(3, 3, 4.0f, "Quick service!", "Got served really fast.", likes3, dislikes3, tags3, db);
+
+// Additional review 4
+        ArrayList<Integer> likes4 = new ArrayList<>(Arrays.asList(5));
+        ArrayList<Integer> dislikes4 = new ArrayList<>(Arrays.asList(2, 3));
+        String[] tags4 = {"Food", "Ambiance"};
+        insertReview(4, 4, 2.5f, "Not the best", "Food was a bit cold.", likes4, dislikes4, tags4, db);
+
+// Additional review 5
+        ArrayList<Integer> likes5 = new ArrayList<>(Arrays.asList(1, 3, 5));
+        ArrayList<Integer> dislikes5 = new ArrayList<>(Arrays.asList(4));
+        String[] tags5 = {"Service", "Food", "Cleanliness"};
+        insertReview(5, 5, 5.0f, "Amazing!", "Best restaurant experience ever!", likes5, dislikes5, tags5, db);
+
+// Repeat as needed for additional reviews
+//        db.execSQL(insertReview);
         insertReviewImage(1, R.drawable.artichokereview, db);
         insertReviewImage(2, R.drawable.boostjuicereview, db);
         insertReviewImage(3, R.drawable.cafecinquelirereview, db);
@@ -302,6 +346,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
+    }
+    public void insertReview(int userId, int busId, float starRating, String reviewTitle, String reviewText,
+                             ArrayList<Integer> likesUser, ArrayList<Integer> dislikesUser, String[] tags, SQLiteDatabase db) {
+
+        // Initialize Gson
+        Gson gson = new Gson();
+
+        // Convert the ArrayLists and String[] to JSON Strings using Gson
+        String gsonLikes = gson.toJson(likesUser);
+        String gsonDislikes = gson.toJson(dislikesUser);
+        String gsonTags = gson.toJson(tags);
+
+        // Get the current date and time
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currentDateAndTime = sdf.format(new Date());
+
+        // Insert the review into the database using ContentValues
+        ContentValues values = new ContentValues();
+        values.put("user_id", userId);
+        values.put("bus_id", busId);
+        values.put("star_rating", starRating);
+        values.put("review_title", reviewTitle);
+        values.put("review_text", reviewText);
+        values.put("review_date", currentDateAndTime); // Current date and time as a string
+
+        // Store the JSON Strings
+        values.put("review_tags", gsonTags);     // Tags serialized to JSON
+        values.put("likes_user", gsonLikes);     // Likes serialized to JSON
+        values.put("dislike_user", gsonDislikes); // Dislikes serialized to JSON
+
+        long result = db.insert("review", null, values);
+        if (result == -1) {
+            // Handle error
+            Log.e("Database", "Failed to insert review");
+        }
     }
 
     private void insertBusinessData(SQLiteDatabase db) {
