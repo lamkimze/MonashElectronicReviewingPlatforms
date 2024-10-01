@@ -323,7 +323,7 @@ public class samplePostDetailActivity extends AppCompatActivity {
 
         Position postUserPosition = crudUser.getUserPoistion(postUser.getId());
 //        set position
-        if(postUserPosition.getBusinessID() == busId){
+        if(postUserPosition != null && postUserPosition.getBusinessID() == busId){
             pPosition.setText(postUserPosition.getPositionName());
         }else{
             pPosition.setVisibility(View.GONE);

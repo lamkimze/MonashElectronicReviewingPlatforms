@@ -50,6 +50,7 @@ public class userRegistrationPage extends AppCompatActivity {
     TextView restaurantNameShowing;
     LinearLayout restaurantVerify;
     Button verificationButton;
+    ImageView restaurantLogo;
 
     TextInputEditText etFirstName, etLastName, etUserName, etPassword, etConPassword, etEmail;
     TextInputEditText etBusId;
@@ -91,6 +92,7 @@ public class userRegistrationPage extends AppCompatActivity {
         etBusId = findViewById(R.id.restaurantCode);
         etPosition = findViewById(R.id.positions);
         restaurantNameShowing = findViewById(R.id.restaurantNameShowing);
+        restaurantLogo = findViewById(R.id.imageView2);
         restaurantVerify = findViewById(R.id.restaurantVerification);
         restaurantVerify.setVisibility(View.GONE);
         verificationButton = findViewById(R.id.button6);
@@ -119,6 +121,7 @@ public class userRegistrationPage extends AppCompatActivity {
                     verifyRestaurant = crudBusiness.getRestaurant(Integer.parseInt(busId));
                     if(verifyRestaurant != null){
                         restaurantVerify.setVisibility(View.VISIBLE);
+                        restaurantLogo.setImageBitmap(crudImage.getBusinessImage(Integer.parseInt(busId)));
                         restaurantNameShowing.setText(verifyRestaurant.getName());
                     }
                 }catch (Exception e){

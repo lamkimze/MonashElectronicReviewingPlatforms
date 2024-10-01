@@ -13,18 +13,24 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
 import com.example.myapplication.Restaurant;
 import com.google.gson.Gson;
+import com.google.gson.Gson;
 import com.password4j.Password;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
@@ -32,8 +38,8 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
-//    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 84;
+    //    increment the version number if you change the schema
+    private static final int DATABASE_VERSION = 89;
 
     private final Context context;
 
@@ -534,13 +540,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("bus_image", busTheCountsImageByteArray);  // No image
         db.insert("business", null, values);
 
-        // Insert data for 'The Den' without an image
-        values.clear();
-        values.put("bus_name", "The Den");
-        values.put("bus_addr", "Cellar West Room, Campus Centre, 21 Chancellor's Walk, Clayton campus");
-        values.put("bus_ph_nb", "95446611");
-        values.putNull("bus_image");  // No image
-        db.insert("business", null, values);
+//        // Insert data for 'The Den' without an image
+//        values.clear();
+//        values.put("bus_name", "The Den");
+//        values.put("bus_addr", "Cellar West Room, Campus Centre, 21 Chancellor's Walk, Clayton campus");
+//        values.put("bus_ph_nb", "95446611");
+//        values.putNull("bus_image");  // No image
+//        db.insert("business", null, values);
 
         // Insert data for 'Grafalis Cafe' without an image
         values.clear();
@@ -599,6 +605,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("bus_hours", "Mon–Fri: 9.30am – 6pm");
         values.put("bus_cuisine_type", "Chinese");
         values.put("bus_image", busMaLongKitchenImageByteArray);  // No image
+        db.insert("business", null, values);
+
+        // Insert data for 'Monash Meeting Point' with an image
+        values.clear();
+        values.put("bus_name", "Monash Meeting Point");
+        values.put("bus_addr", "Ground Floor, Campus Centre, 21 Chancellors Walk, Clayton campus");
+        values.put("bus_ph_nb", "9905 5714");
+        values.put("bus_email", "cater@monashcatering.com.au");
+        values.put("website_url", "www.monashcateringonline.com.au");
+        values.put("bus_hours", "Mon–Fri: 7.30am – 5pm");
+        values.put("bus_cuisine_type", "Asian");
+        values.put("bus_image", busMonashMeetingPointImageByteArray);  // Inserting the image byte array
         db.insert("business", null, values);
 
         // Continue inserting all the remaining businesses similarly...

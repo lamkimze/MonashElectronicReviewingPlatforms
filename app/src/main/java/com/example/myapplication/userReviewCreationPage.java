@@ -173,7 +173,7 @@ public class userReviewCreationPage extends AppCompatActivity {
                 rating = ratingBar.getRating();
                 stringTags = tagsInputEditText.getText().toString();
 
-                ReviewModel reviewModel = new ReviewModel(rating, stringReviewTitle, stringReviewContent, reviewerId, busId);
+                ReviewModel reviewModel = new ReviewModel(rating, stringReviewTitle, new ArrayList<>(), stringReviewContent, reviewerId, busId);
 
                 // Add images to review
                 for (Uri imageUri : uri) {
@@ -185,8 +185,8 @@ public class userReviewCreationPage extends AppCompatActivity {
                             image = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                         }
                         reviewModel.addReviewImage(image);
-                        reviewed_restaurant.setDaily_review(reviewed_restaurant.getDaily_review() + 1);
-                        crudBusiness.updateCompetitionDetail(busId, reviewed_restaurant);
+//                        reviewed_restaurant.setDaily_review(reviewed_restaurant.getDaily_review() + 1);
+//                        crudBusiness.updateCompetitionDetail(busId, reviewed_restaurant);
                     } catch (Exception e) {
                         Toast.makeText(userReviewCreationPage.this, "Error adding image to review: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e("userReviewCreationPage", "Error adding image to review: " + e.getMessage());

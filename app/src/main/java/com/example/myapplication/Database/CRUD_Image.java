@@ -56,19 +56,27 @@ public class CRUD_Image {
      */
     public Bitmap getBusinessImage(int businessID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectBusiness = format(locale, "SELECT * FROM business WHERE bus_id = %d;", businessID);
+        String selectBusiness = String.format(Locale.getDefault(), "SELECT * FROM business WHERE bus_id = %d;", businessID);
         Cursor cursor = db.rawQuery(selectBusiness, null);
 
-        cursor.moveToFirst();
-        int index = cursor.getColumnIndex("bus_image");
-        if (index == -1) {
-            cursor.close();
-            return null;
+        if (cursor != null && cursor.moveToFirst()) {
+            int index = cursor.getColumnIndex("bus_image");
+            if (index != -1) {
+                Bitmap image = DbBitmapUtility.getBitmap(cursor.getBlob(index));
+                cursor.close();
+                return image;
+            }
         }
-        Bitmap image = DbBitmapUtility.getBitmap(cursor.getBlob(index));
-        cursor.close();
-        return image;
+
+        // Make sure to close the cursor if no rows are found
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        // Return null or a default image if no result is found
+        return null;
     }
+
 
     /**
      * Method to get the images Ids of a review

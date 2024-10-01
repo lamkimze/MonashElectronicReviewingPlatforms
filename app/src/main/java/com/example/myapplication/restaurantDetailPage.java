@@ -139,6 +139,10 @@ public class restaurantDetailPage extends AppCompatActivity {
             OperatingHoursTv.setText(" - ");
         }
 
+        if(crudImage.getBusinessImage(busId) != null){
+            restaurantImage.setImageBitmap(crudImage.getBusinessImage(busId));
+        }
+
         totalRatings.setText(String.valueOf(crudReview.getReviews(busId).size()) + " Reviews");
         averageRatingTv.setText(String.valueOf(Math.round(selected_restaurant.getStars())));
         averageRatingBar.setRating(selected_restaurant.getStars());
