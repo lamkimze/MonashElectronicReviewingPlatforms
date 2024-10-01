@@ -1,35 +1,35 @@
 package com.example.myapplication;
 
-import java.util.Comparator;
-
 public class RestaurantReviewCompetition {
-    private static int accumulatedReview = 0;
-    private static int accumulateMonth = 0;
-    private int monthlyReview = 0;
-    private int seasonReview = 0;
-    private int halfYearReview = 0;
-    private int yearlyReview = 0;
+    private int daily_review = 0;
     private int goldMedalNo = 0;
     private int silverMedalNo = 0;
     private int bronzeMedalNo = 0;
-    protected int placeChange = 0;
+    protected int prev_ranking = 0;
 
 
-    public static int getAccumulateMonth() {
-        return accumulateMonth;
+    public int getDaily_review() {
+        return daily_review;
     }
 
-    public int getPlaceChange() {
-        return placeChange;
+    public void setDaily_review(int daily_review) {
+        this.daily_review = daily_review;
     }
 
-    public void incrementReview(){
-        accumulatedReview ++;
-
+    public void setPrev_ranking(int daily_review) {
+        this.daily_review = daily_review;
     }
 
-    public int getAccumulatedReview() {
-        return accumulatedReview;
+    public void setGoldMedalNo(int goldMedalNo) {
+        this.goldMedalNo = goldMedalNo;
+    }
+
+    public void setSilverMedalNo(int silverMedalNo) {
+        this.silverMedalNo = silverMedalNo;
+    }
+
+    public void setBronzeMedalNo(int bronzeMedalNo) {
+        this.bronzeMedalNo = bronzeMedalNo;
     }
 
     public int getGoldMedalNo() {
@@ -44,20 +44,8 @@ public class RestaurantReviewCompetition {
         return bronzeMedalNo;
     }
 
-    public int getMonthlyReview() {
-        return monthlyReview;
-    }
-
-    public int getSeasonReview() {
-        return seasonReview;
-    }
-
-    public int getHalfYearReview() {
-        return halfYearReview;
-    }
-
-    public int getYearlyReview() {
-        return yearlyReview;
+    public int getPrev_ranking() {
+        return daily_review;
     }
 
 }

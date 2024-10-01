@@ -1,11 +1,12 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.text.format.DateFormat;
+import android.net.Uri;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,9 +19,10 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.CRUD_Image;
@@ -28,13 +30,12 @@ import com.example.myapplication.Database.CRUD_Review;
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.Entities.User;
-import com.squareup.picasso.Picasso;
 
-import java.sql.Timestamp;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -64,6 +65,9 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.row_posts, parent, false);
+
+
+
         try {
             databaseHelper = new DatabaseHelper(parent.getContext());
             crudUser = new CRUD_User(databaseHelper);
@@ -84,7 +88,6 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
         String uName = currentUser.getUsername();
         Position userPosition = crudUser.getUserPoistion(uid);
         String pTitle = postList.get(position).getReviewTitle();
-        String pImage = postList.get(position).getpImage();
         String postTime = postList.get(position).getTimestamp();
         float rating = postList.get(position).getReviewRating();
         int commentNo = crudReview.getResponses(postList.get(position).reviewId).size();
@@ -119,7 +122,6 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-
 
 //        set Data
         holder.uNameTv.setText(uName);
@@ -165,7 +167,7 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
         holder.moreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMoreOptions(holder.moreBtn, uid, userId, postList.get(position).getReviewId(), pImage);
+                showMoreOptions(holder.moreBtn, uid, userId, postList.get(position).getReviewId());
             }
         });
 
@@ -232,10 +234,8 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
         });
     }
 
-    private void setLikes(final MyHolder holder, final String postKey){
-    }
 
-    private void showMoreOptions(ImageButton moreBtn, int userId, int myId, final int pId, final String pImage){
+    private void showMoreOptions(ImageButton moreBtn, int userId, int myId, final int pId){
         PopupMenu popupMenu = new PopupMenu(context, moreBtn, Gravity.END);
 
         if(userId == myId){
@@ -284,6 +284,7 @@ public class commentAdapter extends RecyclerView.Adapter<commentAdapter.MyHolder
     public int getItemCount() {
         return postList.size();
     }
+
 
     class MyHolder extends RecyclerView.ViewHolder{
         ImageView uPictureIv;
