@@ -36,7 +36,10 @@ import com.taufiqrahman.reviewratings.RatingReviews;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 public class restaurantDetailPage extends AppCompatActivity {
 
@@ -57,9 +60,11 @@ public class restaurantDetailPage extends AppCompatActivity {
     CRUD_Review crudReview;
     CRUD_Image crudImage;
     CRUD_User crudUser;
+    TextView restaurantTags1, restaurantTags2, restaurantTags3;
     String [] filters = {"5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star", "Staff Replied", "Owner Replied"};
     boolean[] selectedFilters;
     ArrayList<Integer> filterElements = new ArrayList<>();
+    ArrayList<String[]> allTags = new ArrayList<>();
     String [] sorts = {"Likes", "Reply", "Dislike", "Time: Recent-Old", "Time: Old-Recent", "Ratings: high-low", "Ratings: low-high"};
     ArrayAdapter<String> sortAdapter;
     AutoCompleteTextView autoCompleteTextViewFilter, autoCompleteTextViewSort;
@@ -83,6 +88,7 @@ public class restaurantDetailPage extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         loadData();
+
         selected_restaurant = crudBusiness.getRestaurant(busId);
         recyclerView = findViewById(R.id.commentRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -108,6 +114,10 @@ public class restaurantDetailPage extends AppCompatActivity {
         OperatingHoursTv = findViewById(R.id.operatingHourTv);
         websiteTv = findViewById(R.id.websiteTv);
         emailTv = findViewById(R.id.emailTv);
+
+        restaurantTags1 = findViewById(R.id.restaurantTags1);
+        restaurantTags2 = findViewById(R.id.restaurantTags2);
+        restaurantTags3 = findViewById(R.id.restaurantTags3);
 
         if(crudBusiness.getRestaurant(busId).getAddress() != null){
             addressTv.setText(crudBusiness.getRestaurant(busId).getAddress());
@@ -142,6 +152,54 @@ public class restaurantDetailPage extends AppCompatActivity {
         if(crudImage.getBusinessImage(busId) != null){
             restaurantImage.setImageBitmap(crudImage.getBusinessImage(busId));
         }
+
+        ArrayList<ReviewModel> reviewModels = crudReview.getReviews(busId);
+        if(reviewModels != null){
+            for (ReviewModel review: reviewModels) {
+                if(review.getTags() != null && review.getTags().length > 0){
+                    allTags.add(review.getTags());
+                }
+            }
+        }
+
+
+        Map<String, Integer> tagCountMap = new HashMap<>();
+
+        // Count the frequency of each tag
+        for (String[] tags : allTags) {
+            for (String tag : tags) {
+                tagCountMap.put(tag, tagCountMap.getOrDefault(tag, 0) + 1);
+            }
+        }
+
+        // Create a list from the map entries and sort by count
+        List<Map.Entry<String, Integer>> sortedTags = new ArrayList<>(tagCountMap.entrySet());
+        sortedTags.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())); // Sort in descending order
+
+        // Retrieve the top N tags
+        List<String> topTags = new ArrayList<>();
+        for (int i = 0; i < Math.min(3, sortedTags.size()); i++) {
+            topTags.add(sortedTags.get(i).getKey());
+        }
+
+        try {
+            restaurantTags1.setText(topTags.get(0));
+        }catch (Exception e){
+            restaurantTags1.setVisibility(View.GONE);
+        }
+
+        try{
+            restaurantTags2.setText(topTags.get(1));
+        }catch (Exception e){
+            restaurantTags2.setVisibility(View.GONE);
+        }
+
+        try{
+            restaurantTags3.setText(topTags.get(2));
+        }catch (Exception e){
+            restaurantTags3.setVisibility(View.GONE);
+        }
+
 
         totalRatings.setText(String.valueOf(crudReview.getReviews(busId).size()) + " Reviews");
         averageRatingTv.setText(String.valueOf(Math.round(selected_restaurant.getStars())));
