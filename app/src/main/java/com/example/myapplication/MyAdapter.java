@@ -30,7 +30,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.nameView.setText(items.get(position).getName());
         holder.ratingView.setText(items.get(position).getRating());
-        holder.imageView.setImageResource(items.get(position).getImage());
+        holder.imageView.setImageBitmap(items.get(position).getImage());
     }
 
     @Override

@@ -1,11 +1,13 @@
 package com.example.myapplication;
 
+import android.graphics.Bitmap;
+
 public class RestaurantItem {
     String name;
     String rating;
-    int image;
+    Bitmap image;
 
-    public RestaurantItem(String name, String rating, int image) {
+    public RestaurantItem(String name, String rating, Bitmap image) {
         this.name = name;
         this.rating = rating;
         this.image = image;
@@ -27,11 +29,11 @@ public class RestaurantItem {
         this.rating = rating;
     }
 
-    public int getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 }
