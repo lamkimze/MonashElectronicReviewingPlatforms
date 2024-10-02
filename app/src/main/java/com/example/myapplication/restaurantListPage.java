@@ -45,7 +45,7 @@ public class restaurantListPage extends AppCompatActivity {
         });
 
         //  Retrieve user_id from intent
-        int userID = getIntent().getIntExtra("userID", 5);
+        int userId = getIntent().getIntExtra("userId", 5);
 
         //  Initialize DatabaseHelper and CRUD_Business
         DatabaseHelper dbHelper = new DatabaseHelper(this);
@@ -72,7 +72,7 @@ public class restaurantListPage extends AppCompatActivity {
 
 
         // Set the item click listener for the ListView
-        setListViewItemClickListener(userID);
+        setListViewItemClickListener(userId);
 
         // Set the item selected listener for the Spinner
         setSpinnerItemSelectedListener();
@@ -91,12 +91,12 @@ public class restaurantListPage extends AppCompatActivity {
 
     }
 
-    private void setListViewItemClickListener(int userID) {
+    private void setListViewItemClickListener(int userId) {
         restaurantListView.setOnItemClickListener((parent, view, position, id) -> {
             Restaurant restaurant = restaurants.get(position);
             int businessID = restaurant.getId();
             Intent restuarantIntent = new Intent(restaurantListPage.this, restaurantDetailPage.class);
-            restuarantIntent.putExtra("userID", userID);
+            restuarantIntent.putExtra("userId", userId);
             restuarantIntent.putExtra("busId", businessID);
             startActivity(restuarantIntent);
         });
