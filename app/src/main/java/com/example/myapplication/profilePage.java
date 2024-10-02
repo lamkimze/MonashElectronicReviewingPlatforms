@@ -34,6 +34,7 @@ public class profilePage extends DrawerBaseActivity {
     ImageView imageView;
     TextView textView;
     TextView email;
+    TextView name;
     int userId;
     ArrayList<ReviewModel> reviewModels = new ArrayList<>();
     CRUD_Business businessCrud = new CRUD_Business(new DatabaseHelper(this));
@@ -86,7 +87,7 @@ public class profilePage extends DrawerBaseActivity {
         // Inflate the profile page layout into the FrameLayout
         FrameLayout contentFrame = findViewById(R.id.activityContainer); // Use activityContainer ID
         getLayoutInflater().inflate(R.layout.activity_profile_page, contentFrame, true);
-
+        allocateActivityTitle("Profile Page");
         // Initialize views after the layout has been set
         imageView = findViewById(R.id.imageView2); // Initialize ImageView
         textView = findViewById(R.id.textView19);  // Initialize TextView
@@ -115,6 +116,9 @@ public class profilePage extends DrawerBaseActivity {
 
             email = findViewById(R.id.userProfileEmailAddress); // Use class variable
             email.setText(activeUser.getEmail());
+
+            name = findViewById(R.id.textView14);
+            name.setText(activeUser.getFirstName() + " " + activeUser.getLastName());
         } else {
             // Handle the case where the user is not found
             textView = findViewById(R.id.textView19); // Use class variable
@@ -122,6 +126,8 @@ public class profilePage extends DrawerBaseActivity {
 
             email = findViewById(R.id.userProfileEmailAddress); // Use class variable
             email.setText("No email available");
+
+
         }
 
         // Setup RecyclerView for displaying user reviews
