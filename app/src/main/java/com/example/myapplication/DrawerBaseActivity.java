@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,17 +17,25 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Image;
+import com.example.myapplication.Database.CRUD_Review;
 import com.example.myapplication.Database.CRUD_User;
+import com.example.myapplication.Database.DatabaseHelper;
+import com.example.myapplication.Entities.User;
 import com.google.android.material.navigation.NavigationView;
 
 public class DrawerBaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
     boolean isBackDisabled = false;
-    int userid;
+    int userId;
     Position userPosition;
+    DatabaseHelper dbHelper;
     CRUD_User crudUser;
-
+    CRUD_Image crudImage;
+    ImageView userPicture;
+    TextView userName, userEmail;
 
     public void setContentView(View view){
         drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_base, null);
@@ -32,13 +43,10 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         container.addView(view);
         super.setContentView(drawerLayout);
 
-        userid = getIntent().getExtras().getInt("userId");
-        //userPosition = crudUser.getUserPoistion(userid);
+        userId = getIntent().getExtras().getInt("userId");
+        loadData();
 
-
-
-
-        Log.d("TAG", "User ID: " + userid);
+        Log.d("TAG", "User ID: " + userId);
 
         Toolbar toolbar = drawerLayout.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,12 +54,37 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         NavigationView navigationView = drawerLayout.findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+//        userPicture = drawerLayout.findViewById(R.id.userPicture);
+//        userName = drawerLayout.findViewById(R.id.userName);
+//        userEmail = drawerLayout.findViewById(R.id.userEmail);
+
+//        User currentUser = crudUser.getUser(userId);
+//
+//        if(currentUser.getProfilePicture() != null){
+//            userPicture.setImageBitmap(currentUser.getProfilePicture());
+//        }else{
+//            userPicture.setImageResource(R.drawable.person_icon);
+//        }
+//
+//        userName.setText(currentUser.getUsername());
+//        userEmail.setText(currentUser.getEmail());
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
 
+    }
+
+    private void loadData() {
+        try{
+            dbHelper = new DatabaseHelper(this);
+            crudImage = new CRUD_Image(dbHelper);
+            crudUser = new CRUD_User(dbHelper);;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void goToLogin(){
@@ -64,23 +97,21 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
     private void goToFavourite(){
         Intent favIntent = new Intent(this, favouriteRestaurantsPage.class);
+        favIntent.putExtra("userId", userId);
         startActivity(favIntent);
     }
 
-    private void goToProfile(){
-        userid = getIntent().getExtras().getInt("userId");
-        userPosition = null;
-        if (userPosition == null){
-            Intent favIntent = new Intent(this, profilePage.class);
-            startActivity(favIntent);
-        }
-
-        else if (userPosition.getPositionName() == "Owner"){
-            Intent favIntent = new Intent(this, restaurantOwnerProfilePage.class);
-            startActivity(favIntent);
+    public void goToProfile(View view){
+        userPosition = crudUser.getUserPoistion(userId);
+        if (userPosition != null && userPosition.getPositionName().equals("Owner")){
+            Intent profileIntent = new Intent(this, restaurantOwnerProfilePage.class);
+            profileIntent.putExtra("userId", userId);
+            profileIntent.putExtra("busId", crudUser.getUserPoistion(userId).getBusinessID());
+            startActivity(profileIntent);
         }else{
-            Intent favIntent = new Intent(this, profilePage.class);
-            startActivity(favIntent);
+            Intent profileIntent = new Intent(this, profilePage.class);
+            profileIntent.putExtra("userId", userId);
+            startActivity(profileIntent);
         }
     }
 
@@ -89,13 +120,13 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         int id = item.getItemId();
 
         if (id == R.id.item_home) {
-
+            goTaDashBoard();
         }else if(id == R.id.item_setting){
 
         } else if (id == R.id.item_share) {
 
         } else if (id == R.id.item_profile) {
-            goToProfile();
+            goToProfile(item.getActionView());
 
         } else if(id == R.id.item_favouriteList){
             goToFavourite();
@@ -106,6 +137,11 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
         drawerLayout.closeDrawers();
         return true;
+    }
+
+    private void goTaDashBoard() {
+        Intent dashboardPage = new Intent(getApplicationContext(), dashboardPage.class);
+        dashboardPage.putExtra("userid", userId);
     }
 
     protected void allocateActivityTitle(String titleString){
@@ -123,11 +159,7 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         }
     }
 
-    public void goToProfile(View view){
-        Intent profileIntent = new Intent(this, profilePage.class);
-        profileIntent.putExtra("userid", userid);
-        startActivity(profileIntent);
-    }
+
 
     protected void onPostCreate(Bundle saveInstanceState){
         super.onPostCreate(saveInstanceState);

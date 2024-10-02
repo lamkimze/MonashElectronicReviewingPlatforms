@@ -23,6 +23,7 @@ import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_Review;
 import com.example.myapplication.Database.CRUD_User;
 import com.example.myapplication.Database.DatabaseHelper;
+import com.example.myapplication.Entities.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -64,6 +65,8 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             e.printStackTrace();
 
         }
+
+
         return new ReviewHolder(view);
     }
 
@@ -76,15 +79,15 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
         ArrayList<Integer> disLikeList = reviews.get(position).getDislikes();
 
         if (likeList.contains(userId)) {
-            holder.likeButton.setImageResource(R.drawable.thumb_up); // Active like icon
+            holder.likeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.thumb_up, 0, 0, 0); // Active like icon
         } else {
-            holder.likeButton.setImageResource(R.drawable.unclicked_thumbs_up); // Default like icon
+            holder.likeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unclicked_thumbs_up, 0, 0, 0); // Default like icon
         }
 
         if (disLikeList.contains(userId)) {
-            holder.dislikeButton.setImageResource(R.drawable.thumb_down); // Active dislike icon
+            holder.dislikeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.thumb_down, 0, 0, 0); // Active dislike icon
         } else {
-            holder.dislikeButton.setImageResource(R.drawable.uncliked_thumbs_down); // Default dislike icon
+            holder.dislikeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.uncliked_thumbs_down, 0, 0, 0); // Default dislike icon
         }
 
         holder.likeButton.setOnClickListener(new View.OnClickListener() {
@@ -97,13 +100,13 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
 //                user liked the review and tap again
                 if(likeList.contains(userId)){
                     likeList.remove(Integer.valueOf(userId));
-                    holder.likeButton.setImageResource(R.drawable.unclicked_thumbs_up); // Default like icon
+                    holder.likeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unclicked_thumbs_up, 0, 0, 0); // Default like icon
                 }else{
                     likeList.add(userId);
-                    holder.likeButton.setImageResource(R.drawable.thumb_up); // Active like icon
+                    holder.likeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.thumb_up, 0, 0, 0); // Active like icon
                     if(disLikeList.contains(userId)){
                         disLikeList.remove(Integer.valueOf(userId));
-                        holder.dislikeButton.setImageResource(R.drawable.unclicked_thumbs_up); // Reset dislike button
+                        holder.dislikeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unclicked_thumbs_up, 0, 0, 0); // Reset dislike button
                     }
                 }
                 crudReview.updateLikes(reviews.get(position).getReviewId(), likeList);
@@ -112,6 +115,18 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             }
         });
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int businessId = review.getBusinessId();
+                Context context = holder.itemView.getContext();
+                Intent reviewDetail = new Intent(context, samplePostDetailActivity.class);
+                reviewDetail.putExtra("busId", businessId);
+                reviewDetail.putExtra("userId", userId);
+                reviewDetail.putExtra("reviewId", review.getReviewId());
+                context.startActivity(reviewDetail);
+            }
+        });
 
         holder.dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,13 +138,13 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
 //                user liked the review and tap again
                 if(disLikeList.contains(userId)){
                     disLikeList.remove(Integer.valueOf(userId));
-                    holder.dislikeButton.setImageResource(R.drawable.uncliked_thumbs_down); // Default like icon
+                    holder.dislikeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.uncliked_thumbs_down, 0, 0,  0); // Default like icon
                 }else{
                     disLikeList.add(userId);
-                    holder.dislikeButton.setImageResource(R.drawable.thumb_down); // Active like icon
+                    holder.dislikeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.thumb_down, 0, 0, 0); // Active like icon
                     if(likeList.contains(userId)){
                         likeList.remove(Integer.valueOf(userId));
-                        holder.likeButton.setImageResource(R.drawable.unclicked_thumbs_up); // Reset dislike button
+                        holder.likeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unclicked_thumbs_up, 0, 0, 0); // Reset dislike button
                     }
                 }
                 crudReview.updateLikes(reviews.get(position).getReviewId(), likeList);
@@ -150,21 +165,15 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
         private TextView titleView;
         TextView ratingView;
         TextView textView;
-        ImageButton likeButton;
-        ImageButton dislikeButton;
-        Button replyButton;
+        Button likeButton;
+        Button dislikeButton;
         Button reportButton;
         RatingBar ratingBar;
         TextView usernameView;
         TextView commentReviewContentView;
         TextView dateView;
         ImageView reviewImage;
-        TextView businessName;
-        TextView likeCount;
-        TextView dislikeCount;
-
-
-
+        TextView positionTags;
 
 
         ReviewHolder(View itemView){
@@ -176,11 +185,9 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             commentReviewContentView = itemView.findViewById(R.id.commentReviewContent);
             dateView = itemView.findViewById(R.id.commentTimeStamp);
             reviewImage = itemView.findViewById(R.id.commentImages);
-            businessName = itemView.findViewById(R.id.reviewTags);
-            likeCount = itemView.findViewById(R.id.likeCounter);
-            dislikeCount = itemView.findViewById(R.id.dislikeCounters);
             likeButton = itemView.findViewById(R.id.likeButton);
             dislikeButton = itemView.findViewById(R.id.dislikeButton);
+            positionTags = itemView.findViewById(R.id.reviewPosition);
 
         }
 
@@ -192,6 +199,14 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
             usernameView.setText(review.getReviewUsername());
             commentReviewContentView.setText(review.getReviewText());
+
+            Position userPosition = crudUser.getUserPoistion(userId);
+            if(userPosition != null){
+                positionTags.setText(userPosition.getPositionName());
+            }else{
+                positionTags.setVisibility(View.GONE);
+            }
+
 //            dateView.setText(review.getReviewDate());
             try {
                 SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -220,10 +235,15 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
-            businessName.setText(review.getBusinessName());
 
-            likeCount.setText(String.valueOf(review.getLikes().size()));
-            dislikeCount.setText(String.valueOf(review.getDislikes().size()));
+            likeButton.setText(String.valueOf(review.getLikes().size()));
+            if(review.getLikes().contains(userId)){
+                likeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.thumb_up, 0, 0, 0); // Default like icon
+            }
+            dislikeButton.setText(String.valueOf(review.getDislikes().size()));
+            if(review.getDislikes().contains(userId)){
+                dislikeButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.thumb_down, 0, 0, 0); // Default like icon
+            }
 
             // Handle review images
             ArrayList<Bitmap> reviewImages = review.getReviewImages();

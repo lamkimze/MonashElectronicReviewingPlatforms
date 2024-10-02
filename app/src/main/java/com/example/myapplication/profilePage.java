@@ -28,10 +28,11 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class profilePage extends AppCompatActivity {
+public class profilePage extends DrawerBaseActivity {
     ImageView imageView;
     TextView textView;
     TextView email;
+    int userId;
     ArrayList<ReviewModel> reviewModels = new ArrayList<>();
     CRUD_Business businessCrud = new CRUD_Business(new DatabaseHelper(this));
     CRUD_User userCrud = new CRUD_User(new DatabaseHelper(this));
@@ -48,6 +49,8 @@ public class profilePage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        userId = getIntent().getExtras().getInt("userId");
         RecyclerView recyclerView = findViewById(R.id.userRecyclerView);
         imageView = (ImageView) findViewById(R.id.imageView2);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_icon);
@@ -55,12 +58,15 @@ public class profilePage extends AppCompatActivity {
         Drawable userDrawable = new BitmapDrawable(getResources(), scakedBitmap);
         imageView.setImageDrawable(userDrawable);
 
-        activeUser = userCrud.getUser(1);
+        activeUser = userCrud.getUser(userId);
 
 
         textView = (TextView) findViewById(R.id.textView19);
         reviewModels = reviewCrud.getReviews(userCrud.getUserID(activeUser));
-        R_RecyclerViewAdapter adapter = new R_RecyclerViewAdapter(this,reviewModels);
+        commentAdapter adapter = new commentAdapter();
+        adapter.context = getApplicationContext();
+        adapter.setData(reviewModels);
+        adapter.userId = userId;
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         textView.setText(activeUser.getUsername());

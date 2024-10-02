@@ -53,7 +53,6 @@ public class dashboardPage extends DrawerBaseActivity {
     ActivityDashboardPageBinding activityDashboardPageBinding;
     ViewPager2 viewPager2;
     private Handler slideHandler = new Handler();
-    int userId;
     private RecyclerView recyclerView;
     private dashboardReviewCardAdapter adapter;
     private ArrayList<dashboardReviewCard> reviewArrayList;
@@ -74,6 +73,7 @@ public class dashboardPage extends DrawerBaseActivity {
         super.onCreate(savedInstanceState);
         activityDashboardPageBinding = ActivityDashboardPageBinding.inflate(getLayoutInflater());
         setContentView(activityDashboardPageBinding.getRoot());
+
         allocateActivityTitle("Electronic Review Platform");
         userId = getIntent().getExtras().getInt("userId");
         Log.e("User id", String.valueOf(userId) );
@@ -95,10 +95,6 @@ public class dashboardPage extends DrawerBaseActivity {
         for (Bitmap bitmap : topBusBanner) {
             slideItems.add(new SlideItem(bitmap));
         }
-//        slideItems.add(new SlideItem(R.drawable.gyg_banner1));
-//        slideItems.add(new SlideItem(R.drawable.gyg_banner3));
-//        slideItems.add(new SlideItem(R.drawable.gyg_banner4));
-//        slideItems.add(new SlideItem(R.drawable.gyg_banner5));
 
         viewPager2.setAdapter(new SlideAdapter(slideItems, viewPager2));
 
@@ -180,7 +176,7 @@ public class dashboardPage extends DrawerBaseActivity {
     public void onClickCompetitionReview(View view){
         Intent reviewCompetition = new Intent(this, reviewCompetitionRecordPage.class);
         reviewCompetition.putExtra("userId", userId);
-        Log.d("TAG", "User ID: " + userid);
+        Log.d("TAG", "User ID: " + userId);
         startActivity(reviewCompetition);
     }
 
