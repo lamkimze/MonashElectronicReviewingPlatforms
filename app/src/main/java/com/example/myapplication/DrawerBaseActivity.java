@@ -139,6 +139,7 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
             startActivity(profileIntent);
         }else{
             Intent profileIntent = new Intent(this, profilePage.class);
+            Log.e("TAG","Going to user profile");
             profileIntent.putExtra("userId", userId);
             startActivity(profileIntent);
         }

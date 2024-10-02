@@ -91,6 +91,7 @@ public class profilePage extends DrawerBaseActivity {
         imageView = findViewById(R.id.imageView2); // Initialize ImageView
         textView = findViewById(R.id.textView19);  // Initialize TextView
         email = findViewById(R.id.userProfileEmailAddress); // Initialize EditText
+        userId = getIntent().getExtras().getInt("userId");
 
         // Initialize views and functionality for profile page
         setupProfilePage();
@@ -101,12 +102,11 @@ public class profilePage extends DrawerBaseActivity {
         if (imageView == null) {
             Log.e("ProfilePage", "imageView is null");
         }
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.boostjuice);
+        activeUser = userCrud.getUser(userId); // Get active user once
+        Bitmap bitmap = activeUser.getProfilePicture();
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
         Drawable userDrawable = new BitmapDrawable(getResources(), scaledBitmap);
         imageView.setImageDrawable(userDrawable);
-
-        activeUser = userCrud.getUser(1); // Get active user once
 
         if (activeUser != null) {
             // Only set text if the user exists
@@ -130,9 +130,16 @@ public class profilePage extends DrawerBaseActivity {
 
     private void setupRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.userRecyclerView);
-        reviewModels = reviewCrud.getReviews(1); // Assuming user ID = 1
-        R_RecyclerViewAdapter adapter = new R_RecyclerViewAdapter(this, reviewModels);
+        reviewModels = reviewCrud.getReviews(userId);
+        commentAdapter adapter = new commentAdapter();
+        adapter.context = getApplicationContext();
+        adapter.setData(reviewModels);
+        adapter.userId = userId;
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+//        R_RecyclerViewAdapter adapter = new R_RecyclerViewAdapter(this, reviewModels);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
