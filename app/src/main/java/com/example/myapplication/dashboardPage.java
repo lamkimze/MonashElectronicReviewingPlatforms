@@ -181,7 +181,7 @@ public class dashboardPage extends DrawerBaseActivity {
     }
 
     public void onClickBusinessList(View view){
-        Intent businessList = new Intent(this, restaurantListPage.class);
+        Intent businessList = new Intent(this, reviewCompetitionRecordPage.class);
         businessList.putExtra("userId", userId);
         Log.d("TAG", "User ID: " + userId);
         startActivity(businessList);

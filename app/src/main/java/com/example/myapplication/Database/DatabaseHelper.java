@@ -39,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
     //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 91;
+    private static final int DATABASE_VERSION = 92;
 
     private final Context context;
 
@@ -134,13 +134,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (review_id) REFERENCES review(review_id), " +
                 "FOREIGN KEY (user_id) REFERENCES user(user_id));";
         db.execSQL(createResponseTable);
-
-        // New user_favorites table
-        String createUserFavoritesTable = "CREATE TABLE user_favorites (" +
-                "user_id INTEGER PRIMARY KEY, " +  // Primary key from user table
-                "favorites TEXT, " +  // Store business IDs as JSON
-                "FOREIGN KEY (user_id) REFERENCES user(user_id));";  // Reference the user table
-        db.execSQL(createUserFavoritesTable);
 
 
         insertBusinessData(db);
@@ -264,8 +257,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insertBusinessImage(1,R.drawable.artichokebus2,db);
         insertBusinessImage(1,R.drawable.artichokebus3,db);
         insertBusinessImage(1,R.drawable.artichokebus4,db);
-
-        insertSampleFavoriteBusinesses(db);
     }
 
     /**
@@ -396,48 +387,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             // Handle error
             Log.e("Database", "Failed to insert review");
         }
-    }
-
-    public void insertFavoriteBusinesses(int userId, ArrayList<Integer> favoriteBusinesses, SQLiteDatabase db) {
-        Gson gson = new Gson();
-        String gsonFavorites = gson.toJson(favoriteBusinesses);  // Convert ArrayList to JSON string
-
-        ContentValues values = new ContentValues();
-        values.put("user_id", userId);
-        values.put("favorites", gsonFavorites);  // Store the favorite businesses as JSON
-
-        // Insert into user_favorites table, replace if the user_id already exists
-        long result = db.insertWithOnConflict("user_favorites", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-        if (result == -1) {
-            Log.e("Database", "Failed to insert favorite businesses");
-        } else {
-            Log.d("Database", "Favorite businesses inserted successfully");
-        }
-    }
-
-    public void insertSampleFavoriteBusinesses(SQLiteDatabase db) {
-        ArrayList<Integer> favorites1 = new ArrayList<>(Arrays.asList(1, 2, 5));  // Favorite businesses for user 1
-        ArrayList<Integer> favorites2 = new ArrayList<>(Arrays.asList(3, 6, 10)); // Favorite businesses for user 2
-        ArrayList<Integer> favorites3 = new ArrayList<>(Arrays.asList(4, 15, 20)); // Favorite businesses for user 3
-        ArrayList<Integer> favorites4 = new ArrayList<>(Arrays.asList(7, 8, 9));  // Favorite businesses for user 4
-        ArrayList<Integer> favorites5 = new ArrayList<>(Arrays.asList(11, 12, 13)); // Favorite businesses for user 5
-        ArrayList<Integer> favorites6 = new ArrayList<>(Arrays.asList(14, 22, 28)); // Favorite businesses for user 6
-        ArrayList<Integer> favorites7 = new ArrayList<>(Arrays.asList(17, 18, 19)); // Favorite businesses for user 7
-        ArrayList<Integer> favorites8 = new ArrayList<>(Arrays.asList(21, 24, 26)); // Favorite businesses for user 8
-        ArrayList<Integer> favorites9 = new ArrayList<>(Arrays.asList(25, 27, 29)); // Favorite businesses for user 9
-        ArrayList<Integer> favorites10 = new ArrayList<>(Arrays.asList(30, 5, 9));  // Favorite businesses for user 10
-
-        // Insert the favorite businesses into the database using the insertFavoriteBusinesses method
-        insertFavoriteBusinesses(1, favorites1, db);
-        insertFavoriteBusinesses(2, favorites2, db);
-        insertFavoriteBusinesses(3, favorites3, db);
-        insertFavoriteBusinesses(4, favorites4, db);
-        insertFavoriteBusinesses(5, favorites5, db);
-        insertFavoriteBusinesses(6, favorites6, db);
-        insertFavoriteBusinesses(7, favorites7, db);
-        insertFavoriteBusinesses(8, favorites8, db);
-        insertFavoriteBusinesses(9, favorites9, db);
-        insertFavoriteBusinesses(10, favorites10, db);
     }
 
     private void insertBusinessData(SQLiteDatabase db) {
