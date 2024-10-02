@@ -117,7 +117,14 @@ public class userReviewCreationPage extends AppCompatActivity {
             ratingBar.setRating(editReview.getReviewRating());
             reviewTitle.setText(editReview.getReviewTitle());
             reviewContent.setText(editReview.getReviewText());
-            tagsInputEditText.setText(editReview.getTags().toString());
+
+            StringBuilder tagsBuilder = new StringBuilder();
+            for (String tag : editReview.getTags()) {
+                tagsBuilder.append(tag);
+                tagsBuilder.append(" ");  // Use the defined separator
+            }
+
+            tagsInputEditText.setText(tagsBuilder.toString());
         }
 
         stringReviewTitle = reviewTitle.getText().toString();
