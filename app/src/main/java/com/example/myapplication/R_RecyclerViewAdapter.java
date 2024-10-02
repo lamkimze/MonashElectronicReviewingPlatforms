@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,20 @@ public class R_RecyclerViewAdapter extends RecyclerView.Adapter<R_RecyclerViewAd
      */
     @Override
     public void onBindViewHolder(@NonNull R_RecyclerViewAdapter.MyViewHolder holder, int position) {
-        holder.reviewTitle.setText(reviewModels.get(position).getReviewTitle());
-        holder.reviewRating.setRating(reviewModels.get(position).getReviewRating());
-        holder.imageView.setImageResource(reviewModels.get(position).getReviewImages().indexOf(0));
+        ReviewModel review = reviewModels.get(position);
+        holder.reviewTitle.setText(review.getReviewTitle());
+        holder.reviewRating.setRating(review.getReviewRating());
+
+        // Ensure the images list is not empty before accessing it
+        if (!review.getReviewImages().isEmpty()) {
+            Bitmap imageBitmap = review.getReviewImages().get(0); // Assuming this returns a Bitmap
+
+            // Set the Bitmap directly
+            holder.imageView.setImageBitmap(imageBitmap);
+        } else {
+            // Handle the case where there are no images
+            holder.imageView.setImageResource(R.drawable.boostjuice); // Replace with your default image resource
+        }
 
     }
 
@@ -64,7 +76,7 @@ public class R_RecyclerViewAdapter extends RecyclerView.Adapter<R_RecyclerViewAd
             super(itemView);
 
             imageView = itemView.findViewById(R.id.reviewImageView);
-            reviewTitle = itemView.findViewById(R.id.reviewTitle);
+            reviewTitle = itemView.findViewById(R.id.reviewTextView);
             reviewRating = itemView.findViewById(R.id.reviewRatingBar);
         }
     }

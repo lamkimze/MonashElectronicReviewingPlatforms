@@ -79,6 +79,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/restaurantTags1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -89,6 +90,7 @@
                     android:textSize="10sp" />
 
                 <TextView
+                    android:id="@+id/restaurantTags2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -99,6 +101,7 @@
                     android:textSize="10sp" />
 
                 <TextView
+                    android:id="@+id/restaurantTags3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

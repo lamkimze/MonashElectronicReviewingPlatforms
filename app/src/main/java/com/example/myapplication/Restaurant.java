@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -20,7 +21,6 @@ public class Restaurant extends RestaurantReviewCompetition {
     private final String logoUrl;
     private String cuisine;
     private Bitmap businessImage = null; // image of the business initially null
-
 
     public Restaurant(String name, String pictureUrl, String logoUrl){
         this.name = name;

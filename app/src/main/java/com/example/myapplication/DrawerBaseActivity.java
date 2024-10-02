@@ -37,6 +37,35 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     ImageView userPicture;
     TextView userName, userEmail;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_drawer_base);  // Use the base layout here
+
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set up the drawer layout
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+
+        // Set up the NavigationView
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            Log.e("DrawerBaseActivity", "NavigationView is found");
+            navigationView.setNavigationItemSelectedListener(this);
+        } else {
+            Log.e("DrawerBaseActivity", "NavigationView is null");
+        }
+
+        // Set up the drawer toggle
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
     public void setContentView(View view){
         drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_base, null);
         FrameLayout container = drawerLayout.findViewById(R.id.activityContainer);
@@ -110,6 +139,7 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
             startActivity(profileIntent);
         }else{
             Intent profileIntent = new Intent(this, profilePage.class);
+            Log.e("TAG","Going to user profile");
             profileIntent.putExtra("userId", userId);
             startActivity(profileIntent);
         }
@@ -118,6 +148,7 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item){
         int id = item.getItemId();
+        Log.d("TAG", "Item ID: " + id);
 
         if (id == R.id.item_home) {
             goTaDashBoard();

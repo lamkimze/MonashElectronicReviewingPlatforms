@@ -110,6 +110,7 @@ public class CompetitionRecordsFragment extends Fragment {
 //            e.printStackTrace();
 //        }
         functionalLibraries.binarySort(listRestaurant, "restaurant");
+
     }
 
 
