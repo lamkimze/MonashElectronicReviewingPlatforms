@@ -1,81 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".profilePage">
+    android:layout_height="match_parent">
 
-    <!-- Title for User Profile -->
+
     <TextView
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="177dp"
         android:text="User Profile"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- User's profile image -->
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <!-- User's Name -->
+    <EditText
+        android:id="@+id/userProfileEmailAddress"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="test@email.com"
+        app:layout_constraintBottom_toTopOf="@+id/editTextName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView17"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileUserName" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:text="Winter Kim"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView20"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileEmailAddress" />
+
+    <EditText
+        android:id="@+id/editTextUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:text="Restaurant Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/userProfileUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Sample User"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/userProfileEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <!-- User's email address -->
-    <EditText
-        android:id="@+id/userProfileEmailAddress"
+    <TextView
+        android:id="@+id/textView29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:text="test@email.com"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="My Review >>"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-    <!-- User's phone number -->
-    <EditText
-        android:id="@+id/editTextPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="phone"
-        android:text="+61234567890"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userProfileEmailAddress" />
-
-    <!-- RecyclerView for additional content (e.g., user posts, settings) -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/userRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhone"
+        android:id="@+id/recyclerView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Email: "
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfileUserName" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Name: "
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20"
+        tools:srcCompat="@tools:sample/avatars" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

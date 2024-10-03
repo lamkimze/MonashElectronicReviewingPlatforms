@@ -21,6 +21,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +44,7 @@ import java.util.Map;
 
 public class restaurantDetailPage extends AppCompatActivity {
 
-    int busId, userId;
+    int busId, userId, reviewId;
     TextView addressTv, phoneTv, OperatingHoursTv, websiteTv, emailTv;
     Restaurant selected_restaurant;
     TextView restaurantName;
@@ -60,6 +61,7 @@ public class restaurantDetailPage extends AppCompatActivity {
     CRUD_Review crudReview;
     CRUD_Image crudImage;
     CRUD_User crudUser;
+    NestedScrollView nestedScrollView;
     TextView restaurantTags1, restaurantTags2, restaurantTags3;
     String [] filters = {"5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star", "Staff Replied", "Owner Replied"};
     boolean[] selectedFilters;
@@ -80,6 +82,7 @@ public class restaurantDetailPage extends AppCompatActivity {
 
         busId = getIntent().getExtras().getInt("busId");
         userId = getIntent().getExtras().getInt("userId");
+        reviewId = getIntent().getExtras().getInt("reviewId", -1);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -200,7 +203,6 @@ public class restaurantDetailPage extends AppCompatActivity {
             restaurantTags3.setVisibility(View.GONE);
         }
 
-
         totalRatings.setText(String.valueOf(crudReview.getReviews(busId).size()) + " Reviews");
         averageRatingTv.setText(String.valueOf(Math.round(selected_restaurant.getStars())));
         averageRatingBar.setRating(selected_restaurant.getStars());
@@ -231,12 +233,7 @@ public class restaurantDetailPage extends AppCompatActivity {
         autoCompleteTextViewFilter.setOnClickListener(v ->{
             showSortDialog();
         });
-//
-//
-//        restaurantImage.setImageResource(crudImage.get);
-//        if(sortOn != null){
-//            sortingSelected(sortOn);
-//        }
+
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -294,6 +291,33 @@ public class restaurantDetailPage extends AppCompatActivity {
 // Ensure the ratingReviews is correctly set up to only show 5 bars
         ratingReviews.createRatingBars(100, BarLabels.STYPE1, color, raters);
 
+        nestedScrollView = findViewById(R.id.main);
+
+// Wait for the data to be fully loaded
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                // Ensure the RecyclerView data is fully loaded and laid out
+                commentAdapter.notifyDataSetChanged();
+
+                // Scroll to the target position with an offset
+                layoutManager.scrollToPositionWithOffset(reviewId, 0); // 0 offset will align it to the top of the view
+
+                // Adding a post to ensure smooth scrolling after everything is laid out
+                nestedScrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Scroll NestedScrollView to the RecyclerView's specific position
+                        View targetView = recyclerView.getLayoutManager().findViewByPosition(reviewId);
+                        if (targetView != null) {
+                            nestedScrollView.smoothScrollTo(0, targetView.getTop());
+                        } else {
+                            Log.e("ScrollError", "Target view is null, unable to scroll");
+                        }
+                    }
+                });
+            }
+        });
 
     }
 

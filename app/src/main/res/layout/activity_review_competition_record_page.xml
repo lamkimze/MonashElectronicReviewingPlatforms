@@ -73,14 +73,14 @@
             android:text="Name ASC"
             android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/MedalSort"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/blue"
-            android:onClick="medalASCTapped"
-            android:text="Medal ASC" />
+<!--        <Button-->
+<!--            android:id="@+id/reviewNoSort"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:backgroundTint="@color/blue"-->
+<!--            android:onClick="medalASCTapped"-->
+<!--            android:text="Review DSC" />-->
 
         <Button
             android:id="@+id/RatingSort"
@@ -88,8 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/blue"
-            android:onClick="ratingASCTapped"
-            android:text="Rating ASC" />
+            android:onClick="ratingDSCTapped"
+            android:text="Rating DSC" />
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_drawer_header"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="176dp"
@@ -31,5 +32,4 @@
         android:text="userEmail.monash.edu"
         android:textColor="@color/white"
         android:textSize="14sp" />
-
 </LinearLayout>

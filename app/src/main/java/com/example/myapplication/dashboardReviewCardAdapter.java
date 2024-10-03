@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_Review;
 import com.example.myapplication.Database.CRUD_User;
@@ -26,6 +28,8 @@ import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.Entities.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -40,6 +44,7 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
     // CardAdapter Class
     private Context context2;
     private ArrayList<dashboardReviewCard> reviews;
+    CRUD_Business crudBusiness;
     CRUD_User crudUser;
     CRUD_Image crudImage;
     CRUD_Review crudReview;
@@ -61,6 +66,7 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             crudUser = new CRUD_User(databaseHelper);
             crudImage = new CRUD_Image(databaseHelper);
             crudReview = new CRUD_Review(databaseHelper);
+            crudBusiness = new CRUD_Business(databaseHelper);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -120,7 +126,7 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             public void onClick(View view) {
                 int businessId = review.getBusinessId();
                 Context context = holder.itemView.getContext();
-                Intent reviewDetail = new Intent(context, samplePostDetailActivity.class);
+                Intent reviewDetail = new Intent(context, restaurantDetailPage.class);
                 reviewDetail.putExtra("busId", businessId);
                 reviewDetail.putExtra("userId", userId);
                 reviewDetail.putExtra("reviewId", review.getReviewId());
@@ -174,6 +180,9 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
         TextView dateView;
         ImageView reviewImage;
         TextView positionTags;
+        ImageView restaurantImage;
+        TextView restaurantName;
+        LinearLayout restaurantLayout;
 
 
         ReviewHolder(View itemView){
@@ -188,6 +197,9 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             likeButton = itemView.findViewById(R.id.likeButton);
             dislikeButton = itemView.findViewById(R.id.dislikeButton);
             positionTags = itemView.findViewById(R.id.reviewPosition);
+            restaurantImage = itemView.findViewById(R.id.restaurantLogo);
+            restaurantName = itemView.findViewById(R.id.restaurantName);
+            restaurantLayout = itemView.findViewById(R.id.restaurantLayout);
 
         }
 
@@ -199,6 +211,9 @@ public class dashboardReviewCardAdapter extends RecyclerView.Adapter<dashboardRe
             stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
             usernameView.setText(review.getReviewUsername());
             commentReviewContentView.setText(review.getReviewText());
+
+            restaurantImage.setImageBitmap(crudImage.getBusinessImage(review.getBusinessId()));
+            restaurantName.setText(crudBusiness.getRestaurant(review.getBusinessId()).getName());
 
             Position userPosition = crudUser.getUserPoistion(userId);
             if(userPosition != null){

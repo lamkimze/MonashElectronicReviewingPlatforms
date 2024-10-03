@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -49,7 +51,6 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
         // Set up the drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
-
         // Set up the NavigationView
         NavigationView navigationView = findViewById(R.id.nav_view);
         if (navigationView != null) {
@@ -64,54 +65,54 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
     public void setContentView(View view){
-        drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_base, null);
-        FrameLayout container = drawerLayout.findViewById(R.id.activityContainer);
+        super.setContentView(R.layout.activity_drawer_base); // Set base layout which includes the drawer and toolbar
+        FrameLayout container = findViewById(R.id.activityContainer);
         container.addView(view);
-        super.setContentView(drawerLayout);
 
         userId = getIntent().getExtras().getInt("userId");
         loadData();
 
         Log.d("TAG", "User ID: " + userId);
 
-        Toolbar toolbar = drawerLayout.findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar); // Get the toolbar from the layout
+        setSupportActionBar(toolbar); // Set the toolbar as the action bar
 
-        NavigationView navigationView = drawerLayout.findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        NavigationView navigationView = findViewById(R.id.nav_view);
 
-//        userPicture = drawerLayout.findViewById(R.id.userPicture);
-//        userName = drawerLayout.findViewById(R.id.userName);
-//        userEmail = drawerLayout.findViewById(R.id.userEmail);
+        View headerView = navigationView.getHeaderView(0);
+        userPicture = headerView.findViewById(R.id.userPicture);
+        userName = headerView.findViewById(R.id.userName);
+        userEmail = headerView.findViewById(R.id.userEmail);
 
-//        User currentUser = crudUser.getUser(userId);
-//
-//        if(currentUser.getProfilePicture() != null){
-//            userPicture.setImageBitmap(currentUser.getProfilePicture());
-//        }else{
-//            userPicture.setImageResource(R.drawable.person_icon);
-//        }
-//
-//        userName.setText(currentUser.getUsername());
-//        userEmail.setText(currentUser.getEmail());
+        User currentUser = crudUser.getUser(userId);
+
+        if(currentUser.getProfilePicture() != null){
+            userPicture.setImageBitmap(Bitmap.createScaledBitmap(currentUser.getProfilePicture(), 120, 120, false));
+        }else{
+            userPicture.setImageResource(R.drawable.person_icon);
+        }
+
+        userName.setText(currentUser.getUsername());
+        userEmail.setText(currentUser.getEmail());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-
     }
 
     private void loadData() {
-        try{
+        try {
             dbHelper = new DatabaseHelper(this);
             crudImage = new CRUD_Image(dbHelper);
-            crudUser = new CRUD_User(dbHelper);;
-        }catch (Exception e) {
+            crudUser = new CRUD_User(dbHelper);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -137,63 +138,78 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
             profileIntent.putExtra("userId", userId);
             profileIntent.putExtra("busId", crudUser.getUserPoistion(userId).getBusinessID());
             startActivity(profileIntent);
-        }else{
+        } else {
             Intent profileIntent = new Intent(this, profilePage.class);
             profileIntent.putExtra("userId", userId);
             startActivity(profileIntent);
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId(); // get the item ID
 
-    public boolean onNavigationItemSelected(@NonNull MenuItem item){
-        int id = item.getItemId();
-        Log.d("TAG", "Item ID: " + id);
-
+        // Use if-else instead of switch to avoid constant expression requirement
         if (id == R.id.item_home) {
             goTaDashBoard();
-        }else if(id == R.id.item_setting){
-
+        } else if (id == R.id.item_setting) {
+            Log.d("TAG", "Settings item selected");
         } else if (id == R.id.item_share) {
-
+            Log.d("TAG", "Share item selected");
         } else if (id == R.id.item_profile) {
             goToProfile(item.getActionView());
-
-        } else if(id == R.id.item_favouriteList){
+        } else if (id == R.id.item_favouriteList) {
             goToFavourite();
-        }
-        else if(id == R.id.item_log_out){
+        } else if (id == R.id.item_log_out) {
             goToLogin();
+        } else {
+            Log.d("TAG", "Unknown item selected");
         }
 
-        drawerLayout.closeDrawers();
+        drawerLayout.closeDrawer(GravityCompat.START); // Close the drawer after selection
         return true;
     }
+
 
     private void goTaDashBoard() {
         Intent dashboardPage = new Intent(getApplicationContext(), dashboardPage.class);
         dashboardPage.putExtra("userid", userId);
+        startActivity(dashboardPage);
     }
 
-    protected void allocateActivityTitle(String titleString){
-        if(getSupportActionBar() != null){
+    protected void allocateActivityTitle(String titleString) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(titleString);
+        } else {
+            getSupportActionBar().setTitle("");
         }
     }
 
     @Override
-    public void onBackPressed(){
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
 
+    }
 
-    protected void onPostCreate(Bundle saveInstanceState){
+    @Override
+    protected void onPostCreate(Bundle saveInstanceState) {
         super.onPostCreate(saveInstanceState);
         new ActionBarDrawerToggle(this, (DrawerLayout) findViewById(R.id.drawer_layout),
                 (Toolbar) findViewById(R.id.toolbar), R.string.navigation_drawer_open, R.string.navigation_drawer_close){}.syncState();
     }
 }
+

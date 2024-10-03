@@ -70,11 +70,12 @@ public class dashboardPage extends DrawerBaseActivity {
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState); // Call super first
         activityDashboardPageBinding = ActivityDashboardPageBinding.inflate(getLayoutInflater());
-        setContentView(activityDashboardPageBinding.getRoot());
+        setContentView(activityDashboardPageBinding.getRoot()); // Call this to set the content
 
-        allocateActivityTitle("Electronic Review Platform");
+        allocateActivityTitle("Electronic Review Platform"); // Set the title for the action bar
+
         userId = getIntent().getExtras().getInt("userId");
         Log.e("User id", String.valueOf(userId) );
         initializeDatabase();

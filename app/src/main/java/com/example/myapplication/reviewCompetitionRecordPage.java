@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.WindowCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +20,7 @@ import com.example.myapplication.Database.DatabaseHelper;
 import com.example.myapplication.databinding.ActivityReviewCompetitionRecordPageBinding;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class reviewCompetitionRecordPage extends AppCompatActivity {
 
@@ -45,7 +45,8 @@ public class reviewCompetitionRecordPage extends AppCompatActivity {
 
     private boolean westernBool, southEastAsianBool, asianBool, cafe_beverageBool, otherBool = false;
     private Button all, western, southEastAsian, asian, cafe_beverage, others;
-    private Button nameAsc, medalAsc, ratingAsc;
+    private Button nameAsc, ratingDsc;
+//    private Button reviewDsc;
     private int blue, red, white, brown;
 
     @Override
@@ -55,7 +56,7 @@ public class reviewCompetitionRecordPage extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Review Competition Records");
+        toolbar.setTitle("Restaurant List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -118,8 +119,8 @@ public class reviewCompetitionRecordPage extends AppCompatActivity {
 
     private void unselectedAllSorts(){
         lookSortUnSelected(nameAsc);
-        lookSortUnSelected(medalAsc);
-        lookSortUnSelected(ratingAsc);
+        lookSortUnSelected(ratingDsc);
+//        lookSortUnSelected(reviewDsc);
     }
 
 
@@ -160,8 +161,8 @@ public class reviewCompetitionRecordPage extends AppCompatActivity {
         others = findViewById(R.id.others);
 
         nameAsc = findViewById(R.id.NameSort);
-        medalAsc = findViewById(R.id.MedalSort);
-        ratingAsc = findViewById(R.id.RatingSort);
+        ratingDsc = findViewById(R.id.RatingSort);
+//        reviewDsc = findViewById(R.id.reviewNoSort);
     }
 
     public void showFilterTapped(View view){
@@ -292,12 +293,14 @@ public class reviewCompetitionRecordPage extends AppCompatActivity {
         recyclerAdapter.setFilteredList(filteredRestaurants);
     }
 
-    public void medalASCTapped(View view){
-        listRestaurant.sort(Restaurant.medalAscending);
-        checkForFilter();
-        unselectedAllSorts();
-        lookSelected(medalAsc);
-    }
+
+//    public void reviewDSCTapped(View view){
+//        Collections.sort(listRestaurant, Restaurant);
+//        Collections.reverse(listRestaurant);
+//        checkForFilter();
+//        unselectedAllSorts();
+//        lookSelected(reviewDsc);
+//    }
 
     public void nameASCTapped(View view){
         listRestaurant.sort(Restaurant.nameAscending);
@@ -306,11 +309,12 @@ public class reviewCompetitionRecordPage extends AppCompatActivity {
         lookSelected(nameAsc);
     }
 
-    public void ratingASCTapped(View view){
-        listRestaurant.sort(Restaurant.ratingAscending);
+    public void ratingDSCTapped(View view){
+        Collections.sort(listRestaurant, Restaurant.ratingAscending);
+        Collections.reverse(listRestaurant);
         checkForFilter();
         unselectedAllSorts();
-        lookSelected(ratingAsc);
+        lookSelected(ratingDsc);
     }
 
 

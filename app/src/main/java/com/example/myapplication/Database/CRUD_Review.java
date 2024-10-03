@@ -587,6 +587,33 @@ public class CRUD_Review {
         return reviews;
     }
 
+    public ArrayList<Integer> getReviewIDsByUserId(int userId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectReviews = format(locale,
+                "SELECT review_id FROM review WHERE user_id = %d;",
+                userId
+        );
+        Cursor cursor = db.rawQuery(selectReviews, null);
+        ArrayList<Integer> reviewIDs = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            int columnIndex = cursor.getColumnIndex("review_id");
+            if (columnIndex != -1) {
+                reviewIDs.add(cursor.getInt(columnIndex));
+            }
+        }
+        cursor.close();
+        return reviewIDs;
+    }
+
+    public ArrayList<ReviewModel> getReviewsByUserId(int userId) {
+        ArrayList<ReviewModel> reviews = new ArrayList<>();
+        ArrayList<Integer> reviewIDs = getReviewIDsByUserId(userId);
+        for (int reviewID : reviewIDs) {
+            reviews.add(getReview(reviewID));
+        }
+        return reviews;
+    }
+
     /**
      * Method to get all the responses for a review
      * @param reviewID the review to get the responses for

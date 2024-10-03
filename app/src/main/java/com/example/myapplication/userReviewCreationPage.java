@@ -91,6 +91,7 @@ public class userReviewCreationPage extends AppCompatActivity {
         // Find the Toolbar in the layout and set it as the ActionBar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Review Creation");
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         busId = getIntent().getExtras().getInt("busId");

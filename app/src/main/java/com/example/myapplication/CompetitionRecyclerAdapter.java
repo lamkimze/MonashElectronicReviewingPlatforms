@@ -9,10 +9,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,17 +22,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.CRUD_Business;
 import com.example.myapplication.Database.CRUD_Image;
+import com.example.myapplication.Database.CRUD_Review;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<CompetitionRecyclerAdapter.CustomViewHolder> {
 
     List<Restaurant> data = new ArrayList<Restaurant>();
-    List<Restaurant> ranking = new ArrayList<>();
+    CRUD_Review crudReview;
     CRUD_Business crudBusiness;
     CRUD_Image crudImage;
     DatabaseHelper dbHelper;
@@ -55,6 +60,7 @@ public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<Competition
             dbHelper = new DatabaseHelper(parent.getContext());
             crudBusiness = new CRUD_Business(dbHelper);
             crudImage = new CRUD_Image(dbHelper);
+            crudReview = new CRUD_Review(dbHelper);
         }catch (Exception e) {
             e.printStackTrace();
 
@@ -65,26 +71,66 @@ public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<Competition
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, @SuppressLint("RecyclerView") int position) {
 //        ranking = data;
-        holder.tvRestaurantName.setText(String.valueOf(data.get(position).getName()));
-        holder.tvGoldMedal.setText(String.valueOf(data.get(position).getGoldMedalNo()));
-        holder.tvSilverMedal.setText(String.valueOf(data.get(position).getSilverMedalNo()));
-        holder.tvBronzeMedal.setText(String.valueOf(data.get(position).getBronzeMedalNo()));
-
-//        int current_ranking = -999;
-//        ranking.sort(Restaurant.dailyReview);
-
-//        for (int i = 0; i < ranking.size(); i++) {
-//            if(ranking.get(i).getId() == data.get(position).getId()){
-//                current_ranking = ranking.get(i).getPrev_ranking() + 1;
-//                break;
-//            }
-//
-//        }
-//        holder.tvPlaceChange.setText(String.valueOf(current_ranking - data.get(position).getPrev_ranking()));
 
         Restaurant currentRestaurant = data.get(position);
-//        currentRestaurant.setPrev_ranking(current_ranking);
-//        crudBusiness.updateCompetitionDetail(data.get(position).getId(), currentRestaurant);
+
+        holder.tvRestaurantName.setText(String.valueOf(currentRestaurant.getName()));
+        holder.averageRatingBar.setRating(currentRestaurant.getStars());
+        holder.tvCuisineType.setText(currentRestaurant.getCuisine());
+        holder.tvTotalReviews.setText(String.valueOf(crudReview.getReviews(currentRestaurant.getId()).size()));
+
+        List<String[]> allTags = new ArrayList<>();
+        ArrayList<ReviewModel> reviewModels = crudReview.getReviews(currentRestaurant.getId());
+        Log.e("busId", String.valueOf(currentRestaurant.getId()));
+        if(reviewModels != null){
+            for (ReviewModel review: reviewModels) {
+                if(review.getTags() != null && review.getTags().length > 0){
+                    allTags.add(review.getTags());
+                }
+            }
+        }
+        Log.e("reviews", allTags.toString());
+
+
+
+        Map<String, Integer> tagCountMap = new HashMap<>();
+
+        // Count the frequency of each tag
+        for (String[] tags : allTags) {
+            for (String tag : tags) {
+                tagCountMap.put(tag, tagCountMap.getOrDefault(tag, 0) + 1);
+            }
+        }
+
+        // Create a list from the map entries and sort by count
+        List<Map.Entry<String, Integer>> sortedTags = new ArrayList<>(tagCountMap.entrySet());
+        sortedTags.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())); // Sort in descending order
+
+        // Retrieve the top N tags
+        List<String> topTags = new ArrayList<>();
+        for (int i = 0; i < Math.min(3, sortedTags.size()); i++) {
+            topTags.add(sortedTags.get(i).getKey());
+        }
+
+        // Set the top tags safely
+        try{
+            holder.tag1.setText(topTags.get(0));
+        } catch (Exception e) {
+            holder.tag1.setVisibility(View.GONE);
+        }
+
+        try{
+            holder.tag2.setText(topTags.get(1));
+        } catch (Exception e) {
+            holder.tag2.setVisibility(View.GONE);
+        }
+
+        try {
+            holder.tag3.setText(topTags.get(2));
+        } catch (Exception e) {
+            holder.tag3.setVisibility(View.GONE);
+        }
+
 
 
         Bitmap businessImage = crudImage.getBusinessImage(currentRestaurant.getId());
@@ -132,10 +178,10 @@ public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<Competition
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
         public TextView tvRestaurantName;
-        public TextView tvGoldMedal;
-        public TextView tvSilverMedal;
-        public TextView tvBronzeMedal;
-        public TextView tvPlaceChange;
+        public TextView tvCuisineType;
+        public TextView tvTotalReviews;
+        public TextView tag1, tag2, tag3;
+        public RatingBar averageRatingBar;
         public ImageView ivRestaurantImage;
         public ImageView ivRankingAnnotation;
 
@@ -143,12 +189,15 @@ public class CompetitionRecyclerAdapter extends RecyclerView.Adapter<Competition
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRestaurantName = itemView.findViewById(R.id.restaurantName);
-            tvGoldMedal = itemView.findViewById(R.id.goldMedal);
-            tvSilverMedal = itemView.findViewById(R.id.silverMedal);
-            tvBronzeMedal = itemView.findViewById(R.id.bronzeMedal);
-            tvPlaceChange = itemView.findViewById(R.id.placeChange);
             ivRestaurantImage = itemView.findViewById(R.id.restaurantImage);
             ivRankingAnnotation = itemView.findViewById(R.id.placeChangeAnnotation);
+            tvCuisineType = itemView.findViewById(R.id.restaurantListCuisine);
+            tvTotalReviews = itemView.findViewById(R.id.totalReviews);
+            tag1 = itemView.findViewById(R.id.listTag1);
+            tag2 = itemView.findViewById(R.id.listTag2);
+            tag3 = itemView.findViewById(R.id.listTag3);
+            averageRatingBar = itemView.findViewById(R.id.listRatingBar);
+
         }
 
     }

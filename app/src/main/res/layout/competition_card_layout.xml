@@ -4,135 +4,127 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
+    android:layout_marginBottom="8dp"
     app:cardBackgroundColor="#AD94B1"
     app:cardCornerRadius="8dp"
     app:contentPadding="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/restaurantName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Restaurant Name"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/restaurantImage"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:text="Achievements:"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/restaurantImage"
-            app:layout_constraintTop_toBottomOf="@+id/restaurantName" />
-
+        <!-- Restaurant Image -->
         <ImageView
             android:id="@+id/restaurantImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:layout_gravity="center"
+            tools:srcCompat="@tools:sample/avatars"/>
 
-        <TextView
-            android:id="@+id/textView19"
-            android:layout_width="wrap_content"
+        <!-- Main Content: Restaurant Info -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="12dp"
-            android:text="Gold:"
-            android:textColor="#FFC107"
-            app:layout_constraintStart_toEndOf="@+id/restaurantImage"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/goldMedal"
+            <!-- Restaurant Name -->
+            <TextView
+                android:id="@+id/restaurantName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Restaurant Name"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/restaurantListCuisine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:textSize="14sp"
+                android:text="Cuisine Type: Malaysian"
+                android:textColor="@color/black"/>
+
+            <!-- Tags Section -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/listTag1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/restaurant_tags"
+                    android:text="tasty"
+                    android:textSize="12sp"
+                    android:padding="4dp"
+                    android:layout_marginRight="4dp" />
+
+                <TextView
+                    android:id="@+id/listTag2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/restaurant_tags"
+                    android:text="authentic"
+                    android:textSize="12sp"
+                    android:padding="4dp"
+                    android:layout_marginRight="4dp" />
+
+                <TextView
+                    android:id="@+id/listTag3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/restaurant_tags"
+                    android:textSize="12sp"
+
+                    android:text="good_service"
+                    android:padding="4dp" />
+            </LinearLayout>
+
+            <!-- Rating Bar -->
+            <RatingBar
+                android:id="@+id/listRatingBar"
+                style="?android:ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:numStars="5"
+                android:progressTint="#FFEB3B"
+                android:rating="4.5" />
+        </LinearLayout>
+
+        <!-- Right-Side: Place Change Info -->
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="12dp"
-            android:text="000"
-            app:layout_constraintStart_toEndOf="@+id/textView19"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="8dp">
 
-        <TextView
-            android:id="@+id/textView27"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="117dp"
-            android:layout_marginTop="12dp"
-            android:text="Silver:"
-            android:textColor="#C0C0C0"
-            app:layout_constraintStart_toEndOf="@+id/restaurantImage"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            <TextView
+                android:id="@+id/totalReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Number"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/silverMedal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="12dp"
-            android:text="000"
-            app:layout_constraintStart_toEndOf="@+id/textView27"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            <ImageView
+                android:id="@+id/placeChangeAnnotation"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="#AD94B1"
+                app:srcCompat="@drawable/equal" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView34"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="207dp"
-            android:layout_marginTop="12dp"
-            android:text="Bronze:"
-            android:textColor="#CD7F32"
-            app:layout_constraintStart_toEndOf="@+id/restaurantImage"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-        <TextView
-            android:id="@+id/bronzeMedal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="12dp"
-            android:text="000"
-            app:layout_constraintStart_toEndOf="@+id/textView34"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-        <TextView
-            android:id="@+id/placeChange"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="Number"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/placeChangeAnnotation"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="2dp"
-            android:background="#AD94B1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeChange"
-            app:srcCompat="@drawable/equal" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

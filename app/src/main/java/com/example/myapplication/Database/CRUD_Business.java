@@ -357,7 +357,7 @@ public class CRUD_Business {
         // Query to get businesses and their average ratings, sorted in descending order by rating
         String query = "SELECT b.bus_id, b.bus_name, b.bus_addr, b.bus_ph_nb, b.bus_email, b.website_url, b.bus_hours, b.bus_cuisine_type, AVG(r.star_rating) AS avg_rating " +
                 "FROM business b " +
-                "JOIN review r ON b.bus_id = r.bus_id " +
+                "LEFT JOIN review r ON b.bus_id = r.bus_id " +
                 "GROUP BY b.bus_id " +
                 "ORDER BY avg_rating DESC " +
                 "LIMIT 5;";
