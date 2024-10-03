@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Database.CRUD_Business;
+import com.example.myapplication.Database.CRUD_Image;
 import com.example.myapplication.Database.CRUD_Review;
 import com.example.myapplication.Database.DatabaseHelper;
 import com.google.android.material.card.MaterialCardView;
@@ -65,6 +66,7 @@ public class userReviewCreationPage extends AppCompatActivity {
     TagsInputEditText tagsInputEditText;
     RecyclerAdapter adapter;
     Button submitButton;
+    showImages imageAdapter;
 
     //    Converting to respective data style
     float rating;
@@ -77,6 +79,7 @@ public class userReviewCreationPage extends AppCompatActivity {
     DatabaseHelper dbHelper;
     CRUD_Review crudReview;
     CRUD_Business crudBusiness;
+    CRUD_Image crudImage;
     Restaurant reviewed_restaurant;
 
     public static final int Read_Permission = 101;
@@ -126,21 +129,29 @@ public class userReviewCreationPage extends AppCompatActivity {
             }
 
             tagsInputEditText.setText(tagsBuilder.toString());
+
+            stringReviewTitle = reviewTitle.getText().toString();
+            stringReviewContent = reviewContent.getText().toString();
+            rating = (int) ratingBar.getRating();
+            stringTags = tagsInputEditText.getText().toString();
+
+            textView = findViewById(R.id.totalPhotos);
+            recyclerView = findViewById(R.id.recyclerView_Gallery_Images);
+            pick = findViewById(R.id.imageButton);
+
+            adapter = new RecyclerAdapter(uri);
+            recyclerView.setLayoutManager(new GridLayoutManager(userReviewCreationPage.this,4));
+            recyclerView.setAdapter(adapter);
+
+            ArrayList<Bitmap> reviewImages = crudImage.getReviewImages(reviewId);
+            if (!reviewImages.isEmpty()) {
+                imageAdapter = new showImages(this, reviewImages);
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 4));  // Ensure correct view
+                recyclerView.setAdapter(imageAdapter);  // Set the adapter for the imageView RecyclerView
+            } else {
+                recyclerView.setVisibility(View.GONE);  // Hide if no images
+            }
         }
-
-        stringReviewTitle = reviewTitle.getText().toString();
-        stringReviewContent = reviewContent.getText().toString();
-        rating = (int) ratingBar.getRating();
-        stringTags = tagsInputEditText.getText().toString();
-
-        textView = findViewById(R.id.totalPhotos);
-        recyclerView = findViewById(R.id.recyclerView_Gallery_Images);
-        pick = findViewById(R.id.imageButton);
-
-
-        adapter = new RecyclerAdapter(uri);
-        recyclerView.setLayoutManager(new GridLayoutManager(userReviewCreationPage.this,4));
-        recyclerView.setAdapter(adapter);
 
         if(ContextCompat.checkSelfPermission(userReviewCreationPage.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(userReviewCreationPage.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Read_Permission);
@@ -302,6 +313,7 @@ public class userReviewCreationPage extends AppCompatActivity {
             dbHelper = new DatabaseHelper(this);
             crudBusiness = new CRUD_Business(dbHelper);
             crudReview = new CRUD_Review(dbHelper);
+            crudImage = new CRUD_Image(dbHelper);
         } catch (Exception e) {
             e.printStackTrace();
         }
