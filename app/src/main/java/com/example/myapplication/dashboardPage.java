@@ -181,6 +181,13 @@ public class dashboardPage extends DrawerBaseActivity {
         startActivity(reviewCompetition);
     }
 
+    public void onClickBusinessList(View view){
+        Intent businessList = new Intent(this, reviewCompetitionRecordPage.class);
+        businessList.putExtra("userId", userId);
+        Log.d("TAG", "User ID: " + userId);
+        startActivity(businessList);
+    }
+
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.option_menu, menu);
         return true;

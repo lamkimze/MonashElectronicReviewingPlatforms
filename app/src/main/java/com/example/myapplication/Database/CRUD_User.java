@@ -10,9 +10,13 @@ import android.graphics.Bitmap;
 
 import com.example.myapplication.Entities.User;
 import com.example.myapplication.Position;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.password4j.Password;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Locale;
 
 
@@ -321,6 +325,38 @@ public class CRUD_User {
         // If no user is found, close the cursor and return null
         cursor.close();
         return null;
+    }
+
+    public ArrayList<Integer> getFavoriteBusinesses(int userID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Query to get the favorite businesses JSON array for the given user ID
+        String selectFavorites = format(locale, "SELECT favorites FROM user_favorites WHERE user_id = %d;", userID);
+        Cursor cursor = db.rawQuery(selectFavorites, null);
+
+        // Check if we got a result
+        if (cursor.moveToFirst()) {
+            // Get the index of the 'favorites' column
+            int favListIndex = cursor.getColumnIndex("favorites");
+
+            // If the index is valid, retrieve the JSON string
+            if (favListIndex != -1) {
+                String favoriteBusinessJson = cursor.getString(favListIndex);
+
+                // Use Gson to deserialize the JSON string back into an ArrayList of Integer
+                Gson gson = new Gson();
+                Type type = new TypeToken<ArrayList<Integer>>() {}.getType();
+                ArrayList<Integer> favoriteBusinesses = gson.fromJson(favoriteBusinessJson, type);
+
+                // Close the cursor and return the list of favorite business IDs
+                cursor.close();
+                return favoriteBusinesses;
+            }
+        }
+
+        // If no favorite businesses are found, return an empty list
+        cursor.close();
+        return new ArrayList<>();
     }
 
 }

@@ -39,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "database.db";
     //    increment the version number if you change the schema
-    private static final int DATABASE_VERSION = 89;
+    private static final int DATABASE_VERSION = 92;
 
     private final Context context;
 
