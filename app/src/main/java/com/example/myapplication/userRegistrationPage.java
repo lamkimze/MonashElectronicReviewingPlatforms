@@ -123,6 +123,12 @@ public class userRegistrationPage extends AppCompatActivity {
                         restaurantVerify.setVisibility(View.VISIBLE);
                         restaurantLogo.setImageBitmap(crudImage.getBusinessImage(Integer.parseInt(busId)));
                         restaurantNameShowing.setText(verifyRestaurant.getName());
+                    }else{
+                        restaurantVerify.setVisibility(View.GONE);
+                        restaurantLogo.setVisibility(View.GONE);
+                        restaurantNameShowing.setVisibility(View.GONE);
+                        verifyRestaurant = null;
+                        Toast.makeText(getApplicationContext(), "The restaurant does not exist!!", Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
 
@@ -174,13 +180,14 @@ public class userRegistrationPage extends AppCompatActivity {
                         if(stringEmail.matches("^[a-z]{4}[0-9]{4}@student\\.monash\\.edu$")){
                             try {
                                 User user = new User(stringUserName, stringEmail, stringFirstName, stringLastName);
-                                user.setPosition(stringPosition);
                                 boolean isInserted =  crudUser.createUser(user, stringPassword);
                                 user.setId(crudUser.getUserID(user));
                                 Log.e("insert", String.valueOf(isInserted));
                                 Log.e("User id", String.valueOf(crudUser.getUserID(user)) );
                                 if (isInserted) {
-                                    crudUser.createUserPosition(crudUser.getUserID(user), Integer.parseInt(busId), stringPosition);
+                                    if(verifyRestaurant != null){
+                                        crudUser.createUserPosition(crudUser.getUserID(user), Integer.parseInt(busId), stringPosition);
+                                    }
                                     Bitmap profilePicture;
                                     if(selectedImageUri != null){
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

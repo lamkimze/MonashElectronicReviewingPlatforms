@@ -91,32 +91,45 @@ public class userReviewCreationPage extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_review_creation_page);
 
-        // Find the Toolbar in the layout and set it as the ActionBar
+        // Toolbar setup
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Review Creation");
-
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        // Initialize fields
         busId = getIntent().getExtras().getInt("busId");
         reviewerId = getIntent().getExtras().getInt("userId");
         reviewId = getIntent().getExtras().getInt("reviewId", 0);
         key = getIntent().getExtras().getString("key", "createPost");
-        Log.e("userId", String.valueOf(reviewerId));
-        Log.e("businessId", String.valueOf(busId));
 
-        loadData();
+        loadData(); // Initialize CRUD operations
         reviewed_restaurant = crudBusiness.getRestaurant(busId);
-        submitButton = findViewById(R.id.reviewSubmit);
 
+        // Setting up views
         restaurantName = findViewById(R.id.rcRestaurantName);
         restaurantName.setText(reviewed_restaurant.getName());
-
         reviewTitle = findViewById(R.id.reviewTitle);
         reviewContent = findViewById(R.id.reviewDetail);
         ratingBar = findViewById(R.id.reviewCreateRatingBar);
         tagsInputEditText = findViewById(R.id.tagsET);
+        textView = findViewById(R.id.totalPhotos);
+        recyclerView = findViewById(R.id.recyclerView_Gallery_Images);
+        pick = findViewById(R.id.imageButton);
+        submitButton = findViewById(R.id.reviewSubmit);
 
-        if(key.equals("editPost")){
+        // Setting up RecyclerView
+        adapter = new RecyclerAdapter(uri);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        recyclerView.setAdapter(adapter);
+
+        // Check for read storage permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Read_Permission);
+        }
+
+        // If editing a post, populate the fields with existing data
+        if (key.equals("editPost")) {
             ReviewModel editReview = crudReview.getReview(reviewId);
             ratingBar.setRating(editReview.getReviewRating());
             reviewTitle.setText(editReview.getReviewTitle());
@@ -130,108 +143,74 @@ public class userReviewCreationPage extends AppCompatActivity {
 
             tagsInputEditText.setText(tagsBuilder.toString());
 
+            // Fetching images associated with the review
+            List<Bitmap> reviewImages = editReview.getReviewImages();
+            for (Bitmap image : reviewImages) {
+                Uri imageUri = getImageUriFromBitmap(image); // Convert Bitmap to Uri
+                uri.add(imageUri);  // Add each image Uri to the list
+            }
+
+            adapter.notifyDataSetChanged(); // Notify adapter that data has changed
+            textView.setText(String.format(Locale.ENGLISH, "Photos (%d)", uri.size()));
+        }
+
+        // Image picker button click listener
+        pick.setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            }
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+        });
+
+        // Submit button click listener to save review
+        submitButton.setOnClickListener(view -> {
             stringReviewTitle = reviewTitle.getText().toString();
             stringReviewContent = reviewContent.getText().toString();
-            rating = (int) ratingBar.getRating();
+            rating = ratingBar.getRating();
             stringTags = tagsInputEditText.getText().toString();
 
-            textView = findViewById(R.id.totalPhotos);
-            recyclerView = findViewById(R.id.recyclerView_Gallery_Images);
-            pick = findViewById(R.id.imageButton);
+            ReviewModel reviewModel = new ReviewModel(rating, stringReviewTitle, new ArrayList<>(), stringReviewContent, reviewerId, busId);
 
-            adapter = new RecyclerAdapter(uri);
-            recyclerView.setLayoutManager(new GridLayoutManager(userReviewCreationPage.this,4));
-            recyclerView.setAdapter(adapter);
-
-            ArrayList<Bitmap> reviewImages = crudImage.getReviewImages(reviewId);
-            if (!reviewImages.isEmpty()) {
-                imageAdapter = new showImages(this, reviewImages);
-                recyclerView.setLayoutManager(new GridLayoutManager(this, 4));  // Ensure correct view
-                recyclerView.setAdapter(imageAdapter);  // Set the adapter for the imageView RecyclerView
-            } else {
-                recyclerView.setVisibility(View.GONE);  // Hide if no images
-            }
-        }
-
-        if(ContextCompat.checkSelfPermission(userReviewCreationPage.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(userReviewCreationPage.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Read_Permission);
-        }
-
-//        separate the tags
-
-        pick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
-                }
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"),1);
-            }
-        });
-
-//        submit button click and save
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stringReviewTitle = reviewTitle.getText().toString();
-                stringReviewContent = reviewContent.getText().toString();
-                rating = ratingBar.getRating();
-                stringTags = tagsInputEditText.getText().toString();
-
-                ReviewModel reviewModel = new ReviewModel(rating, stringReviewTitle, new ArrayList<>(), stringReviewContent, reviewerId, busId);
-
-                // Add images to review
-                for (Uri imageUri : uri) {
-                    try {
-                        Bitmap image = null;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            image = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), imageUri));
-                        } else {
-                            image = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                        }
-                        reviewModel.addReviewImage(image);
-//                        reviewed_restaurant.setDaily_review(reviewed_restaurant.getDaily_review() + 1);
-//                        crudBusiness.updateCompetitionDetail(busId, reviewed_restaurant);
-                    } catch (Exception e) {
-                        Toast.makeText(userReviewCreationPage.this, "Error adding image to review: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("userReviewCreationPage", "Error adding image to review: " + e.getMessage());
-                    }
-                }
-                // Save review to database
+            // Add images to review
+            for (Uri imageUri : uri) {
                 try {
-                    reviewModel.setTags(stringTags.split(" "));
-                    if(key.equals("editPost")){
-                        crudReview.replaceReview(reviewId, reviewModel);
-                    }else{
-                        crudReview.createReview(reviewModel);
+                    Bitmap image = null;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        image = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), imageUri));
+                    } else {
+                        image = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                     }
+                    reviewModel.addReviewImage(image);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e("userReviewCreationPage", "Error creating review: " + e.getMessage());
+                    Toast.makeText(this, "Error adding image to review: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("userReviewCreationPage", "Error adding image to review: " + e.getMessage());
                 }
-
-                // Start the next activity
-                Intent submitIntent = new Intent(getApplicationContext(), restaurantDetailPage.class);
-                submitIntent.putExtra("busID", busId);
-                submitIntent.putExtra("userID", reviewerId);
-                startActivity(submitIntent);
             }
-        });
 
-////        selectCard = findViewById(R.id.selectCard);
-////        tvCuisineProd = findViewById(R.id.tvCuisineProd);
-//        selectedCuisineProd = new boolean[cuisineArray.length];
-//
-//        selectCard.setOnClickListener(v -> {
-//            showCuisineProdDialog();
-//        });
-//
-//
+            // Save review to database
+            try {
+                reviewModel.setTags(stringTags.split(" "));
+                if (key.equals("editPost")) {
+                    crudReview.replaceReview(reviewId, reviewModel);
+                } else {
+                    crudReview.createReview(reviewModel);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("userReviewCreationPage", "Error creating review: " + e.getMessage());
+            }
+
+            // Start the next activity
+            Intent submitIntent = new Intent(getApplicationContext(), restaurantDetailPage.class);
+            submitIntent.putExtra("busID", busId);
+            submitIntent.putExtra("userID", reviewerId);
+            startActivity(submitIntent);
+        });
     }
+
     //
 //    private void showCuisineProdDialog(){
 //        AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -332,6 +311,11 @@ public class userReviewCreationPage extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
+    }
+
+    private Uri getImageUriFromBitmap(Bitmap bitmap) {
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
+        return Uri.parse(path);
     }
 
 
